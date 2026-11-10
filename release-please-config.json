@@ -3,7 +3,8 @@
   "packages": {
     ".": {
       "release-type": "node",
-      "package-name": "harrier-web"
+      "package-name": "harrier-web",
+      "include-component-in-tag": false
     }
   }
 }
