@@ -1,0 +1,34 @@
+{
+  "app": {
+    "panel": "Panel",
+    "backendVersion": "Backend v{{version}}",
+    "language": "Sprache"
+  },
+  "contract": {
+    "title": "API-Vertrag",
+    "matches": "passt",
+    "mismatch": "passt nicht",
+    "mismatchAlert": "Dieses Frontend passt nicht zur Backend-Version (Contract {{expected}} ≠ {{actual}}). Bitte Panel aktualisieren."
+  },
+  "status": {
+    "loading": "…",
+    "unreachable": "nicht erreichbar",
+    "ok": "OK",
+    "degraded": "eingeschränkt",
+    "up": "läuft",
+    "down": "nicht erreichbar"
+  },
+  "services": {
+    "gateway": "Gateway",
+    "service": "Service: {{name}}"
+  },
+  "agents": {
+    "title": "Verbundene Agents ({{count}})",
+    "host": "Host",
+    "system": "System",
+    "agent": "Agent",
+    "protocol": "Protokoll",
+    "connectedSince": "Verbunden seit",
+    "empty": "Noch kein Agent verbunden. Im Agent-Repo <code>just dev</code> ausführen."
+  }
+}

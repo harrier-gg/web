@@ -1,59 +1,83 @@
 import { useQuery } from '@tanstack/react-query';
 import type { ReactNode } from 'react';
+import { Trans, useTranslation } from 'react-i18next';
 import { agentsListOptions, systemHealthOptions, systemMetaOptions } from './api/@tanstack/react-query.gen';
+import { LANGUAGES } from './i18n';
 
 declare const __API_CONTRACT__: string;
 
-// M0: Statusseite. Zeigt, ob Gateway, Services und Agents erreichbar sind und ob Web und Backend zusammenpassen.
+// M0: status page. Shows whether gateway, services and agents are reachable and whether web and backend match.
 export function App() {
+  const { t, i18n } = useTranslation();
   const health = useQuery({ ...systemHealthOptions(), refetchInterval: 5000 });
   const meta = useQuery(systemMetaOptions());
-  // ponytail: Polling alle 2 s; ab M1 kommen Agent-Updates live per WebSocket
+  // ponytail: polling every 2 s; from M1 agent updates arrive live via WebSocket
   const agents = useQuery({ ...agentsListOptions(), refetchInterval: 2000 });
 
   const contractOk = meta.data ? meta.data.contract === __API_CONTRACT__ : undefined;
 
   return (
     <main className="mx-auto max-w-4xl space-y-6 p-6">
-      <header className="flex items-baseline justify-between">
+      <header className="flex flex-wrap items-baseline justify-between gap-3">
         <h1 className="text-2xl font-semibold">
-          <span className="text-accent">Harrier</span> Panel
+          <span className="text-accent">Harrier</span> {t('app.panel')}
         </h1>
-        <span className="text-sm text-zinc-400">Backend v{meta.data?.version ?? '?'}</span>
+        <div className="flex items-baseline gap-4 text-sm text-zinc-400">
+          <span>{t('app.backendVersion', { version: meta.data?.version ?? '?' })}</span>
+          <label className="flex items-center gap-2">
+            <span className="sr-only">{t('app.language')}</span>
+            <select
+              value={i18n.resolvedLanguage}
+              onChange={(e) => void i18n.changeLanguage(e.target.value)}
+              className="rounded-md bg-surface-raised px-2 py-1 text-zinc-100"
+            >
+              {LANGUAGES.map((l) => (
+                <option key={l.code} value={l.code}>
+                  {l.label}
+                </option>
+              ))}
+            </select>
+          </label>
+        </div>
       </header>
 
       {contractOk === false && (
         <p role="alert" className="rounded-lg border border-red-500/40 bg-red-500/10 p-4 text-red-200">
-          Dieses Frontend passt nicht zur Backend-Version (Contract {__API_CONTRACT__} ≠ {meta.data?.contract}).
-          Bitte Panel aktualisieren.
+          {t('contract.mismatchAlert', { expected: __API_CONTRACT__, actual: meta.data?.contract })}
         </p>
       )}
 
       <section className="grid gap-4 sm:grid-cols-3">
-        <Card title="Gateway">
-          <Status ok={health.isSuccess} label={health.isError ? 'nicht erreichbar' : (health.data?.status ?? '…')} />
+        <Card title={t('services.gateway')}>
+          <Status
+            ok={health.data?.status === 'ok'}
+            label={health.isError ? t('status.unreachable') : health.data ? t(`status.${health.data.status}`) : t('status.loading')}
+          />
         </Card>
         {Object.entries(health.data?.services ?? {}).map(([name, state]) => (
-          <Card key={name} title={`Service: ${name}`}>
-            <Status ok={state === 'up'} label={state} />
+          <Card key={name} title={t('services.service', { name })}>
+            <Status ok={state === 'up'} label={t(`status.${state}`)} />
           </Card>
         ))}
-        <Card title="API-Vertrag">
-          <Status ok={contractOk === true} label={contractOk === undefined ? '…' : contractOk ? 'passt' : 'passt nicht'} />
+        <Card title={t('contract.title')}>
+          <Status
+            ok={contractOk === true}
+            label={contractOk === undefined ? t('status.loading') : contractOk ? t('contract.matches') : t('contract.mismatch')}
+          />
         </Card>
       </section>
 
       <section className="rounded-xl bg-surface-raised p-4">
-        <h2 className="mb-3 font-medium">Verbundene Agents ({agents.data?.length ?? 0})</h2>
+        <h2 className="mb-3 font-medium">{t('agents.title', { count: agents.data?.length ?? 0 })}</h2>
         {agents.data?.length ? (
           <table className="w-full text-left text-sm">
             <thead className="text-zinc-400">
               <tr>
-                <th className="py-1 font-normal">Host</th>
-                <th className="font-normal">System</th>
-                <th className="font-normal">Agent</th>
-                <th className="font-normal">Protokoll</th>
-                <th className="font-normal">Verbunden seit</th>
+                <th className="py-1 font-normal">{t('agents.host')}</th>
+                <th className="font-normal">{t('agents.system')}</th>
+                <th className="font-normal">{t('agents.agent')}</th>
+                <th className="font-normal">{t('agents.protocol')}</th>
+                <th className="font-normal">{t('agents.connectedSince')}</th>
               </tr>
             </thead>
             <tbody>
@@ -65,14 +89,14 @@ export function App() {
                   </td>
                   <td>v{a.agentVersion}</td>
                   <td>{a.protocol}</td>
-                  <td>{new Date(a.connectedAt).toLocaleTimeString()}</td>
+                  <td>{new Date(a.connectedAt).toLocaleTimeString(i18n.resolvedLanguage)}</td>
                 </tr>
               ))}
             </tbody>
           </table>
         ) : (
           <p className="text-sm text-zinc-400">
-            Noch kein Agent verbunden. Im Agent-Repo <code className="text-zinc-200">just dev</code> ausführen.
+            <Trans i18nKey="agents.empty" components={{ code: <code className="text-zinc-200" /> }} />
           </p>
         )}
       </section>

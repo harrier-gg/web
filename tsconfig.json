@@ -10,7 +10,8 @@
     "skipLibCheck": true,
     "types": ["vite/client"],
     "allowImportingTsExtensions": true,
-    "verbatimModuleSyntax": true
+    "verbatimModuleSyntax": true,
+    "resolveJsonModule": true
   },
   "include": ["src", "vite.config.ts", "openapi-ts.config.ts"]
 }

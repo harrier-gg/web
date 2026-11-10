@@ -4,8 +4,8 @@ import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { defineConfig } from 'vite';
 
-// Gleicher Hash wie im Gateway (apps/gateway/src/openapi.ts): API-Form ohne Versionsnummer.
-// Stimmt er nicht mit GET /api/v1/meta überein, passt dieses Frontend nicht zum Backend.
+// Same hash as in the gateway (apps/gateway/src/openapi.ts): the API shape without the version number.
+// If it differs from GET /api/v1/meta, this frontend does not match the backend.
 const spec = JSON.parse(readFileSync(new URL('./openapi.json', import.meta.url), 'utf8'));
 const contract = createHash('sha256')
   .update(JSON.stringify({ paths: spec.paths, components: spec.components }))

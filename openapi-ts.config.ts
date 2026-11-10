@@ -1,6 +1,6 @@
 import { defineConfig } from '@hey-api/openapi-ts';
 
-// Erzeugt den API-Client aus openapi.json (Kopie aus dem Backend-Release). Ergebnis wird committet.
+// Generates the API client from openapi.json (copy from the backend release). The result is committed.
 export default defineConfig({
   input: './openapi.json',
   output: 'src/api',

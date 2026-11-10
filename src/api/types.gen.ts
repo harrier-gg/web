@@ -15,7 +15,7 @@ export type HealthDto = {
 export type MetaDto = {
     version: string;
     /**
-     * Hash der API-Form (paths + components). Das Web vergleicht ihn mit seinem generierten Client.
+     * Hash of the API shape (paths + components). The web app compares it with its generated client.
      */
     contract: string;
 };
