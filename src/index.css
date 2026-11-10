@@ -1,0 +1,11 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-surface: oklch(0.21 0.01 260);
+  --color-surface-raised: oklch(0.26 0.012 260);
+  --color-accent: oklch(0.75 0.15 60);
+}
+
+body {
+  @apply bg-surface text-zinc-100 antialiased;
+}
