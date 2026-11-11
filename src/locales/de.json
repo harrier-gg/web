@@ -62,6 +62,7 @@
     "back": "Alle Server",
     "start": "Starten",
     "stop": "Stoppen",
+    "restarting": "Wird nach einem Absturz neu gestartet (Versuch {{attempt}} von {{max}})",
     "cpu": "CPU",
     "memory": "Arbeitsspeicher",
     "console": "Konsole",

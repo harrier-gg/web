@@ -62,6 +62,7 @@
     "back": "All servers",
     "start": "Start",
     "stop": "Stop",
+    "restarting": "Restarting after a crash (attempt {{attempt}} of {{max}})",
     "cpu": "CPU",
     "memory": "Memory",
     "console": "Console",
