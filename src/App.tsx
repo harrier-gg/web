@@ -1,8 +1,9 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState, type ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
-import { authLogoutMutation, systemMetaOptions } from './api/@tanstack/react-query.gen';
+import { authLogoutMutation, discordProvidersOptions, systemMetaOptions } from './api/@tanstack/react-query.gen';
 import { AuthGate } from './features/auth/AuthGate';
+import { authNotice, discordErrorKey, discordUrl } from './features/auth/discord';
 import { ServerDetail } from './features/servers/ServerDetail';
 import { ServerList } from './features/servers/ServerList';
 import { SystemStatus } from './features/system/SystemStatus';
@@ -17,6 +18,8 @@ export function App() {
   const queryClient = useQueryClient();
   const meta = useQuery(systemMetaOptions());
   const logout = useMutation({ ...authLogoutMutation(), onSuccess: () => queryClient.clear() });
+  const providers = useQuery({ ...discordProvidersOptions(), refetchOnWindowFocus: false });
+  const [notice, setNotice] = useState(authNotice);
   // ponytail: one level of navigation; a router comes with more pages (M2: login, users)
   const [serverId, setServerId] = useState<string | null>(null);
   const [page, setPage] = useState<'servers' | 'nodes' | 'users'>('servers');
@@ -71,11 +74,29 @@ export function App() {
               </div>
               <div className="flex items-center gap-3 text-zinc-400">
                 <span>{t('auth.signedInAs', { name: user.name })} · {t(`roles.${user.role}`)}</span>
+                {user.discord ? (
+                  <span title={t('discord.linkedAs', { name: user.discord })}>Discord ✓</span>
+                ) : (
+                  providers.data?.discord && (
+                    <a href={discordUrl('link')} className="rounded-md px-2 py-1 hover:bg-white/5 hover:text-zinc-200">
+                      {t('discord.link')}
+                    </a>
+                  )
+                )}
                 <button type="button" onClick={() => logout.mutate({})} className="rounded-md px-2 py-1 hover:bg-white/5 hover:text-zinc-200">
                   {t('auth.logout')}
                 </button>
               </div>
             </nav>
+            {notice && (
+              <p
+                role={notice.kind === 'error' ? 'alert' : 'status'}
+                className={`flex justify-between gap-3 rounded-lg p-3 text-sm ${notice.kind === 'error' ? 'bg-red-500/10 text-red-200' : 'bg-emerald-500/10 text-emerald-200'}`}
+              >
+                {notice.kind === 'error' ? t(discordErrorKey(notice.code)) : t('discord.linked')}
+                <button type="button" onClick={() => setNotice(null)} aria-label={t('discord.dismiss')}>×</button>
+              </p>
+            )}
             {page === 'users' ? (
               <UsersPage me={user} />
             ) : page === 'nodes' ? (
