@@ -7,16 +7,15 @@ import { localize } from '../../lib/localize';
 
 export const input = 'w-full rounded-md bg-surface px-3 py-2 text-zinc-100 outline-none focus:ring-2 focus:ring-accent';
 
-type Value = string | number | boolean;
-/** Form state: text and numbers as typed, booleans as they are. */
-export type Draft = Record<string, string | boolean>;
+type Value = string | number;
+/** Form state: values as typed. */
+export type Draft = Record<string, string>;
 
 /** Form state for the given fields, filled with stored values or the template's defaults. */
 export function draftOf(fields: TemplateConfigFieldDto[], settings: Record<string, Value> = {}): Draft {
   return Object.fromEntries(
     fields.map((f) => {
-      const value = settings[f.key] ?? f.default;
-      return [f.key, typeof value === 'boolean' ? value : String(value)];
+      return [f.key, String(settings[f.key] ?? f.default)];
     }),
   );
 }
@@ -26,46 +25,28 @@ export function toSettings(fields: TemplateConfigFieldDto[], draft: Draft): Reco
   return Object.fromEntries(fields.map((f) => [f.key, f.type === 'integer' ? Number(draft[f.key]) : draft[f.key]]));
 }
 
-/** One input per config field of a template (ADR 0005); the browser checks min, max and patterns. */
+/** One input per config field of a template (ADR 0005); the browser checks min, max and patterns. Game settings are files (ADR 0011). */
 export function SettingsFields({ fields, draft, onChange }: { fields: TemplateConfigFieldDto[]; draft: Draft; onChange: (draft: Draft) => void }) {
   const { i18n } = useTranslation();
   const lang = i18n.resolvedLanguage;
-  const set = (key: string, value: string | boolean) => onChange({ ...draft, [key]: value });
 
   return (
     <div className="grid gap-4 sm:grid-cols-3">
-      {fields.map((f) =>
-        f.type === 'boolean' ? (
-          <label key={f.key} className="flex items-center gap-2 self-end py-2 text-sm">
-            <input type="checkbox" checked={draft[f.key] === true} onChange={(e) => set(f.key, e.target.checked)} className="size-4 accent-accent" />
-            <span>{localize(f.label, lang)}</span>
-          </label>
-        ) : (
-          <label key={f.key} className="space-y-1 text-sm">
-            <span className="text-zinc-400">{localize(f.label, lang)}</span>
-            {f.type === 'select' ? (
-              <select value={String(draft[f.key])} onChange={(e) => set(f.key, e.target.value)} className={input}>
-                {f.options?.map((o) => (
-                  <option key={o.value} value={o.value}>
-                    {localize(o.label, lang)}
-                  </option>
-                ))}
-              </select>
-            ) : (
-              <input
-                required
-                type={f.type === 'integer' ? 'number' : 'text'}
-                min={f.min}
-                max={f.max}
-                pattern={f.pattern}
-                value={String(draft[f.key])}
-                onChange={(e) => set(f.key, e.target.value)}
-                className={input}
-              />
-            )}
-          </label>
-        ),
-      )}
+      {fields.map((f) => (
+        <label key={f.key} className="space-y-1 text-sm">
+          <span className="text-zinc-400">{localize(f.label, lang)}</span>
+          <input
+            required
+            type={f.type === 'integer' ? 'number' : 'text'}
+            min={f.min}
+            max={f.max}
+            pattern={f.pattern}
+            value={draft[f.key]}
+            onChange={(e) => onChange({ ...draft, [f.key]: e.target.value })}
+            className={input}
+          />
+        </label>
+      ))}
     </div>
   );
 }

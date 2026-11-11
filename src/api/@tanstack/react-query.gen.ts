@@ -3,8 +3,8 @@
 import { type DefaultError, queryOptions, type UseMutationOptions } from '@tanstack/react-query';
 
 import { client } from '../client.gen';
-import { agentsList, authAcceptInvite, authCheckInvite, authLogin, authLogout, authMe, authSetup, authSetupStatus, discordProviders, nodesCreate, nodesList, nodesRemove, type Options, serversCommand, serversCreate, serversGet, serversList, serversMetrics, serversStart, serversStop, serversUpdateSettings, systemHealth, systemMeta, templatesList, usersCreateInvite, usersInvites, usersList, usersRemove, usersRevokeInvite, usersUpdateRole } from '../sdk.gen';
-import type { AgentsListData, AgentsListResponse, AuthAcceptInviteData, AuthAcceptInviteResponse, AuthCheckInviteData, AuthCheckInviteResponse, AuthLoginData, AuthLoginResponse, AuthLogoutData, AuthLogoutResponse, AuthMeData, AuthMeResponse, AuthSetupData, AuthSetupResponse, AuthSetupStatusData, AuthSetupStatusResponse, DiscordProvidersData, DiscordProvidersResponse, NodesCreateData, NodesCreateResponse, NodesListData, NodesListResponse, NodesRemoveData, NodesRemoveResponse, ServersCommandData, ServersCommandResponse, ServersCreateData, ServersCreateResponse, ServersGetData, ServersGetResponse, ServersListData, ServersListResponse, ServersMetricsData, ServersMetricsResponse, ServersStartData, ServersStartResponse, ServersStopData, ServersStopResponse, ServersUpdateSettingsData, ServersUpdateSettingsResponse, SystemHealthData, SystemHealthResponse, SystemMetaData, SystemMetaResponse, TemplatesListData, TemplatesListResponse, UsersCreateInviteData, UsersCreateInviteResponse, UsersInvitesData, UsersInvitesResponse, UsersListData, UsersListResponse, UsersRemoveData, UsersRemoveResponse, UsersRevokeInviteData, UsersRevokeInviteResponse, UsersUpdateRoleData, UsersUpdateRoleResponse } from '../types.gen';
+import { agentsList, authAcceptInvite, authCheckInvite, authLogin, authLogout, authMe, authSetup, authSetupStatus, discordProviders, nodesCreate, nodesList, nodesRemove, type Options, serversCommand, serversCreate, serversGet, serversList, serversMetrics, serversReadFile, serversStart, serversStop, serversUpdateSettings, serversWriteFile, systemHealth, systemMeta, templatesList, usersCreateInvite, usersInvites, usersList, usersRemove, usersRevokeInvite, usersUpdateRole } from '../sdk.gen';
+import type { AgentsListData, AgentsListResponse, AuthAcceptInviteData, AuthAcceptInviteResponse, AuthCheckInviteData, AuthCheckInviteResponse, AuthLoginData, AuthLoginResponse, AuthLogoutData, AuthLogoutResponse, AuthMeData, AuthMeResponse, AuthSetupData, AuthSetupResponse, AuthSetupStatusData, AuthSetupStatusResponse, DiscordProvidersData, DiscordProvidersResponse, NodesCreateData, NodesCreateResponse, NodesListData, NodesListResponse, NodesRemoveData, NodesRemoveResponse, ServersCommandData, ServersCommandResponse, ServersCreateData, ServersCreateResponse, ServersGetData, ServersGetResponse, ServersListData, ServersListResponse, ServersMetricsData, ServersMetricsResponse, ServersReadFileData, ServersReadFileResponse, ServersStartData, ServersStartResponse, ServersStopData, ServersStopResponse, ServersUpdateSettingsData, ServersUpdateSettingsResponse, ServersWriteFileData, ServersWriteFileResponse, SystemHealthData, SystemHealthResponse, SystemMetaData, SystemMetaResponse, TemplatesListData, TemplatesListResponse, UsersCreateInviteData, UsersCreateInviteResponse, UsersInvitesData, UsersInvitesResponse, UsersListData, UsersListResponse, UsersRemoveData, UsersRemoveResponse, UsersRevokeInviteData, UsersRevokeInviteResponse, UsersUpdateRoleData, UsersUpdateRoleResponse } from '../types.gen';
 
 export type QueryKey<TOptions extends Options> = [
     Pick<TOptions, 'baseUrl' | 'body' | 'headers' | 'path' | 'query'> & {
@@ -377,6 +377,35 @@ export const serversUpdateSettingsMutation = (options?: Partial<Options<ServersU
     const mutationOptions: UseMutationOptions<ServersUpdateSettingsResponse, DefaultError, Options<ServersUpdateSettingsData>> = {
         mutationFn: async (fnOptions) => {
             const { data } = await serversUpdateSettings({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+export const serversReadFileQueryKey = (options: Options<ServersReadFileData>) => createQueryKey('serversReadFile', options);
+
+export const serversReadFileOptions = (options: Options<ServersReadFileData>) => queryOptions<ServersReadFileResponse, DefaultError, ServersReadFileResponse, ReturnType<typeof serversReadFileQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await serversReadFile({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: serversReadFileQueryKey(options)
+});
+
+export const serversWriteFileMutation = (options?: Partial<Options<ServersWriteFileData>>): UseMutationOptions<ServersWriteFileResponse, DefaultError, Options<ServersWriteFileData>> => {
+    const mutationOptions: UseMutationOptions<ServersWriteFileResponse, DefaultError, Options<ServersWriteFileData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await serversWriteFile({
                 ...options,
                 ...fnOptions,
                 throwOnError: true

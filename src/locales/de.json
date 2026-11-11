@@ -191,5 +191,13 @@
       "email": "Dein Discord-Konto braucht eine bestätigte E-Mail-Adresse, um beizutreten.",
       "failed": "Die Anmeldung mit Discord hat nicht geklappt. Bitte nochmal versuchen."
     }
+  },
+  "files": {
+    "title": "Datei",
+    "loading": "Wird geladen …",
+    "loadFailed": "Die Datei konnte nicht geladen werden.",
+    "saveFailed": "Die Datei konnte nicht gespeichert werden.",
+    "missing": "Die Datei gibt es noch nicht; der Server legt sie beim ersten Start an. Du kannst sie auch jetzt schon schreiben.",
+    "discard": "Änderungen verwerfen"
   }
 }

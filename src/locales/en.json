@@ -191,5 +191,13 @@
       "email": "Your Discord account needs a verified e-mail address to join.",
       "failed": "The Discord login did not work. Please try again."
     }
+  },
+  "files": {
+    "title": "File",
+    "loading": "Loading…",
+    "loadFailed": "The file could not be loaded.",
+    "saveFailed": "The file could not be saved.",
+    "missing": "The file does not exist yet; the server creates it on its first start. You can also write it now.",
+    "discard": "Discard changes"
   }
 }
