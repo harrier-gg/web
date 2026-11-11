@@ -14,10 +14,22 @@ export interface Players {
   names: string[];
 }
 
+/** Set while the agent waits to restart a crashed server (ADR 0010). */
+export interface Restart {
+  attempt: number;
+  maxAttempts: number;
+}
+
+interface Status {
+  status: ServerDto['status'];
+  message: string | null;
+  restart?: Restart | null;
+}
+
 type Event =
-  | { type: 'snapshot'; output: string; status: ServerDto['status']; message: string | null; stats: Stats | null; players: Players | null }
+  | ({ type: 'snapshot'; output: string; stats: Stats | null; players: Players | null } & Status)
   | { type: 'output'; data: string }
-  | { type: 'status'; status: ServerDto['status']; message: string | null }
+  | ({ type: 'status' } & Status)
   | ({ type: 'stats' } & Stats)
   | ({ type: 'players' } & Players);
 
@@ -26,7 +38,7 @@ type Event =
  * Output goes straight to `onOutput` (the terminal), status and stats into React state.
  */
 export function useServerConsole(serverId: string, onOutput: (data: string, reset: boolean) => void) {
-  const [status, setStatus] = useState<{ status: ServerDto['status']; message: string | null } | null>(null);
+  const [status, setStatus] = useState<Status | null>(null);
   const [stats, setStats] = useState<Stats | null>(null);
   const [players, setPlayers] = useState<Players | null>(null);
   const [connected, setConnected] = useState(false);
@@ -52,7 +64,7 @@ export function useServerConsole(serverId: string, onOutput: (data: string, rese
         switch (event.type) {
           case 'snapshot':
             output.current(event.output, true);
-            setStatus({ status: event.status, message: event.message });
+            setStatus({ status: event.status, message: event.message, restart: event.restart });
             setStats(event.stats);
             setPlayers(event.players ?? null);
             break;
@@ -60,7 +72,7 @@ export function useServerConsole(serverId: string, onOutput: (data: string, rese
             output.current(event.data, false);
             break;
           case 'status':
-            setStatus({ status: event.status, message: event.message });
+            setStatus({ status: event.status, message: event.message, restart: event.restart });
             if (event.status !== 'running') {
               setStats(null);
               setPlayers(null);

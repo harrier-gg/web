@@ -61,7 +61,10 @@ export function ServerDetail({ id, me, onBack }: { id: string; me: MeDto; onBack
   };
 
   const status = live.status?.status ?? server.data?.status ?? 'stopped';
-  const message = live.status?.message ?? server.data?.statusMessage;
+  const restart = live.status?.restart;
+  const message = [restart && t('detail.restarting', { attempt: restart.attempt, max: restart.maxAttempts }), live.status?.message ?? server.data?.statusMessage]
+    .filter(Boolean)
+    .join(' · ');
   const busy = status === 'installing' || status === 'starting' || status === 'stopping';
   const tpl = templates.data?.find((x) => x.id === server.data?.templateId);
 
@@ -80,7 +83,7 @@ export function ServerDetail({ id, me, onBack }: { id: string; me: MeDto; onBack
         </div>
         <div className="flex items-center gap-4">
           <StatusBadge status={status} />
-          {status === 'running' || status === 'starting' ? (
+          {status === 'running' || status === 'starting' || restart ? (
             <button type="button" disabled={stop.isPending} onClick={() => stop.mutate({ path: { id } })} className="rounded-lg bg-white/10 px-3 py-1.5 text-sm hover:bg-white/15 disabled:opacity-50">
               {t('detail.stop')}
             </button>
