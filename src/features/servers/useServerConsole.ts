@@ -1,0 +1,74 @@
+import { useEffect, useRef, useState } from 'react';
+import type { ServerDto } from '../../api/types.gen';
+
+export interface Stats {
+  cpuPercent: number;
+  memoryBytes: number;
+  memoryLimitBytes: number;
+}
+
+type Event =
+  | { type: 'snapshot'; output: string; status: ServerDto['status']; message: string | null; stats: Stats | null }
+  | { type: 'output'; data: string }
+  | { type: 'status'; status: ServerDto['status']; message: string | null }
+  | ({ type: 'stats' } & Stats);
+
+/**
+ * Live console of one server over the gateway's WebSocket (`/api/v1/servers/<id>/console`).
+ * Output goes straight to `onOutput` (the terminal), status and stats into React state.
+ */
+export function useServerConsole(serverId: string, onOutput: (data: string, reset: boolean) => void) {
+  const [status, setStatus] = useState<{ status: ServerDto['status']; message: string | null } | null>(null);
+  const [stats, setStats] = useState<Stats | null>(null);
+  const [connected, setConnected] = useState(false);
+  const socket = useRef<WebSocket | null>(null);
+  const output = useRef(onOutput);
+  output.current = onOutput;
+
+  useEffect(() => {
+    let closed = false;
+    let retry: ReturnType<typeof setTimeout>;
+
+    const connect = () => {
+      const scheme = location.protocol === 'https:' ? 'wss' : 'ws';
+      const ws = new WebSocket(`${scheme}://${location.host}/api/v1/servers/${serverId}/console`);
+      socket.current = ws;
+      ws.onopen = () => setConnected(true);
+      ws.onclose = () => {
+        setConnected(false);
+        if (!closed) retry = setTimeout(connect, 2000); // reconnect, e.g. after a gateway restart
+      };
+      ws.onmessage = (e) => {
+        const event = JSON.parse(e.data as string) as Event;
+        switch (event.type) {
+          case 'snapshot':
+            output.current(event.output, true);
+            setStatus({ status: event.status, message: event.message });
+            setStats(event.stats);
+            break;
+          case 'output':
+            output.current(event.data, false);
+            break;
+          case 'status':
+            setStatus({ status: event.status, message: event.message });
+            if (event.status !== 'running') setStats(null);
+            break;
+          case 'stats':
+            setStats({ cpuPercent: event.cpuPercent, memoryBytes: event.memoryBytes, memoryLimitBytes: event.memoryLimitBytes });
+            break;
+        }
+      };
+    };
+
+    connect();
+    return () => {
+      closed = true;
+      clearTimeout(retry);
+      socket.current?.close();
+    };
+  }, [serverId]);
+
+  const send = (command: string) => socket.current?.send(JSON.stringify({ type: 'command', command }));
+
+  return { status, stats, connected, send };
+}
