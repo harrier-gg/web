@@ -2,7 +2,7 @@
 
 import type { Client, ClientMeta, Options as Options2, RequestResult, TDataShape } from './client';
 import { client } from './client.gen';
-import type { AgentsListData, AgentsListResponses, NodesListData, NodesListResponses, ServersCommandData, ServersCommandResponses, ServersCreateData, ServersCreateResponses, ServersGetData, ServersGetResponses, ServersListData, ServersListResponses, ServersStartData, ServersStartResponses, ServersStopData, ServersStopResponses, SystemHealthData, SystemHealthResponses, SystemMetaData, SystemMetaResponses, TemplatesListData, TemplatesListResponses } from './types.gen';
+import type { AgentsListData, AgentsListResponses, AuthLoginData, AuthLoginResponses, AuthLogoutData, AuthLogoutResponses, AuthMeData, AuthMeResponses, AuthSetupData, AuthSetupResponses, AuthSetupStatusData, AuthSetupStatusResponses, NodesListData, NodesListResponses, ServersCommandData, ServersCommandResponses, ServersCreateData, ServersCreateResponses, ServersGetData, ServersGetResponses, ServersListData, ServersListResponses, ServersStartData, ServersStartResponses, ServersStopData, ServersStopResponses, SystemHealthData, SystemHealthResponses, SystemMetaData, SystemMetaResponses, TemplatesListData, TemplatesListResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean, TResponse = unknown> = Options2<TData, ThrowOnError, TResponse> & {
     /**
@@ -17,6 +17,30 @@ export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends 
      */
     meta?: keyof ClientMeta extends never ? Record<string, unknown> : ClientMeta;
 };
+
+export const authSetupStatus = <ThrowOnError extends boolean = false>(options?: Options<AuthSetupStatusData, ThrowOnError>): RequestResult<AuthSetupStatusResponses, unknown, ThrowOnError> => (options?.client ?? client).get<AuthSetupStatusResponses, unknown, ThrowOnError>({ url: '/auth/setup', ...options });
+
+export const authSetup = <ThrowOnError extends boolean = false>(options: Options<AuthSetupData, ThrowOnError>): RequestResult<AuthSetupResponses, unknown, ThrowOnError> => (options.client ?? client).post<AuthSetupResponses, unknown, ThrowOnError>({
+    url: '/auth/setup',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+export const authLogin = <ThrowOnError extends boolean = false>(options: Options<AuthLoginData, ThrowOnError>): RequestResult<AuthLoginResponses, unknown, ThrowOnError> => (options.client ?? client).post<AuthLoginResponses, unknown, ThrowOnError>({
+    url: '/auth/login',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+export const authLogout = <ThrowOnError extends boolean = false>(options?: Options<AuthLogoutData, ThrowOnError>): RequestResult<AuthLogoutResponses, unknown, ThrowOnError> => (options?.client ?? client).post<AuthLogoutResponses, unknown, ThrowOnError>({ url: '/auth/logout', ...options });
+
+export const authMe = <ThrowOnError extends boolean = false>(options?: Options<AuthMeData, ThrowOnError>): RequestResult<AuthMeResponses, unknown, ThrowOnError> => (options?.client ?? client).get<AuthMeResponses, unknown, ThrowOnError>({ url: '/auth/me', ...options });
 
 export const systemHealth = <ThrowOnError extends boolean = false>(options?: Options<SystemHealthData, ThrowOnError>): RequestResult<SystemHealthResponses, unknown, ThrowOnError> => (options?.client ?? client).get<SystemHealthResponses, unknown, ThrowOnError>({ url: '/health', ...options });
 

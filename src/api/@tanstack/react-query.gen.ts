@@ -3,8 +3,8 @@
 import { type DefaultError, queryOptions, type UseMutationOptions } from '@tanstack/react-query';
 
 import { client } from '../client.gen';
-import { agentsList, nodesList, type Options, serversCommand, serversCreate, serversGet, serversList, serversStart, serversStop, systemHealth, systemMeta, templatesList } from '../sdk.gen';
-import type { AgentsListData, AgentsListResponse, NodesListData, NodesListResponse, ServersCommandData, ServersCommandResponse, ServersCreateData, ServersCreateResponse, ServersGetData, ServersGetResponse, ServersListData, ServersListResponse, ServersStartData, ServersStartResponse, ServersStopData, ServersStopResponse, SystemHealthData, SystemHealthResponse, SystemMetaData, SystemMetaResponse, TemplatesListData, TemplatesListResponse } from '../types.gen';
+import { agentsList, authLogin, authLogout, authMe, authSetup, authSetupStatus, nodesList, type Options, serversCommand, serversCreate, serversGet, serversList, serversStart, serversStop, systemHealth, systemMeta, templatesList } from '../sdk.gen';
+import type { AgentsListData, AgentsListResponse, AuthLoginData, AuthLoginResponse, AuthLogoutData, AuthLogoutResponse, AuthMeData, AuthMeResponse, AuthSetupData, AuthSetupResponse, AuthSetupStatusData, AuthSetupStatusResponse, NodesListData, NodesListResponse, ServersCommandData, ServersCommandResponse, ServersCreateData, ServersCreateResponse, ServersGetData, ServersGetResponse, ServersListData, ServersListResponse, ServersStartData, ServersStartResponse, ServersStopData, ServersStopResponse, SystemHealthData, SystemHealthResponse, SystemMetaData, SystemMetaResponse, TemplatesListData, TemplatesListResponse } from '../types.gen';
 
 export type QueryKey<TOptions extends Options> = [
     Pick<TOptions, 'baseUrl' | 'body' | 'headers' | 'path' | 'query'> & {
@@ -38,6 +38,78 @@ const createQueryKey = <TOptions extends Options>(id: string, options?: TOptions
     }
     return [params];
 };
+
+export const authSetupStatusQueryKey = (options?: Options<AuthSetupStatusData>) => createQueryKey('authSetupStatus', options);
+
+export const authSetupStatusOptions = (options?: Options<AuthSetupStatusData>) => queryOptions<AuthSetupStatusResponse, DefaultError, AuthSetupStatusResponse, ReturnType<typeof authSetupStatusQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await authSetupStatus({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: authSetupStatusQueryKey(options)
+});
+
+export const authSetupMutation = (options?: Partial<Options<AuthSetupData>>): UseMutationOptions<AuthSetupResponse, DefaultError, Options<AuthSetupData>> => {
+    const mutationOptions: UseMutationOptions<AuthSetupResponse, DefaultError, Options<AuthSetupData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await authSetup({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+export const authLoginMutation = (options?: Partial<Options<AuthLoginData>>): UseMutationOptions<AuthLoginResponse, DefaultError, Options<AuthLoginData>> => {
+    const mutationOptions: UseMutationOptions<AuthLoginResponse, DefaultError, Options<AuthLoginData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await authLogin({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+export const authLogoutMutation = (options?: Partial<Options<AuthLogoutData>>): UseMutationOptions<AuthLogoutResponse, DefaultError, Options<AuthLogoutData>> => {
+    const mutationOptions: UseMutationOptions<AuthLogoutResponse, DefaultError, Options<AuthLogoutData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await authLogout({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+export const authMeQueryKey = (options?: Options<AuthMeData>) => createQueryKey('authMe', options);
+
+export const authMeOptions = (options?: Options<AuthMeData>) => queryOptions<AuthMeResponse, DefaultError, AuthMeResponse, ReturnType<typeof authMeQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await authMe({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: authMeQueryKey(options)
+});
 
 export const systemHealthQueryKey = (options?: Options<SystemHealthData>) => createQueryKey('systemHealth', options);
 
