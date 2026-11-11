@@ -151,7 +151,7 @@ export type ServerDto = {
     nodeId: string;
     templateId: string;
     settings: {
-        [key: string]: string | number | boolean;
+        [key: string]: string | number;
     };
     /**
      * Port players connect to on the node
@@ -167,7 +167,7 @@ export type CreateServerDto = {
     name: string;
     templateId: string;
     settings?: {
-        [key: string]: string | number | boolean;
+        [key: string]: string | number;
     };
 };
 
@@ -195,8 +195,24 @@ export type SettingsDto = {
      * Changed settings; keys left out keep their value
      */
     settings: {
-        [key: string]: string | number | boolean;
+        [key: string]: string | number;
     };
+};
+
+export type ConfigFileDto = {
+    path: string;
+    /**
+     * null while the file does not exist, e.g. before the first start
+     */
+    content: string | null;
+};
+
+export type WriteConfigFileDto = {
+    path: string;
+    /**
+     * New content, at most 128 KiB
+     */
+    content: string;
 };
 
 export type CommandDto = {
@@ -219,29 +235,29 @@ export type VariantDto = {
     description?: LocalizedTextDto;
 };
 
-export type SelectOptionDto = {
-    value: string;
-    label: LocalizedTextDto;
+export type TemplateFileDto = {
+    path: string;
+    description?: LocalizedTextDto;
 };
 
 export type TemplateConfigFieldDto = {
     key: string;
     label: LocalizedTextDto;
-    type: 'string' | 'integer' | 'boolean' | 'select';
-    default: string | number | boolean;
+    type: 'string' | 'integer';
+    default: string | number;
     min?: number;
     max?: number;
     pattern?: string;
-    /**
-     * Choices of a select field
-     */
-    options?: Array<SelectOptionDto>;
 };
 
 export type TemplateDto = {
     id: string;
     game: NamedDto;
     variant: VariantDto;
+    /**
+     * Files owners and admins can edit
+     */
+    files: Array<TemplateFileDto>;
     config: Array<TemplateConfigFieldDto>;
 };
 
@@ -601,6 +617,38 @@ export type ServersUpdateSettingsResponses = {
 };
 
 export type ServersUpdateSettingsResponse = ServersUpdateSettingsResponses[keyof ServersUpdateSettingsResponses];
+
+export type ServersReadFileData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query: {
+        path: string;
+    };
+    url: '/servers/{id}/files';
+};
+
+export type ServersReadFileResponses = {
+    200: ConfigFileDto;
+};
+
+export type ServersReadFileResponse = ServersReadFileResponses[keyof ServersReadFileResponses];
+
+export type ServersWriteFileData = {
+    body: WriteConfigFileDto;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/servers/{id}/files';
+};
+
+export type ServersWriteFileResponses = {
+    200: ConfigFileDto;
+};
+
+export type ServersWriteFileResponse = ServersWriteFileResponses[keyof ServersWriteFileResponses];
 
 export type ServersCommandData = {
     body: CommandDto;

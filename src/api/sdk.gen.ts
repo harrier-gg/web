@@ -2,7 +2,7 @@
 
 import type { Client, ClientMeta, Options as Options2, RequestResult, TDataShape } from './client';
 import { client } from './client.gen';
-import type { AgentsListData, AgentsListResponses, AuthAcceptInviteData, AuthAcceptInviteResponses, AuthCheckInviteData, AuthCheckInviteResponses, AuthLoginData, AuthLoginResponses, AuthLogoutData, AuthLogoutResponses, AuthMeData, AuthMeResponses, AuthSetupData, AuthSetupResponses, AuthSetupStatusData, AuthSetupStatusResponses, DiscordProvidersData, DiscordProvidersResponses, NodesCreateData, NodesCreateResponses, NodesListData, NodesListResponses, NodesRemoveData, NodesRemoveResponses, ServersCommandData, ServersCommandResponses, ServersCreateData, ServersCreateResponses, ServersGetData, ServersGetResponses, ServersListData, ServersListResponses, ServersMetricsData, ServersMetricsResponses, ServersStartData, ServersStartResponses, ServersStopData, ServersStopResponses, ServersUpdateSettingsData, ServersUpdateSettingsResponses, SystemHealthData, SystemHealthResponses, SystemMetaData, SystemMetaResponses, TemplatesListData, TemplatesListResponses, UsersCreateInviteData, UsersCreateInviteResponses, UsersInvitesData, UsersInvitesResponses, UsersListData, UsersListResponses, UsersRemoveData, UsersRemoveResponses, UsersRevokeInviteData, UsersRevokeInviteResponses, UsersUpdateRoleData, UsersUpdateRoleResponses } from './types.gen';
+import type { AgentsListData, AgentsListResponses, AuthAcceptInviteData, AuthAcceptInviteResponses, AuthCheckInviteData, AuthCheckInviteResponses, AuthLoginData, AuthLoginResponses, AuthLogoutData, AuthLogoutResponses, AuthMeData, AuthMeResponses, AuthSetupData, AuthSetupResponses, AuthSetupStatusData, AuthSetupStatusResponses, DiscordProvidersData, DiscordProvidersResponses, NodesCreateData, NodesCreateResponses, NodesListData, NodesListResponses, NodesRemoveData, NodesRemoveResponses, ServersCommandData, ServersCommandResponses, ServersCreateData, ServersCreateResponses, ServersGetData, ServersGetResponses, ServersListData, ServersListResponses, ServersMetricsData, ServersMetricsResponses, ServersReadFileData, ServersReadFileResponses, ServersStartData, ServersStartResponses, ServersStopData, ServersStopResponses, ServersUpdateSettingsData, ServersUpdateSettingsResponses, ServersWriteFileData, ServersWriteFileResponses, SystemHealthData, SystemHealthResponses, SystemMetaData, SystemMetaResponses, TemplatesListData, TemplatesListResponses, UsersCreateInviteData, UsersCreateInviteResponses, UsersInvitesData, UsersInvitesResponses, UsersListData, UsersListResponses, UsersRemoveData, UsersRemoveResponses, UsersRevokeInviteData, UsersRevokeInviteResponses, UsersUpdateRoleData, UsersUpdateRoleResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean, TResponse = unknown> = Options2<TData, ThrowOnError, TResponse> & {
     /**
@@ -108,6 +108,17 @@ export const serversStop = <ThrowOnError extends boolean = false>(options: Optio
 
 export const serversUpdateSettings = <ThrowOnError extends boolean = false>(options: Options<ServersUpdateSettingsData, ThrowOnError>): RequestResult<ServersUpdateSettingsResponses, unknown, ThrowOnError> => (options.client ?? client).put<ServersUpdateSettingsResponses, unknown, ThrowOnError>({
     url: '/servers/{id}/settings',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+export const serversReadFile = <ThrowOnError extends boolean = false>(options: Options<ServersReadFileData, ThrowOnError>): RequestResult<ServersReadFileResponses, unknown, ThrowOnError> => (options.client ?? client).get<ServersReadFileResponses, unknown, ThrowOnError>({ url: '/servers/{id}/files', ...options });
+
+export const serversWriteFile = <ThrowOnError extends boolean = false>(options: Options<ServersWriteFileData, ThrowOnError>): RequestResult<ServersWriteFileResponses, unknown, ThrowOnError> => (options.client ?? client).put<ServersWriteFileResponses, unknown, ThrowOnError>({
+    url: '/servers/{id}/files',
     ...options,
     headers: {
         'Content-Type': 'application/json',

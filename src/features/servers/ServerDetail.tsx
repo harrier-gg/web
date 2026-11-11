@@ -13,6 +13,7 @@ import {
 } from '../../api/@tanstack/react-query.gen';
 import type { MeDto } from '../../api/types.gen';
 import { History } from './History';
+import { ConfigFiles } from './ConfigFiles';
 import { ServerSettings } from './SettingsFields';
 import { StatusBadge } from './StatusBadge';
 import { useServerConsole } from './useServerConsole';
@@ -68,6 +69,8 @@ export function ServerDetail({ id, me, onBack }: { id: string; me: MeDto; onBack
     .join(' · ');
   const busy = status === 'installing' || status === 'starting' || status === 'stopping';
   const tpl = templates.data?.find((x) => x.id === server.data?.templateId);
+  // Settings and files apply on the next start; a pending crash restart reuses the old ones.
+  const running = status !== 'stopped' && (status !== 'crashed' || !!restart);
 
   return (
     <section className="space-y-4">
@@ -163,7 +166,10 @@ export function ServerDetail({ id, me, onBack }: { id: string; me: MeDto; onBack
       </div>
 
       {server.data && tpl && me.permissions.includes('manageServers') && (
-        <ServerSettings key={server.data.id} server={server.data} fields={tpl.config} running={status !== 'stopped' && (status !== 'crashed' || !!restart)} />
+        <>
+          <ServerSettings key={server.data.id} server={server.data} fields={tpl.config} running={running} />
+          <ConfigFiles key={`files-${server.data.id}`} serverId={server.data.id} files={tpl.files} running={running} />
+        </>
       )}
     </section>
   );
