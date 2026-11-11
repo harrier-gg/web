@@ -73,7 +73,8 @@ export function App() {
           <table className="w-full text-left text-sm">
             <thead className="text-zinc-400">
               <tr>
-                <th className="py-1 font-normal">{t('agents.host')}</th>
+                <th className="py-1 font-normal">{t('agents.name')}</th>
+                <th className="font-normal">{t('agents.host')}</th>
                 <th className="font-normal">{t('agents.system')}</th>
                 <th className="font-normal">{t('agents.agent')}</th>
                 <th className="font-normal">{t('agents.protocol')}</th>
@@ -83,7 +84,8 @@ export function App() {
             <tbody>
               {agents.data.map((a) => (
                 <tr key={a.id} className="border-t border-white/5">
-                  <td className="py-2">{a.hostname}</td>
+                  <td className="py-2 font-medium">{a.name}</td>
+                  <td>{a.hostname}</td>
                   <td>
                     {a.os}/{a.arch}
                   </td>
