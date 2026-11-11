@@ -8,6 +8,7 @@ const COLORS: Record<ServerDto['status'], string> = {
   stopping: 'bg-amber-400 animate-pulse',
   stopped: 'bg-zinc-500',
   crashed: 'bg-red-400',
+  sleeping: 'bg-indigo-400',
 };
 
 export function StatusBadge({ status }: { status: ServerDto['status'] }) {
