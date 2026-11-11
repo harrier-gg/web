@@ -8,8 +8,7 @@ import {
   templatesListOptions,
 } from '../../api/@tanstack/react-query.gen';
 import { localize } from '../../lib/localize';
-
-const input = 'w-full rounded-md bg-surface px-3 py-2 text-zinc-100 outline-none focus:ring-2 focus:ring-accent';
+import { draftOf, input, SettingsFields, toSettings, type Draft } from './SettingsFields';
 
 /** Game → variant → settings (ADR 0005). The settings form is generated from the template. */
 export function CreateServerForm({ onCancel, onCreated }: { onCancel: () => void; onCreated: (id: string) => void }) {
@@ -32,11 +31,13 @@ export function CreateServerForm({ onCancel, onCreated }: { onCancel: () => void
   const [templateId, setTemplateId] = useState('');
   const [nodeId, setNodeId] = useState('');
   const [name, setName] = useState('');
-  const [settings, setSettings] = useState<Record<string, string>>({});
+  const [edited, setEdited] = useState<Draft>({});
 
   const game = games.find(([id]) => id === (gameId || games[0]?.[0]))?.[1];
   const template = game?.variants.find((v) => v.id === templateId) ?? game?.variants[0];
   const node = nodeId || nodes.data?.[0]?.id || '';
+  // Defaults of the chosen template, overlaid with what the user changed so far.
+  const draft = template ? { ...draftOf(template.config), ...edited } : {};
 
   const create = useMutation({
     ...serversCreateMutation(),
@@ -49,13 +50,7 @@ export function CreateServerForm({ onCancel, onCreated }: { onCancel: () => void
   const submit = (e: FormEvent) => {
     e.preventDefault();
     if (!template) return;
-    const values = Object.fromEntries(
-      template.config.map((f) => {
-        const raw = settings[f.key] ?? String(f.default);
-        return [f.key, f.type === 'integer' ? Number(raw) : raw];
-      }),
-    );
-    create.mutate({ body: { nodeId: node, name, templateId: template.id, settings: values } });
+    create.mutate({ body: { nodeId: node, name, templateId: template.id, settings: toSettings(template.config, draft) } });
   };
 
   const error = create.error as { detail?: string } | null;
@@ -99,23 +94,9 @@ export function CreateServerForm({ onCancel, onCreated }: { onCancel: () => void
       {template?.variant.description && <p className="text-sm text-zinc-400">{localize(template.variant.description, i18n.resolvedLanguage)}</p>}
 
       {template && (
-        <fieldset className="grid gap-4 sm:grid-cols-3">
+        <fieldset>
           <legend className="mb-2 text-sm text-zinc-400">{t('create.settings')}</legend>
-          {template.config.map((f) => (
-            <label key={f.key} className="space-y-1 text-sm">
-              <span className="text-zinc-400">{localize(f.label, i18n.resolvedLanguage)}</span>
-              <input
-                type={f.type === 'integer' ? 'number' : 'text'}
-                min={f.min}
-                max={f.max}
-                pattern={f.pattern}
-                placeholder={String(f.default)}
-                value={settings[f.key] ?? ''}
-                onChange={(e) => setSettings({ ...settings, [f.key]: e.target.value })}
-                className={input}
-              />
-            </label>
-          ))}
+          <SettingsFields fields={template.config} draft={draft} onChange={setEdited} />
         </fieldset>
       )}
 

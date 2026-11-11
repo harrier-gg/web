@@ -2,7 +2,7 @@
 
 import type { Client, ClientMeta, Options as Options2, RequestResult, TDataShape } from './client';
 import { client } from './client.gen';
-import type { AgentsListData, AgentsListResponses, AuthAcceptInviteData, AuthAcceptInviteResponses, AuthCheckInviteData, AuthCheckInviteResponses, AuthLoginData, AuthLoginResponses, AuthLogoutData, AuthLogoutResponses, AuthMeData, AuthMeResponses, AuthSetupData, AuthSetupResponses, AuthSetupStatusData, AuthSetupStatusResponses, DiscordProvidersData, DiscordProvidersResponses, NodesCreateData, NodesCreateResponses, NodesListData, NodesListResponses, NodesRemoveData, NodesRemoveResponses, ServersCommandData, ServersCommandResponses, ServersCreateData, ServersCreateResponses, ServersGetData, ServersGetResponses, ServersListData, ServersListResponses, ServersMetricsData, ServersMetricsResponses, ServersStartData, ServersStartResponses, ServersStopData, ServersStopResponses, SystemHealthData, SystemHealthResponses, SystemMetaData, SystemMetaResponses, TemplatesListData, TemplatesListResponses, UsersCreateInviteData, UsersCreateInviteResponses, UsersInvitesData, UsersInvitesResponses, UsersListData, UsersListResponses, UsersRemoveData, UsersRemoveResponses, UsersRevokeInviteData, UsersRevokeInviteResponses, UsersUpdateRoleData, UsersUpdateRoleResponses } from './types.gen';
+import type { AgentsListData, AgentsListResponses, AuthAcceptInviteData, AuthAcceptInviteResponses, AuthCheckInviteData, AuthCheckInviteResponses, AuthLoginData, AuthLoginResponses, AuthLogoutData, AuthLogoutResponses, AuthMeData, AuthMeResponses, AuthSetupData, AuthSetupResponses, AuthSetupStatusData, AuthSetupStatusResponses, DiscordProvidersData, DiscordProvidersResponses, NodesCreateData, NodesCreateResponses, NodesListData, NodesListResponses, NodesRemoveData, NodesRemoveResponses, ServersCommandData, ServersCommandResponses, ServersCreateData, ServersCreateResponses, ServersGetData, ServersGetResponses, ServersListData, ServersListResponses, ServersMetricsData, ServersMetricsResponses, ServersStartData, ServersStartResponses, ServersStopData, ServersStopResponses, ServersUpdateSettingsData, ServersUpdateSettingsResponses, SystemHealthData, SystemHealthResponses, SystemMetaData, SystemMetaResponses, TemplatesListData, TemplatesListResponses, UsersCreateInviteData, UsersCreateInviteResponses, UsersInvitesData, UsersInvitesResponses, UsersListData, UsersListResponses, UsersRemoveData, UsersRemoveResponses, UsersRevokeInviteData, UsersRevokeInviteResponses, UsersUpdateRoleData, UsersUpdateRoleResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean, TResponse = unknown> = Options2<TData, ThrowOnError, TResponse> & {
     /**
@@ -105,6 +105,15 @@ export const serversMetrics = <ThrowOnError extends boolean = false>(options: Op
 export const serversStart = <ThrowOnError extends boolean = false>(options: Options<ServersStartData, ThrowOnError>): RequestResult<ServersStartResponses, unknown, ThrowOnError> => (options.client ?? client).post<ServersStartResponses, unknown, ThrowOnError>({ url: '/servers/{id}/start', ...options });
 
 export const serversStop = <ThrowOnError extends boolean = false>(options: Options<ServersStopData, ThrowOnError>): RequestResult<ServersStopResponses, unknown, ThrowOnError> => (options.client ?? client).post<ServersStopResponses, unknown, ThrowOnError>({ url: '/servers/{id}/stop', ...options });
+
+export const serversUpdateSettings = <ThrowOnError extends boolean = false>(options: Options<ServersUpdateSettingsData, ThrowOnError>): RequestResult<ServersUpdateSettingsResponses, unknown, ThrowOnError> => (options.client ?? client).put<ServersUpdateSettingsResponses, unknown, ThrowOnError>({
+    url: '/servers/{id}/settings',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
 
 export const serversCommand = <ThrowOnError extends boolean = false>(options: Options<ServersCommandData, ThrowOnError>): RequestResult<ServersCommandResponses, unknown, ThrowOnError> => (options.client ?? client).post<ServersCommandResponses, unknown, ThrowOnError>({
     url: '/servers/{id}/command',

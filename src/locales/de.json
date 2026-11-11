@@ -81,7 +81,12 @@
       "24h": "24 Std.",
       "7d": "7 Tage"
     },
-    "time": "Zeit"
+    "time": "Zeit",
+    "settings": "Einstellungen",
+    "save": "Speichern",
+    "settingsSaved": "Gespeichert.",
+    "settingsSavedRestart": "Gespeichert. Stoppe den Server und starte ihn wieder, damit die Änderungen gelten.",
+    "settingsFailed": "Die Einstellungen konnten nicht gespeichert werden."
   },
   "auth": {
     "login": "Anmelden",
