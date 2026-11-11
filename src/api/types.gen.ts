@@ -4,6 +4,35 @@ export type ClientOptions = {
     baseUrl: `${string}://${string}/api/v1` | (string & {});
 };
 
+export type SetupStatusDto = {
+    /**
+     * True until the owner account was created via the setup link
+     */
+    needsSetup: boolean;
+};
+
+export type SetupDto = {
+    /**
+     * Token from the setup link in the identity service log
+     */
+    token: string;
+    name: string;
+    email: string;
+    password: string;
+};
+
+export type UserDto = {
+    id: string;
+    email: string;
+    name: string;
+    role: 'owner' | 'admin' | 'member';
+};
+
+export type LoginDto = {
+    email: string;
+    password: string;
+};
+
 export type HealthDto = {
     status: 'ok' | 'degraded';
     version: string;
@@ -109,6 +138,71 @@ export type NodeDto = {
      */
     online: boolean;
 };
+
+export type AuthSetupStatusData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/auth/setup';
+};
+
+export type AuthSetupStatusResponses = {
+    200: SetupStatusDto;
+};
+
+export type AuthSetupStatusResponse = AuthSetupStatusResponses[keyof AuthSetupStatusResponses];
+
+export type AuthSetupData = {
+    body: SetupDto;
+    path?: never;
+    query?: never;
+    url: '/auth/setup';
+};
+
+export type AuthSetupResponses = {
+    200: UserDto;
+};
+
+export type AuthSetupResponse = AuthSetupResponses[keyof AuthSetupResponses];
+
+export type AuthLoginData = {
+    body: LoginDto;
+    path?: never;
+    query?: never;
+    url: '/auth/login';
+};
+
+export type AuthLoginResponses = {
+    200: UserDto;
+};
+
+export type AuthLoginResponse = AuthLoginResponses[keyof AuthLoginResponses];
+
+export type AuthLogoutData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/auth/logout';
+};
+
+export type AuthLogoutResponses = {
+    204: void;
+};
+
+export type AuthLogoutResponse = AuthLogoutResponses[keyof AuthLogoutResponses];
+
+export type AuthMeData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/auth/me';
+};
+
+export type AuthMeResponses = {
+    200: UserDto;
+};
+
+export type AuthMeResponse = AuthMeResponses[keyof AuthMeResponses];
 
 export type SystemHealthData = {
     body?: never;

@@ -1,7 +1,8 @@
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { systemMetaOptions } from './api/@tanstack/react-query.gen';
+import { authLogoutMutation, systemMetaOptions } from './api/@tanstack/react-query.gen';
+import { AuthGate } from './features/auth/AuthGate';
 import { ServerDetail } from './features/servers/ServerDetail';
 import { ServerList } from './features/servers/ServerList';
 import { SystemStatus } from './features/system/SystemStatus';
@@ -11,7 +12,9 @@ declare const __API_CONTRACT__: string;
 
 export function App() {
   const { t, i18n } = useTranslation();
+  const queryClient = useQueryClient();
   const meta = useQuery(systemMetaOptions());
+  const logout = useMutation({ ...authLogoutMutation(), onSuccess: () => queryClient.clear() });
   // ponytail: one level of navigation; a router comes with more pages (M2: login, users)
   const [serverId, setServerId] = useState<string | null>(null);
 
@@ -50,14 +53,26 @@ export function App() {
         </p>
       )}
 
-      {serverId ? (
-        <ServerDetail id={serverId} onBack={() => setServerId(null)} />
-      ) : (
-        <>
-          <ServerList onOpen={setServerId} />
-          <SystemStatus contractOk={contractOk} />
-        </>
-      )}
+      <AuthGate>
+        {(user) => (
+          <>
+            <div className="flex items-center justify-end gap-3 text-sm text-zinc-400">
+              <span>{t('auth.signedInAs', { name: user.name })}</span>
+              <button type="button" onClick={() => logout.mutate({})} className="rounded-md px-2 py-1 hover:bg-white/5 hover:text-zinc-200">
+                {t('auth.logout')}
+              </button>
+            </div>
+            {serverId ? (
+              <ServerDetail id={serverId} onBack={() => setServerId(null)} />
+            ) : (
+              <>
+                <ServerList onOpen={setServerId} />
+                <SystemStatus contractOk={contractOk} />
+              </>
+            )}
+          </>
+        )}
+      </AuthGate>
     </main>
   );
 }

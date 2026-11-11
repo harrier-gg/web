@@ -69,5 +69,27 @@
     "connecting": "connecting…",
     "commandPlaceholder": "Type a command, e.g. list",
     "commandOffline": "Start the server to send commands"
+  },
+  "auth": {
+    "login": "Log in",
+    "email": "E-mail",
+    "password": "Password",
+    "loginButton": "Log in",
+    "failed": "That did not work. Please try again.",
+    "setupTitle": "Set up",
+    "setupHint": "Create the owner account. You can invite friends afterwards.",
+    "setupNeedsLink": "Harrier is not set up yet. Open the setup link from the log of the identity service.",
+    "name": "Name",
+    "newPassword": "Password (at least 10 characters)",
+    "setupButton": "Create owner account",
+    "signedInAs": "Signed in as {{name}}",
+    "logout": "Log out",
+    "errors": {
+      "invalid": "Please check your input. The password needs at least 10 characters.",
+      "wrongCredentials": "E-mail address or password is wrong.",
+      "setupLink": "The setup link is invalid or was already used.",
+      "alreadySetUp": "Harrier is already set up. Please log in.",
+      "tooMany": "Too many failed attempts. Please wait a few minutes."
+    }
   }
 }

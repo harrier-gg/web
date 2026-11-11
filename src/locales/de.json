@@ -69,5 +69,27 @@
     "connecting": "verbinde…",
     "commandPlaceholder": "Befehl eingeben, z. B. list",
     "commandOffline": "Server starten, um Befehle zu senden"
+  },
+  "auth": {
+    "login": "Anmelden",
+    "email": "E-Mail",
+    "password": "Passwort",
+    "loginButton": "Anmelden",
+    "failed": "Das hat nicht geklappt. Bitte erneut versuchen.",
+    "setupTitle": "Einrichtung",
+    "setupHint": "Lege das Owner-Konto an. Freunde kannst du danach einladen.",
+    "setupNeedsLink": "Harrier ist noch nicht eingerichtet. Öffne den Einrichtungslink aus dem Log des Identity-Service.",
+    "name": "Name",
+    "newPassword": "Passwort (mindestens 10 Zeichen)",
+    "setupButton": "Owner-Konto anlegen",
+    "signedInAs": "Angemeldet als {{name}}",
+    "logout": "Abmelden",
+    "errors": {
+      "invalid": "Bitte Eingaben prüfen. Das Passwort braucht mindestens 10 Zeichen.",
+      "wrongCredentials": "E-Mail-Adresse oder Passwort ist falsch.",
+      "setupLink": "Der Einrichtungslink ist ungültig oder wurde schon benutzt.",
+      "alreadySetUp": "Harrier ist bereits eingerichtet. Bitte anmelden.",
+      "tooMany": "Zu viele Fehlversuche. Bitte ein paar Minuten warten."
+    }
   }
 }
