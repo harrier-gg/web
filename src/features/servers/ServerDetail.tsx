@@ -12,6 +12,7 @@ import {
   templatesListOptions,
 } from '../../api/@tanstack/react-query.gen';
 import type { MeDto } from '../../api/types.gen';
+import { History } from './History';
 import { StatusBadge } from './StatusBadge';
 import { useServerConsole } from './useServerConsole';
 
@@ -97,6 +98,25 @@ export function ServerDetail({ id, me, onBack }: { id: string; me: MeDto; onBack
         </p>
       )}
 
+      {live.players && (
+        <div className="rounded-xl bg-surface-raised p-4">
+          <p className="text-sm text-zinc-400">{t('detail.players')}</p>
+          <p className="text-xl font-medium">{t('detail.playersOnline', { online: live.players.online, max: live.players.max })}</p>
+          {live.players.online > 0 && (
+            <ul className="mt-2 flex flex-wrap gap-2 text-sm">
+              {live.players.names.map((name) => (
+                <li key={name} className="rounded-md bg-white/5 px-2 py-0.5">
+                  {name}
+                </li>
+              ))}
+              {live.players.online > live.players.names.length && (
+                <li className="px-1 py-0.5 text-zinc-400">{t('detail.playersMore', { count: live.players.online - live.players.names.length })}</li>
+              )}
+            </ul>
+          )}
+        </div>
+      )}
+
       {live.stats && (
         <div className="grid gap-4 sm:grid-cols-2">
           <div className="rounded-xl bg-surface-raised p-4">
@@ -114,6 +134,8 @@ export function ServerDetail({ id, me, onBack }: { id: string; me: MeDto; onBack
           </div>
         </div>
       )}
+
+      <History serverId={id} />
 
       <div className="overflow-hidden rounded-xl bg-[#16181d]">
         <div className="flex items-center justify-between px-4 py-2 text-xs text-zinc-400">
