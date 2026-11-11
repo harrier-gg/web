@@ -330,6 +330,33 @@ export type MoveDto = {
     to: string;
 };
 
+export type BackupsSummaryDto = {
+    everyHours: number;
+    keep: number;
+    lastBackupAt: string | null;
+    inProgress: 'create' | 'restore';
+    lastError: string | null;
+    /**
+     * Newest first; null while the node is offline
+     */
+    backups: Array<FileEntryDto> | null;
+};
+
+export type BackupScheduleDto = {
+    /**
+     * Hours between scheduled backups; 0 = only by hand
+     */
+    everyHours: number;
+    /**
+     * Backups to keep
+     */
+    keep: number;
+};
+
+export type BackupNameDto = {
+    name: string;
+};
+
 export type AuthSetupStatusData = {
     body?: never;
     path?: never;
@@ -884,3 +911,96 @@ export type FilesUploadResponses = {
 };
 
 export type FilesUploadResponse = FilesUploadResponses[keyof FilesUploadResponses];
+
+export type BackupsRemoveData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query: {
+        name: string;
+    };
+    url: '/servers/{id}/backups';
+};
+
+export type BackupsRemoveResponses = {
+    204: void;
+};
+
+export type BackupsRemoveResponse = BackupsRemoveResponses[keyof BackupsRemoveResponses];
+
+export type BackupsSummaryData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/servers/{id}/backups';
+};
+
+export type BackupsSummaryResponses = {
+    200: BackupsSummaryDto;
+};
+
+export type BackupsSummaryResponse = BackupsSummaryResponses[keyof BackupsSummaryResponses];
+
+export type BackupsCreateData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/servers/{id}/backups';
+};
+
+export type BackupsCreateResponses = {
+    202: unknown;
+};
+
+export type BackupsScheduleData = {
+    body: BackupScheduleDto;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/servers/{id}/backups/schedule';
+};
+
+export type BackupsScheduleResponses = {
+    204: void;
+};
+
+export type BackupsScheduleResponse = BackupsScheduleResponses[keyof BackupsScheduleResponses];
+
+export type BackupsRestoreData = {
+    body: BackupNameDto;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/servers/{id}/backups/restore';
+};
+
+export type BackupsRestoreResponses = {
+    202: unknown;
+};
+
+export type BackupsDownloadData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query: {
+        name: string;
+    };
+    url: '/servers/{id}/backups/download';
+};
+
+export type BackupsDownloadResponses = {
+    /**
+     * The archive (tar.gz)
+     */
+    200: Blob | File;
+};
+
+export type BackupsDownloadResponse = BackupsDownloadResponses[keyof BackupsDownloadResponses];

@@ -224,5 +224,23 @@
     "snapshot": "snapshot",
     "showSnapshots": "Show snapshots and pre-releases",
     "offline": "The version list is not reachable; type the version, e.g. 1.21.4."
+  },
+  "backups": {
+    "title": "Backups",
+    "now": "Back up now",
+    "creating": "Backing up …",
+    "restoring": "Restoring …",
+    "last": "Last backup: {{date}}",
+    "none": "No backup yet.",
+    "offline": "The node is offline; its backups cannot be listed.",
+    "failed": "That did not work.",
+    "beforeRestore": "before a restore",
+    "restore": "Restore",
+    "stopFirst": "Stop the server to restore a backup.",
+    "restoreConfirm": "Restore the backup from {{date}}? The current state is backed up first.",
+    "deleteConfirm": "Delete the backup from {{date}}?",
+    "every": "Every (hours, 0 = only by hand)",
+    "keep": "Keep",
+    "scheduleHint": "Scheduled backups only run for servers that ran since their last backup, so older backups are not replaced by copies of the same state."
   }
 }
