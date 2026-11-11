@@ -157,7 +157,7 @@ export type ServerDto = {
      * Port players connect to on the node
      */
     hostPort: number;
-    status: 'installing' | 'starting' | 'running' | 'stopping' | 'stopped' | 'crashed';
+    status: 'installing' | 'starting' | 'running' | 'stopping' | 'stopped' | 'crashed' | 'sleeping';
     statusMessage: string | null;
     createdAt: string;
 };

@@ -93,7 +93,7 @@ export function ServerDetail({ id, me, onBack }: { id: string; me: MeDto; onBack
             </button>
           ) : (
             <button type="button" disabled={busy || start.isPending} onClick={() => start.mutate({ path: { id } })} className="rounded-lg bg-accent px-3 py-1.5 text-sm font-medium text-zinc-900 disabled:opacity-50">
-              {t('detail.start')}
+              {status === 'sleeping' ? t('detail.wake') : t('detail.start')}
             </button>
           )}
         </div>

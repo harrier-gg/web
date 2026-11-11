@@ -44,7 +44,8 @@
     "running": "Running",
     "stopping": "Stopping",
     "stopped": "Stopped",
-    "crashed": "Crashed"
+    "crashed": "Crashed",
+    "sleeping": "Sleeping"
   },
   "create": {
     "title": "New server",
@@ -61,6 +62,7 @@
   "detail": {
     "back": "All servers",
     "start": "Start",
+    "wake": "Wake up",
     "stop": "Stop",
     "restarting": "Restarting after a crash (attempt {{attempt}} of {{max}})",
     "cpu": "CPU",
