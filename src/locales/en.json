@@ -68,7 +68,18 @@
     "live": "live",
     "connecting": "connecting…",
     "commandPlaceholder": "Type a command, e.g. list",
-    "commandOffline": "Start the server to send commands"
+    "commandOffline": "Start the server to send commands",
+    "players": "Players",
+    "playersOnline": "{{online}} of {{max}} online",
+    "playersMore": "+{{count}} more",
+    "history": "History",
+    "historyEmpty": "No data yet. While the server runs, a value is recorded every minute.",
+    "now": "now",
+    "range": {
+      "1h": "1 h",
+      "24h": "24 h",
+      "7d": "7 days"
+    }
   },
   "auth": {
     "login": "Log in",

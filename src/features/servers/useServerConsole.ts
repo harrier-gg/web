@@ -7,11 +7,19 @@ export interface Stats {
   memoryLimitBytes: number;
 }
 
+export interface Players {
+  online: number;
+  max: number;
+  /** May be fewer than `online` (Minecraft sends at most 12 names). */
+  names: string[];
+}
+
 type Event =
-  | { type: 'snapshot'; output: string; status: ServerDto['status']; message: string | null; stats: Stats | null }
+  | { type: 'snapshot'; output: string; status: ServerDto['status']; message: string | null; stats: Stats | null; players: Players | null }
   | { type: 'output'; data: string }
   | { type: 'status'; status: ServerDto['status']; message: string | null }
-  | ({ type: 'stats' } & Stats);
+  | ({ type: 'stats' } & Stats)
+  | ({ type: 'players' } & Players);
 
 /**
  * Live console of one server over the gateway's WebSocket (`/api/v1/servers/<id>/console`).
@@ -20,6 +28,7 @@ type Event =
 export function useServerConsole(serverId: string, onOutput: (data: string, reset: boolean) => void) {
   const [status, setStatus] = useState<{ status: ServerDto['status']; message: string | null } | null>(null);
   const [stats, setStats] = useState<Stats | null>(null);
+  const [players, setPlayers] = useState<Players | null>(null);
   const [connected, setConnected] = useState(false);
   const socket = useRef<WebSocket | null>(null);
   const output = useRef(onOutput);
@@ -45,16 +54,23 @@ export function useServerConsole(serverId: string, onOutput: (data: string, rese
             output.current(event.output, true);
             setStatus({ status: event.status, message: event.message });
             setStats(event.stats);
+            setPlayers(event.players ?? null);
             break;
           case 'output':
             output.current(event.data, false);
             break;
           case 'status':
             setStatus({ status: event.status, message: event.message });
-            if (event.status !== 'running') setStats(null);
+            if (event.status !== 'running') {
+              setStats(null);
+              setPlayers(null);
+            }
             break;
           case 'stats':
             setStats({ cpuPercent: event.cpuPercent, memoryBytes: event.memoryBytes, memoryLimitBytes: event.memoryLimitBytes });
+            break;
+          case 'players':
+            setPlayers({ online: event.online, max: event.max, names: event.names });
             break;
         }
       };
@@ -70,5 +86,5 @@ export function useServerConsole(serverId: string, onOutput: (data: string, rese
 
   const send = (command: string) => socket.current?.send(JSON.stringify({ type: 'command', command }));
 
-  return { status, stats, connected, send };
+  return { status, stats, players, connected, send };
 }

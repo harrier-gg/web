@@ -68,7 +68,18 @@
     "live": "live",
     "connecting": "verbinde…",
     "commandPlaceholder": "Befehl eingeben, z. B. list",
-    "commandOffline": "Server starten, um Befehle zu senden"
+    "commandOffline": "Server starten, um Befehle zu senden",
+    "players": "Spieler",
+    "playersOnline": "{{online}} von {{max}} online",
+    "playersMore": "+{{count}} weitere",
+    "history": "Verlauf",
+    "historyEmpty": "Noch keine Daten. Solange der Server läuft, wird jede Minute ein Wert gespeichert.",
+    "now": "jetzt",
+    "range": {
+      "1h": "1 Std.",
+      "24h": "24 Std.",
+      "7d": "7 Tage"
+    }
   },
   "auth": {
     "login": "Anmelden",

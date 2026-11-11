@@ -171,6 +171,25 @@ export type CreateServerDto = {
     };
 };
 
+export type MetricPointDto = {
+    /**
+     * Start of the bucket
+     */
+    at: string;
+    /**
+     * Average CPU usage; 100 = one core
+     */
+    cpuPercent: number;
+    /**
+     * Peak memory usage
+     */
+    memoryBytes: number;
+    /**
+     * Peak players online; null for games without a player query
+     */
+    players: number | null;
+};
+
 export type CommandDto = {
     command: string;
 };
@@ -502,6 +521,23 @@ export type ServersGetResponses = {
 };
 
 export type ServersGetResponse = ServersGetResponses[keyof ServersGetResponses];
+
+export type ServersMetricsData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query: {
+        range: '1h' | '24h' | '7d';
+    };
+    url: '/servers/{id}/metrics';
+};
+
+export type ServersMetricsResponses = {
+    200: Array<MetricPointDto>;
+};
+
+export type ServersMetricsResponse = ServersMetricsResponses[keyof ServersMetricsResponses];
 
 export type ServersStartData = {
     body?: never;
