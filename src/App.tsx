@@ -1,11 +1,12 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useState } from 'react';
+import { useState, type ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { authLogoutMutation, systemMetaOptions } from './api/@tanstack/react-query.gen';
 import { AuthGate } from './features/auth/AuthGate';
 import { ServerDetail } from './features/servers/ServerDetail';
 import { ServerList } from './features/servers/ServerList';
 import { SystemStatus } from './features/system/SystemStatus';
+import { UsersPage } from './features/users/UsersPage';
 import { LANGUAGES } from './i18n';
 
 declare const __API_CONTRACT__: string;
@@ -17,6 +18,7 @@ export function App() {
   const logout = useMutation({ ...authLogoutMutation(), onSuccess: () => queryClient.clear() });
   // ponytail: one level of navigation; a router comes with more pages (M2: login, users)
   const [serverId, setServerId] = useState<string | null>(null);
+  const [page, setPage] = useState<'servers' | 'users'>('servers');
 
   const contractOk = meta.data ? meta.data.contract === __API_CONTRACT__ : undefined;
 
@@ -56,23 +58,41 @@ export function App() {
       <AuthGate>
         {(user) => (
           <>
-            <div className="flex items-center justify-end gap-3 text-sm text-zinc-400">
-              <span>{t('auth.signedInAs', { name: user.name })}</span>
-              <button type="button" onClick={() => logout.mutate({})} className="rounded-md px-2 py-1 hover:bg-white/5 hover:text-zinc-200">
-                {t('auth.logout')}
-              </button>
-            </div>
-            {serverId ? (
-              <ServerDetail id={serverId} onBack={() => setServerId(null)} />
+            <nav className="flex flex-wrap items-center justify-between gap-3 text-sm">
+              <div className="flex gap-1">
+                <Tab active={page === 'servers'} onClick={() => { setPage('servers'); setServerId(null); }}>{t('nav.servers')}</Tab>
+                {user.permissions.includes('manageMembers') && (
+                  <Tab active={page === 'users'} onClick={() => setPage('users')}>{t('nav.users')}</Tab>
+                )}
+              </div>
+              <div className="flex items-center gap-3 text-zinc-400">
+                <span>{t('auth.signedInAs', { name: user.name })} · {t(`roles.${user.role}`)}</span>
+                <button type="button" onClick={() => logout.mutate({})} className="rounded-md px-2 py-1 hover:bg-white/5 hover:text-zinc-200">
+                  {t('auth.logout')}
+                </button>
+              </div>
+            </nav>
+            {page === 'users' ? (
+              <UsersPage me={user} />
+            ) : serverId ? (
+              <ServerDetail id={serverId} me={user} onBack={() => setServerId(null)} />
             ) : (
               <>
-                <ServerList onOpen={setServerId} />
-                <SystemStatus contractOk={contractOk} />
+                <ServerList me={user} onOpen={setServerId} />
+                <SystemStatus contractOk={contractOk} showAgents={user.permissions.includes('manageServers')} />
               </>
             )}
           </>
         )}
       </AuthGate>
     </main>
+  );
+}
+
+function Tab({ active, onClick, children }: { active: boolean; onClick: () => void; children: ReactNode }) {
+  return (
+    <button type="button" onClick={onClick} className={`rounded-md px-3 py-1.5 ${active ? 'bg-surface-raised text-zinc-100' : 'text-zinc-400 hover:text-zinc-200'}`}>
+      {children}
+    </button>
   );
 }

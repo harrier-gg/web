@@ -2,7 +2,7 @@
 
 import type { Client, ClientMeta, Options as Options2, RequestResult, TDataShape } from './client';
 import { client } from './client.gen';
-import type { AgentsListData, AgentsListResponses, AuthLoginData, AuthLoginResponses, AuthLogoutData, AuthLogoutResponses, AuthMeData, AuthMeResponses, AuthSetupData, AuthSetupResponses, AuthSetupStatusData, AuthSetupStatusResponses, NodesListData, NodesListResponses, ServersCommandData, ServersCommandResponses, ServersCreateData, ServersCreateResponses, ServersGetData, ServersGetResponses, ServersListData, ServersListResponses, ServersStartData, ServersStartResponses, ServersStopData, ServersStopResponses, SystemHealthData, SystemHealthResponses, SystemMetaData, SystemMetaResponses, TemplatesListData, TemplatesListResponses } from './types.gen';
+import type { AgentsListData, AgentsListResponses, AuthAcceptInviteData, AuthAcceptInviteResponses, AuthCheckInviteData, AuthCheckInviteResponses, AuthLoginData, AuthLoginResponses, AuthLogoutData, AuthLogoutResponses, AuthMeData, AuthMeResponses, AuthSetupData, AuthSetupResponses, AuthSetupStatusData, AuthSetupStatusResponses, NodesListData, NodesListResponses, ServersCommandData, ServersCommandResponses, ServersCreateData, ServersCreateResponses, ServersGetData, ServersGetResponses, ServersListData, ServersListResponses, ServersStartData, ServersStartResponses, ServersStopData, ServersStopResponses, SystemHealthData, SystemHealthResponses, SystemMetaData, SystemMetaResponses, TemplatesListData, TemplatesListResponses, UsersCreateInviteData, UsersCreateInviteResponses, UsersInvitesData, UsersInvitesResponses, UsersListData, UsersListResponses, UsersRemoveData, UsersRemoveResponses, UsersRevokeInviteData, UsersRevokeInviteResponses, UsersUpdateRoleData, UsersUpdateRoleResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean, TResponse = unknown> = Options2<TData, ThrowOnError, TResponse> & {
     /**
@@ -41,6 +41,43 @@ export const authLogin = <ThrowOnError extends boolean = false>(options: Options
 export const authLogout = <ThrowOnError extends boolean = false>(options?: Options<AuthLogoutData, ThrowOnError>): RequestResult<AuthLogoutResponses, unknown, ThrowOnError> => (options?.client ?? client).post<AuthLogoutResponses, unknown, ThrowOnError>({ url: '/auth/logout', ...options });
 
 export const authMe = <ThrowOnError extends boolean = false>(options?: Options<AuthMeData, ThrowOnError>): RequestResult<AuthMeResponses, unknown, ThrowOnError> => (options?.client ?? client).get<AuthMeResponses, unknown, ThrowOnError>({ url: '/auth/me', ...options });
+
+export const authCheckInvite = <ThrowOnError extends boolean = false>(options: Options<AuthCheckInviteData, ThrowOnError>): RequestResult<AuthCheckInviteResponses, unknown, ThrowOnError> => (options.client ?? client).get<AuthCheckInviteResponses, unknown, ThrowOnError>({ url: '/auth/invites/check', ...options });
+
+export const authAcceptInvite = <ThrowOnError extends boolean = false>(options: Options<AuthAcceptInviteData, ThrowOnError>): RequestResult<AuthAcceptInviteResponses, unknown, ThrowOnError> => (options.client ?? client).post<AuthAcceptInviteResponses, unknown, ThrowOnError>({
+    url: '/auth/invites/accept',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+export const usersList = <ThrowOnError extends boolean = false>(options?: Options<UsersListData, ThrowOnError>): RequestResult<UsersListResponses, unknown, ThrowOnError> => (options?.client ?? client).get<UsersListResponses, unknown, ThrowOnError>({ url: '/users', ...options });
+
+export const usersRemove = <ThrowOnError extends boolean = false>(options: Options<UsersRemoveData, ThrowOnError>): RequestResult<UsersRemoveResponses, unknown, ThrowOnError> => (options.client ?? client).delete<UsersRemoveResponses, unknown, ThrowOnError>({ url: '/users/{id}', ...options });
+
+export const usersUpdateRole = <ThrowOnError extends boolean = false>(options: Options<UsersUpdateRoleData, ThrowOnError>): RequestResult<UsersUpdateRoleResponses, unknown, ThrowOnError> => (options.client ?? client).patch<UsersUpdateRoleResponses, unknown, ThrowOnError>({
+    url: '/users/{id}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+export const usersInvites = <ThrowOnError extends boolean = false>(options?: Options<UsersInvitesData, ThrowOnError>): RequestResult<UsersInvitesResponses, unknown, ThrowOnError> => (options?.client ?? client).get<UsersInvitesResponses, unknown, ThrowOnError>({ url: '/invites', ...options });
+
+export const usersCreateInvite = <ThrowOnError extends boolean = false>(options: Options<UsersCreateInviteData, ThrowOnError>): RequestResult<UsersCreateInviteResponses, unknown, ThrowOnError> => (options.client ?? client).post<UsersCreateInviteResponses, unknown, ThrowOnError>({
+    url: '/invites',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+export const usersRevokeInvite = <ThrowOnError extends boolean = false>(options: Options<UsersRevokeInviteData, ThrowOnError>): RequestResult<UsersRevokeInviteResponses, unknown, ThrowOnError> => (options.client ?? client).delete<UsersRevokeInviteResponses, unknown, ThrowOnError>({ url: '/invites/{id}', ...options });
 
 export const systemHealth = <ThrowOnError extends boolean = false>(options?: Options<SystemHealthData, ThrowOnError>): RequestResult<SystemHealthResponses, unknown, ThrowOnError> => (options?.client ?? client).get<SystemHealthResponses, unknown, ThrowOnError>({ url: '/health', ...options });
 

@@ -4,11 +4,11 @@ import { Trans, useTranslation } from 'react-i18next';
 import { agentsListOptions, systemHealthOptions } from '../../api/@tanstack/react-query.gen';
 
 // Health of gateway and services, the API contract, and connected agents.
-export function SystemStatus({ contractOk }: { contractOk: boolean | undefined }) {
+export function SystemStatus({ contractOk, showAgents }: { contractOk: boolean | undefined; showAgents: boolean }) {
   const { t, i18n } = useTranslation();
   const health = useQuery({ ...systemHealthOptions(), refetchInterval: 5000 });
   // ponytail: polling every 2 s; agent lists get live updates once there is a panel event stream
-  const agents = useQuery({ ...agentsListOptions(), refetchInterval: 2000 });
+  const agents = useQuery({ ...agentsListOptions(), refetchInterval: 2000, enabled: showAgents });
 
   return (
     <>
@@ -32,6 +32,7 @@ export function SystemStatus({ contractOk }: { contractOk: boolean | undefined }
         </Card>
       </section>
 
+      {showAgents && (
       <section className="rounded-xl bg-surface-raised p-4">
         <h2 className="mb-3 font-medium">{t('agents.title', { count: agents.data?.length ?? 0 })}</h2>
         {agents.data?.length ? (
@@ -67,6 +68,7 @@ export function SystemStatus({ contractOk }: { contractOk: boolean | undefined }
           </p>
         )}
       </section>
+      )}
     </>
   );
 }
