@@ -24,11 +24,12 @@
   },
   "agents": {
     "title": "Connected agents ({{count}})",
+    "name": "Name",
     "host": "Host",
     "system": "System",
     "agent": "Agent",
     "protocol": "Protocol",
     "connectedSince": "Connected since",
-    "empty": "No agent connected yet. Run <code>just dev</code> in the agent repository."
+    "empty": "No agent connected yet. Register a node with <code>just node-create</code> and start its agent with the token."
   }
 }

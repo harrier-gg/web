@@ -21,7 +21,14 @@ export type MetaDto = {
 };
 
 export type AgentDto = {
+    /**
+     * Node ID (from the agent token)
+     */
     id: string;
+    /**
+     * Node name given at registration
+     */
+    name: string;
     hostname: string;
     os: string;
     arch: string;
