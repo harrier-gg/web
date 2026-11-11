@@ -79,7 +79,8 @@
       "1h": "1 h",
       "24h": "24 h",
       "7d": "7 days"
-    }
+    },
+    "time": "Time"
   },
   "auth": {
     "login": "Log in",
