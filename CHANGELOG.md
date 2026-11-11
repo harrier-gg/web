@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.0](https://github.com/harrier-gg/web/compare/v0.3.0...v0.4.0) (2026-11-11)
+
+
+### Features
+
+* show sleeping servers and wake them up ([#20](https://github.com/harrier-gg/web/issues/20)) ([d0114c2](https://github.com/harrier-gg/web/commit/d0114c2f846b732b9201f9069e84a1beb34d3ebb))
+
 ## [0.3.0](https://github.com/harrier-gg/web/compare/v0.2.0...v0.3.0) (2026-11-11)
 
 
