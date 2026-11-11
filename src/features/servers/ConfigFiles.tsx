@@ -25,7 +25,8 @@ function ConfigFile({ serverId, file, running }: { serverId: string; file: Templ
   );
 }
 
-function Editor({ serverId, path, running }: { serverId: string; path: string; running: boolean }) {
+/** Plain text editor for one file of a server; used by config files and the file manager. */
+export function Editor({ serverId, path, running }: { serverId: string; path: string; running: boolean }) {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
   const options = { path: { id: serverId }, query: { path } };

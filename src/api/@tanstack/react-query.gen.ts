@@ -3,8 +3,8 @@
 import { type DefaultError, queryOptions, type UseMutationOptions } from '@tanstack/react-query';
 
 import { client } from '../client.gen';
-import { agentsList, authAcceptInvite, authCheckInvite, authLogin, authLogout, authMe, authSetup, authSetupStatus, discordProviders, nodesCreate, nodesList, nodesRemove, type Options, serversCommand, serversCreate, serversGet, serversList, serversMetrics, serversReadFile, serversStart, serversStop, serversUpdateSettings, serversWriteFile, systemHealth, systemMeta, templatesList, templatesVersions, usersCreateInvite, usersInvites, usersList, usersRemove, usersRevokeInvite, usersUpdateRole } from '../sdk.gen';
-import type { AgentsListData, AgentsListResponse, AuthAcceptInviteData, AuthAcceptInviteResponse, AuthCheckInviteData, AuthCheckInviteResponse, AuthLoginData, AuthLoginResponse, AuthLogoutData, AuthLogoutResponse, AuthMeData, AuthMeResponse, AuthSetupData, AuthSetupResponse, AuthSetupStatusData, AuthSetupStatusResponse, DiscordProvidersData, DiscordProvidersResponse, NodesCreateData, NodesCreateResponse, NodesListData, NodesListResponse, NodesRemoveData, NodesRemoveResponse, ServersCommandData, ServersCommandResponse, ServersCreateData, ServersCreateResponse, ServersGetData, ServersGetResponse, ServersListData, ServersListResponse, ServersMetricsData, ServersMetricsResponse, ServersReadFileData, ServersReadFileResponse, ServersStartData, ServersStartResponse, ServersStopData, ServersStopResponse, ServersUpdateSettingsData, ServersUpdateSettingsResponse, ServersWriteFileData, ServersWriteFileResponse, SystemHealthData, SystemHealthResponse, SystemMetaData, SystemMetaResponse, TemplatesListData, TemplatesListResponse, TemplatesVersionsData, TemplatesVersionsResponse, UsersCreateInviteData, UsersCreateInviteResponse, UsersInvitesData, UsersInvitesResponse, UsersListData, UsersListResponse, UsersRemoveData, UsersRemoveResponse, UsersRevokeInviteData, UsersRevokeInviteResponse, UsersUpdateRoleData, UsersUpdateRoleResponse } from '../types.gen';
+import { agentsList, authAcceptInvite, authCheckInvite, authLogin, authLogout, authMe, authSetup, authSetupStatus, discordProviders, filesDownload, filesList, filesMkdir, filesMove, filesRemove, filesUpload, nodesCreate, nodesList, nodesRemove, type Options, serversCommand, serversCreate, serversGet, serversList, serversMetrics, serversReadFile, serversStart, serversStop, serversUpdateSettings, serversWriteFile, systemHealth, systemMeta, templatesList, templatesVersions, usersCreateInvite, usersInvites, usersList, usersRemove, usersRevokeInvite, usersUpdateRole } from '../sdk.gen';
+import type { AgentsListData, AgentsListResponse, AuthAcceptInviteData, AuthAcceptInviteResponse, AuthCheckInviteData, AuthCheckInviteResponse, AuthLoginData, AuthLoginResponse, AuthLogoutData, AuthLogoutResponse, AuthMeData, AuthMeResponse, AuthSetupData, AuthSetupResponse, AuthSetupStatusData, AuthSetupStatusResponse, DiscordProvidersData, DiscordProvidersResponse, FilesDownloadData, FilesDownloadResponse, FilesListData, FilesListResponse, FilesMkdirData, FilesMkdirResponse, FilesMoveData, FilesMoveResponse, FilesRemoveData, FilesRemoveResponse, FilesUploadData, FilesUploadResponse, NodesCreateData, NodesCreateResponse, NodesListData, NodesListResponse, NodesRemoveData, NodesRemoveResponse, ServersCommandData, ServersCommandResponse, ServersCreateData, ServersCreateResponse, ServersGetData, ServersGetResponse, ServersListData, ServersListResponse, ServersMetricsData, ServersMetricsResponse, ServersReadFileData, ServersReadFileResponse, ServersStartData, ServersStartResponse, ServersStopData, ServersStopResponse, ServersUpdateSettingsData, ServersUpdateSettingsResponse, ServersWriteFileData, ServersWriteFileResponse, SystemHealthData, SystemHealthResponse, SystemMetaData, SystemMetaResponse, TemplatesListData, TemplatesListResponse, TemplatesVersionsData, TemplatesVersionsResponse, UsersCreateInviteData, UsersCreateInviteResponse, UsersInvitesData, UsersInvitesResponse, UsersListData, UsersListResponse, UsersRemoveData, UsersRemoveResponse, UsersRevokeInviteData, UsersRevokeInviteResponse, UsersUpdateRoleData, UsersUpdateRoleResponse } from '../types.gen';
 
 export type QueryKey<TOptions extends Options> = [
     Pick<TOptions, 'baseUrl' | 'body' | 'headers' | 'path' | 'query'> & {
@@ -387,6 +387,20 @@ export const serversUpdateSettingsMutation = (options?: Partial<Options<ServersU
     return mutationOptions;
 };
 
+export const filesRemoveMutation = (options?: Partial<Options<FilesRemoveData>>): UseMutationOptions<FilesRemoveResponse, DefaultError, Options<FilesRemoveData>> => {
+    const mutationOptions: UseMutationOptions<FilesRemoveResponse, DefaultError, Options<FilesRemoveData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await filesRemove({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
 export const serversReadFileQueryKey = (options: Options<ServersReadFileData>) => createQueryKey('serversReadFile', options);
 
 export const serversReadFileOptions = (options: Options<ServersReadFileData>) => queryOptions<ServersReadFileResponse, DefaultError, ServersReadFileResponse, ReturnType<typeof serversReadFileQueryKey>>({
@@ -493,6 +507,78 @@ export const nodesRemoveMutation = (options?: Partial<Options<NodesRemoveData>>)
     const mutationOptions: UseMutationOptions<NodesRemoveResponse, DefaultError, Options<NodesRemoveData>> = {
         mutationFn: async (fnOptions) => {
             const { data } = await nodesRemove({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+export const filesListQueryKey = (options: Options<FilesListData>) => createQueryKey('filesList', options);
+
+export const filesListOptions = (options: Options<FilesListData>) => queryOptions<FilesListResponse, DefaultError, FilesListResponse, ReturnType<typeof filesListQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await filesList({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: filesListQueryKey(options)
+});
+
+export const filesMkdirMutation = (options?: Partial<Options<FilesMkdirData>>): UseMutationOptions<FilesMkdirResponse, DefaultError, Options<FilesMkdirData>> => {
+    const mutationOptions: UseMutationOptions<FilesMkdirResponse, DefaultError, Options<FilesMkdirData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await filesMkdir({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+export const filesMoveMutation = (options?: Partial<Options<FilesMoveData>>): UseMutationOptions<FilesMoveResponse, DefaultError, Options<FilesMoveData>> => {
+    const mutationOptions: UseMutationOptions<FilesMoveResponse, DefaultError, Options<FilesMoveData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await filesMove({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+export const filesDownloadQueryKey = (options: Options<FilesDownloadData>) => createQueryKey('filesDownload', options);
+
+export const filesDownloadOptions = (options: Options<FilesDownloadData>) => queryOptions<FilesDownloadResponse, DefaultError, FilesDownloadResponse, ReturnType<typeof filesDownloadQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await filesDownload({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: filesDownloadQueryKey(options)
+});
+
+export const filesUploadMutation = (options?: Partial<Options<FilesUploadData>>): UseMutationOptions<FilesUploadResponse, DefaultError, Options<FilesUploadData>> => {
+    const mutationOptions: UseMutationOptions<FilesUploadResponse, DefaultError, Options<FilesUploadData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await filesUpload({
                 ...options,
                 ...fnOptions,
                 throwOnError: true
