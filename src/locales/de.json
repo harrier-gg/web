@@ -242,5 +242,21 @@
     "every": "Alle (Stunden, 0 = nur von Hand)",
     "keep": "Behalten",
     "scheduleHint": "Geplante Sicherungen laufen nur für Server, die seit der letzten Sicherung gelaufen sind. So ersetzen Kopien desselben Stands keine älteren Sicherungen."
+  },
+  "content": {
+    "clientOnly": "nur für Spieler",
+    "dependency": "von anderem benötigt",
+    "removeConfirm": "{{name}} entfernen? Die Datei wird gelöscht.",
+    "failed": "Das hat nicht geklappt.",
+    "installed": "Installiert: {{names}}",
+    "restartHint": "Der Server läuft: Änderungen wirken nach einem Neustart.",
+    "source": "Quelle",
+    "searchPlaceholder": "{{source}} durchsuchen",
+    "search": "Suchen",
+    "nothing": "Nichts für diese Serverversion gefunden.",
+    "downloads": "{{count}} Downloads",
+    "isInstalled": "Installiert",
+    "installing": "Wird installiert …",
+    "install": "Installieren"
   }
 }

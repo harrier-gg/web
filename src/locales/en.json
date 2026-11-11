@@ -242,5 +242,21 @@
     "every": "Every (hours, 0 = only by hand)",
     "keep": "Keep",
     "scheduleHint": "Scheduled backups only run for servers that ran since their last backup, so older backups are not replaced by copies of the same state."
+  },
+  "content": {
+    "clientOnly": "only for players",
+    "dependency": "needed by another",
+    "removeConfirm": "Remove {{name}}? The file is deleted.",
+    "failed": "That did not work.",
+    "installed": "Installed: {{names}}",
+    "restartHint": "The server is running: changes take effect after a restart.",
+    "source": "Source",
+    "searchPlaceholder": "Search {{source}}",
+    "search": "Search",
+    "nothing": "Nothing found for this server version.",
+    "downloads": "{{count}} downloads",
+    "isInstalled": "Installed",
+    "installing": "Installing …",
+    "install": "Install"
   }
 }

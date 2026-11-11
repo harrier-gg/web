@@ -15,6 +15,7 @@ import type { MeDto } from '../../api/types.gen';
 import { History } from './History';
 import { ConfigFiles } from './ConfigFiles';
 import { Backups } from './Backups';
+import { Content } from './Content';
 import { FileManager } from './FileManager';
 import { ServerSettings } from './SettingsFields';
 import { StatusBadge } from './StatusBadge';
@@ -170,6 +171,7 @@ export function ServerDetail({ id, me, onBack }: { id: string; me: MeDto; onBack
       {server.data && tpl && me.permissions.includes('manageServers') && (
         <>
           <ServerSettings key={server.data.id} server={server.data} fields={tpl.config} running={running} />
+          <Content key={`content-${server.data.id}`} serverId={server.data.id} kinds={tpl.content} running={running} />
           <ConfigFiles key={`files-${server.data.id}`} serverId={server.data.id} files={tpl.files} running={running} />
           <FileManager key={`manager-${server.data.id}`} serverId={server.data.id} running={running} />
           <Backups key={`backups-${server.data.id}`} serverId={server.data.id} stopped={status === 'stopped' || (status === 'crashed' && !restart)} />
