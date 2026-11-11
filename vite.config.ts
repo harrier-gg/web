@@ -17,6 +17,7 @@ export default defineConfig({
   define: { __API_CONTRACT__: JSON.stringify(contract) },
   server: {
     port: 5173,
-    proxy: { '/api': { target: 'http://localhost:8080', ws: true } }, // ws: live consoles
+    // ws: live consoles; /agent: agents can use the panel address in development, too
+    proxy: { '/api': { target: 'http://localhost:8080', ws: true }, '/agent': { target: 'http://localhost:8080', ws: true } },
   },
 });

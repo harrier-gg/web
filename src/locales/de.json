@@ -30,7 +30,7 @@
     "agent": "Agent",
     "protocol": "Protokoll",
     "connectedSince": "Verbunden seit",
-    "empty": "Noch kein Agent verbunden. Node mit <code>just node-create</code> registrieren und den Agent mit dem Token starten."
+    "empty": "Noch kein Agent verbunden. Füge auf der Seite <code>Nodes</code> einen Node hinzu und starte seinen Agent mit dem angezeigten Befehl."
   },
   "servers": {
     "title": "Server",
@@ -94,7 +94,8 @@
   },
   "nav": {
     "servers": "Server",
-    "users": "Benutzer"
+    "users": "Benutzer",
+    "nodes": "Nodes"
   },
   "roles": {
     "owner": "Owner",
@@ -125,5 +126,36 @@
     "toLogin": "Zur Anmeldung",
     "emailTaken": "Für diese E-Mail-Adresse gibt es schon ein Konto. Bitte melde dich an.",
     "join": "Harrier beitreten"
+  },
+  "nodes": {
+    "title": "Nodes ({{count}})",
+    "addTitle": "Node hinzufügen",
+    "addHint": "Ein Node ist ein Rechner, auf dem Spieleserver laufen. Der Harrier-Agent darauf verbindet sich von selbst mit diesem Panel – ohne Portfreigabe.",
+    "name": "Name des Nodes",
+    "add": "Node hinzufügen",
+    "runCommand": "Führe das auf „{{name}}“ aus (wo der Harrier-Agent installiert ist):",
+    "command": "Agent-Befehl",
+    "tokenOnce": "Der Befehl enthält den Token des Nodes und wird nur einmal angezeigt.",
+    "waiting": "Warte, bis sich der Agent verbindet …",
+    "connected": "✓ Verbunden",
+    "online": "online",
+    "lastSeen": "zuletzt gesehen {{date}}",
+    "neverConnected": "noch nie verbunden",
+    "empty": "Noch keine Nodes.",
+    "removeConfirm": "Node „{{name}}“ entfernen? Sein Agent wird getrennt und sein Token ist danach ungültig.",
+    "conflict": "Es gibt schon einen Node mit diesem Namen, oder der Node hat noch Server.",
+    "invalid": "Node-Namen haben 1–64 Zeichen: Buchstaben, Ziffern, „.“, „_“, „-“."
+  },
+  "start": {
+    "title": "Erste Schritte ({{done}}/{{total}})",
+    "hide": "Ausblenden",
+    "node": "Node hinzufügen – der Rechner, auf dem deine Spieleserver laufen",
+    "nodeAction": "Node hinzufügen",
+    "agent": "Agent darauf starten",
+    "agentAction": "Befehl anzeigen",
+    "server": "Ersten Server anlegen",
+    "serverAction": "Server anlegen",
+    "friends": "Freunde einladen",
+    "friendsAction": "Einladen"
   }
 }

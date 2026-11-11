@@ -3,8 +3,8 @@
 import { type DefaultError, queryOptions, type UseMutationOptions } from '@tanstack/react-query';
 
 import { client } from '../client.gen';
-import { agentsList, authAcceptInvite, authCheckInvite, authLogin, authLogout, authMe, authSetup, authSetupStatus, nodesList, type Options, serversCommand, serversCreate, serversGet, serversList, serversStart, serversStop, systemHealth, systemMeta, templatesList, usersCreateInvite, usersInvites, usersList, usersRemove, usersRevokeInvite, usersUpdateRole } from '../sdk.gen';
-import type { AgentsListData, AgentsListResponse, AuthAcceptInviteData, AuthAcceptInviteResponse, AuthCheckInviteData, AuthCheckInviteResponse, AuthLoginData, AuthLoginResponse, AuthLogoutData, AuthLogoutResponse, AuthMeData, AuthMeResponse, AuthSetupData, AuthSetupResponse, AuthSetupStatusData, AuthSetupStatusResponse, NodesListData, NodesListResponse, ServersCommandData, ServersCommandResponse, ServersCreateData, ServersCreateResponse, ServersGetData, ServersGetResponse, ServersListData, ServersListResponse, ServersStartData, ServersStartResponse, ServersStopData, ServersStopResponse, SystemHealthData, SystemHealthResponse, SystemMetaData, SystemMetaResponse, TemplatesListData, TemplatesListResponse, UsersCreateInviteData, UsersCreateInviteResponse, UsersInvitesData, UsersInvitesResponse, UsersListData, UsersListResponse, UsersRemoveData, UsersRemoveResponse, UsersRevokeInviteData, UsersRevokeInviteResponse, UsersUpdateRoleData, UsersUpdateRoleResponse } from '../types.gen';
+import { agentsList, authAcceptInvite, authCheckInvite, authLogin, authLogout, authMe, authSetup, authSetupStatus, nodesCreate, nodesList, nodesRemove, type Options, serversCommand, serversCreate, serversGet, serversList, serversStart, serversStop, systemHealth, systemMeta, templatesList, usersCreateInvite, usersInvites, usersList, usersRemove, usersRevokeInvite, usersUpdateRole } from '../sdk.gen';
+import type { AgentsListData, AgentsListResponse, AuthAcceptInviteData, AuthAcceptInviteResponse, AuthCheckInviteData, AuthCheckInviteResponse, AuthLoginData, AuthLoginResponse, AuthLogoutData, AuthLogoutResponse, AuthMeData, AuthMeResponse, AuthSetupData, AuthSetupResponse, AuthSetupStatusData, AuthSetupStatusResponse, NodesCreateData, NodesCreateResponse, NodesListData, NodesListResponse, NodesRemoveData, NodesRemoveResponse, ServersCommandData, ServersCommandResponse, ServersCreateData, ServersCreateResponse, ServersGetData, ServersGetResponse, ServersListData, ServersListResponse, ServersStartData, ServersStartResponse, ServersStopData, ServersStopResponse, SystemHealthData, SystemHealthResponse, SystemMetaData, SystemMetaResponse, TemplatesListData, TemplatesListResponse, UsersCreateInviteData, UsersCreateInviteResponse, UsersInvitesData, UsersInvitesResponse, UsersListData, UsersListResponse, UsersRemoveData, UsersRemoveResponse, UsersRevokeInviteData, UsersRevokeInviteResponse, UsersUpdateRoleData, UsersUpdateRoleResponse } from '../types.gen';
 
 export type QueryKey<TOptions extends Options> = [
     Pick<TOptions, 'baseUrl' | 'body' | 'headers' | 'path' | 'query'> & {
@@ -386,3 +386,31 @@ export const nodesListOptions = (options?: Options<NodesListData>) => queryOptio
     },
     queryKey: nodesListQueryKey(options)
 });
+
+export const nodesCreateMutation = (options?: Partial<Options<NodesCreateData>>): UseMutationOptions<NodesCreateResponse, DefaultError, Options<NodesCreateData>> => {
+    const mutationOptions: UseMutationOptions<NodesCreateResponse, DefaultError, Options<NodesCreateData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await nodesCreate({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+export const nodesRemoveMutation = (options?: Partial<Options<NodesRemoveData>>): UseMutationOptions<NodesRemoveResponse, DefaultError, Options<NodesRemoveData>> => {
+    const mutationOptions: UseMutationOptions<NodesRemoveResponse, DefaultError, Options<NodesRemoveData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await nodesRemove({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};

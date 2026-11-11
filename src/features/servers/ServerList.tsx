@@ -3,10 +3,11 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { serversListOptions, templatesListOptions } from '../../api/@tanstack/react-query.gen';
 import type { MeDto } from '../../api/types.gen';
+import { GettingStarted } from '../onboarding/GettingStarted';
 import { CreateServerForm } from './CreateServerForm';
 import { StatusBadge } from './StatusBadge';
 
-export function ServerList({ me, onOpen }: { me: MeDto; onOpen: (id: string) => void }) {
+export function ServerList({ me, onOpen, onNavigate }: { me: MeDto; onOpen: (id: string) => void; onNavigate: (page: 'nodes' | 'users') => void }) {
   const { t } = useTranslation();
   // ponytail: polling every 3 s; a panel-wide event stream replaces it later
   const servers = useQuery({ ...serversListOptions(), refetchInterval: 3000 });
@@ -20,6 +21,9 @@ export function ServerList({ me, onOpen }: { me: MeDto; onOpen: (id: string) => 
 
   return (
     <section className="space-y-4">
+      {me.permissions.includes('manageServers') && me.permissions.includes('manageMembers') && (
+        <GettingStarted onNodes={() => onNavigate('nodes')} onCreateServer={() => setCreating(true)} onUsers={() => onNavigate('users')} />
+      )}
       <div className="flex items-center justify-between">
         <h2 className="text-lg font-medium">{t('servers.title')}</h2>
         {!creating && me.permissions.includes('manageServers') && (

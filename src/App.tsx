@@ -7,6 +7,7 @@ import { ServerDetail } from './features/servers/ServerDetail';
 import { ServerList } from './features/servers/ServerList';
 import { SystemStatus } from './features/system/SystemStatus';
 import { UsersPage } from './features/users/UsersPage';
+import { NodesPage } from './features/nodes/NodesPage';
 import { LANGUAGES } from './i18n';
 
 declare const __API_CONTRACT__: string;
@@ -18,7 +19,7 @@ export function App() {
   const logout = useMutation({ ...authLogoutMutation(), onSuccess: () => queryClient.clear() });
   // ponytail: one level of navigation; a router comes with more pages (M2: login, users)
   const [serverId, setServerId] = useState<string | null>(null);
-  const [page, setPage] = useState<'servers' | 'users'>('servers');
+  const [page, setPage] = useState<'servers' | 'nodes' | 'users'>('servers');
 
   const contractOk = meta.data ? meta.data.contract === __API_CONTRACT__ : undefined;
 
@@ -61,6 +62,9 @@ export function App() {
             <nav className="flex flex-wrap items-center justify-between gap-3 text-sm">
               <div className="flex gap-1">
                 <Tab active={page === 'servers'} onClick={() => { setPage('servers'); setServerId(null); }}>{t('nav.servers')}</Tab>
+                {user.permissions.includes('manageServers') && (
+                  <Tab active={page === 'nodes'} onClick={() => setPage('nodes')}>{t('nav.nodes')}</Tab>
+                )}
                 {user.permissions.includes('manageMembers') && (
                   <Tab active={page === 'users'} onClick={() => setPage('users')}>{t('nav.users')}</Tab>
                 )}
@@ -74,11 +78,13 @@ export function App() {
             </nav>
             {page === 'users' ? (
               <UsersPage me={user} />
+            ) : page === 'nodes' ? (
+              <NodesPage />
             ) : serverId ? (
               <ServerDetail id={serverId} me={user} onBack={() => setServerId(null)} />
             ) : (
               <>
-                <ServerList me={user} onOpen={setServerId} />
+                <ServerList me={user} onOpen={setServerId} onNavigate={setPage} />
                 <SystemStatus contractOk={contractOk} showAgents={user.permissions.includes('manageServers')} />
               </>
             )}

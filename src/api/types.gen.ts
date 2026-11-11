@@ -199,6 +199,21 @@ export type NodeDto = {
     online: boolean;
 };
 
+export type CreateNodeDto = {
+    /**
+     * 1–64 characters: letters, digits, ".", "_", "-"
+     */
+    name: string;
+};
+
+export type NodeCreatedDto = {
+    node: NodeDto;
+    /**
+     * Agent token (HARRIER_AGENT_TOKEN). Shown only once.
+     */
+    token: string;
+};
+
 export type AuthSetupStatusData = {
     body?: never;
     path?: never;
@@ -526,3 +541,31 @@ export type NodesListResponses = {
 };
 
 export type NodesListResponse = NodesListResponses[keyof NodesListResponses];
+
+export type NodesCreateData = {
+    body: CreateNodeDto;
+    path?: never;
+    query?: never;
+    url: '/nodes';
+};
+
+export type NodesCreateResponses = {
+    200: NodeCreatedDto;
+};
+
+export type NodesCreateResponse = NodesCreateResponses[keyof NodesCreateResponses];
+
+export type NodesRemoveData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/nodes/{id}';
+};
+
+export type NodesRemoveResponses = {
+    204: void;
+};
+
+export type NodesRemoveResponse = NodesRemoveResponses[keyof NodesRemoveResponses];
