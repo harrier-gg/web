@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.5.0](https://github.com/harrier-gg/web/compare/v0.4.0...v0.5.0) (2026-11-11)
+
+
+### Features
+
+* backups block with schedule, download and restore ([#24](https://github.com/harrier-gg/web/issues/24)) ([426a11e](https://github.com/harrier-gg/web/commit/426a11e2573474ed095b5dee3f9580f8f63ee1db))
+* file manager for each server ([#22](https://github.com/harrier-gg/web/issues/22)) ([96cd803](https://github.com/harrier-gg/web/commit/96cd8039b0de75ab6642138539345d9012ea71b6))
+
 ## [0.4.0](https://github.com/harrier-gg/web/compare/v0.3.0...v0.4.0) (2026-11-11)
 
 
