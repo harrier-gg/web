@@ -2,7 +2,7 @@
 
 import type { Client, ClientMeta, Options as Options2, RequestResult, TDataShape } from './client';
 import { client } from './client.gen';
-import type { AgentsListData, AgentsListResponses, AuthAcceptInviteData, AuthAcceptInviteResponses, AuthCheckInviteData, AuthCheckInviteResponses, AuthLoginData, AuthLoginResponses, AuthLogoutData, AuthLogoutResponses, AuthMeData, AuthMeResponses, AuthSetupData, AuthSetupResponses, AuthSetupStatusData, AuthSetupStatusResponses, DiscordProvidersData, DiscordProvidersResponses, FilesDownloadData, FilesDownloadResponses, FilesListData, FilesListResponses, FilesMkdirData, FilesMkdirResponses, FilesMoveData, FilesMoveResponses, FilesRemoveData, FilesRemoveResponses, FilesUploadData, FilesUploadResponses, NodesCreateData, NodesCreateResponses, NodesListData, NodesListResponses, NodesRemoveData, NodesRemoveResponses, ServersCommandData, ServersCommandResponses, ServersCreateData, ServersCreateResponses, ServersGetData, ServersGetResponses, ServersListData, ServersListResponses, ServersMetricsData, ServersMetricsResponses, ServersReadFileData, ServersReadFileResponses, ServersStartData, ServersStartResponses, ServersStopData, ServersStopResponses, ServersUpdateSettingsData, ServersUpdateSettingsResponses, ServersWriteFileData, ServersWriteFileResponses, SystemHealthData, SystemHealthResponses, SystemMetaData, SystemMetaResponses, TemplatesListData, TemplatesListResponses, TemplatesVersionsData, TemplatesVersionsResponses, UsersCreateInviteData, UsersCreateInviteResponses, UsersInvitesData, UsersInvitesResponses, UsersListData, UsersListResponses, UsersRemoveData, UsersRemoveResponses, UsersRevokeInviteData, UsersRevokeInviteResponses, UsersUpdateRoleData, UsersUpdateRoleResponses } from './types.gen';
+import type { AgentsListData, AgentsListResponses, AuthAcceptInviteData, AuthAcceptInviteResponses, AuthCheckInviteData, AuthCheckInviteResponses, AuthLoginData, AuthLoginResponses, AuthLogoutData, AuthLogoutResponses, AuthMeData, AuthMeResponses, AuthSetupData, AuthSetupResponses, AuthSetupStatusData, AuthSetupStatusResponses, BackupsCreateData, BackupsCreateResponses, BackupsDownloadData, BackupsDownloadResponses, BackupsRemoveData, BackupsRemoveResponses, BackupsRestoreData, BackupsRestoreResponses, BackupsScheduleData, BackupsScheduleResponses, BackupsSummaryData, BackupsSummaryResponses, DiscordProvidersData, DiscordProvidersResponses, FilesDownloadData, FilesDownloadResponses, FilesListData, FilesListResponses, FilesMkdirData, FilesMkdirResponses, FilesMoveData, FilesMoveResponses, FilesRemoveData, FilesRemoveResponses, FilesUploadData, FilesUploadResponses, NodesCreateData, NodesCreateResponses, NodesListData, NodesListResponses, NodesRemoveData, NodesRemoveResponses, ServersCommandData, ServersCommandResponses, ServersCreateData, ServersCreateResponses, ServersGetData, ServersGetResponses, ServersListData, ServersListResponses, ServersMetricsData, ServersMetricsResponses, ServersReadFileData, ServersReadFileResponses, ServersStartData, ServersStartResponses, ServersStopData, ServersStopResponses, ServersUpdateSettingsData, ServersUpdateSettingsResponses, ServersWriteFileData, ServersWriteFileResponses, SystemHealthData, SystemHealthResponses, SystemMetaData, SystemMetaResponses, TemplatesListData, TemplatesListResponses, TemplatesVersionsData, TemplatesVersionsResponses, UsersCreateInviteData, UsersCreateInviteResponses, UsersInvitesData, UsersInvitesResponses, UsersListData, UsersListResponses, UsersRemoveData, UsersRemoveResponses, UsersRevokeInviteData, UsersRevokeInviteResponses, UsersUpdateRoleData, UsersUpdateRoleResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean, TResponse = unknown> = Options2<TData, ThrowOnError, TResponse> & {
     /**
@@ -185,3 +185,29 @@ export const filesUpload = <ThrowOnError extends boolean = false>(options: Optio
         ...options.headers
     }
 });
+
+export const backupsRemove = <ThrowOnError extends boolean = false>(options: Options<BackupsRemoveData, ThrowOnError>): RequestResult<BackupsRemoveResponses, unknown, ThrowOnError> => (options.client ?? client).delete<BackupsRemoveResponses, unknown, ThrowOnError>({ url: '/servers/{id}/backups', ...options });
+
+export const backupsSummary = <ThrowOnError extends boolean = false>(options: Options<BackupsSummaryData, ThrowOnError>): RequestResult<BackupsSummaryResponses, unknown, ThrowOnError> => (options.client ?? client).get<BackupsSummaryResponses, unknown, ThrowOnError>({ url: '/servers/{id}/backups', ...options });
+
+export const backupsCreate = <ThrowOnError extends boolean = false>(options: Options<BackupsCreateData, ThrowOnError>): RequestResult<BackupsCreateResponses, unknown, ThrowOnError> => (options.client ?? client).post<BackupsCreateResponses, unknown, ThrowOnError>({ url: '/servers/{id}/backups', ...options });
+
+export const backupsSchedule = <ThrowOnError extends boolean = false>(options: Options<BackupsScheduleData, ThrowOnError>): RequestResult<BackupsScheduleResponses, unknown, ThrowOnError> => (options.client ?? client).put<BackupsScheduleResponses, unknown, ThrowOnError>({
+    url: '/servers/{id}/backups/schedule',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+export const backupsRestore = <ThrowOnError extends boolean = false>(options: Options<BackupsRestoreData, ThrowOnError>): RequestResult<BackupsRestoreResponses, unknown, ThrowOnError> => (options.client ?? client).post<BackupsRestoreResponses, unknown, ThrowOnError>({
+    url: '/servers/{id}/backups/restore',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+export const backupsDownload = <ThrowOnError extends boolean = false>(options: Options<BackupsDownloadData, ThrowOnError>): RequestResult<BackupsDownloadResponses, unknown, ThrowOnError> => (options.client ?? client).get<BackupsDownloadResponses, unknown, ThrowOnError>({ url: '/servers/{id}/backups/download', ...options });

@@ -10,7 +10,7 @@ const EDITABLE_BYTES = 128 * 1024;
 
 const join = (dir: string, name: string) => (dir ? `${dir}/${name}` : name);
 
-function size(bytes: number): string {
+export function size(bytes: number): string {
   if (bytes < 1024) return `${bytes} B`;
   const units = ['KB', 'MB', 'GB', 'TB'];
   let value = bytes / 1024;

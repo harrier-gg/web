@@ -224,5 +224,23 @@
     "snapshot": "Snapshot",
     "showSnapshots": "Snapshots und Vorabversionen zeigen",
     "offline": "Die Versionsliste ist nicht erreichbar; gib die Version ein, z. B. 1.21.4."
+  },
+  "backups": {
+    "title": "Backups",
+    "now": "Jetzt sichern",
+    "creating": "Wird gesichert …",
+    "restoring": "Wird wiederhergestellt …",
+    "last": "Letzte Sicherung: {{date}}",
+    "none": "Noch keine Sicherung.",
+    "offline": "Der Node ist offline; seine Sicherungen lassen sich nicht anzeigen.",
+    "failed": "Das hat nicht geklappt.",
+    "beforeRestore": "vor einer Wiederherstellung",
+    "restore": "Wiederherstellen",
+    "stopFirst": "Stoppe den Server, um eine Sicherung wiederherzustellen.",
+    "restoreConfirm": "Die Sicherung vom {{date}} wiederherstellen? Der aktuelle Stand wird vorher gesichert.",
+    "deleteConfirm": "Die Sicherung vom {{date}} löschen?",
+    "every": "Alle (Stunden, 0 = nur von Hand)",
+    "keep": "Behalten",
+    "scheduleHint": "Geplante Sicherungen laufen nur für Server, die seit der letzten Sicherung gelaufen sind. So ersetzen Kopien desselben Stands keine älteren Sicherungen."
   }
 }
