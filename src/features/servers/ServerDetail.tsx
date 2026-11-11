@@ -11,12 +11,13 @@ import {
   serversStopMutation,
   templatesListOptions,
 } from '../../api/@tanstack/react-query.gen';
+import type { MeDto } from '../../api/types.gen';
 import { StatusBadge } from './StatusBadge';
 import { useServerConsole } from './useServerConsole';
 
 const mb = (bytes: number) => Math.round(bytes / 1024 / 1024);
 
-export function ServerDetail({ id, onBack }: { id: string; onBack: () => void }) {
+export function ServerDetail({ id, me, onBack }: { id: string; me: MeDto; onBack: () => void }) {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
   const server = useQuery(serversGetOptions({ path: { id } }));
@@ -120,6 +121,7 @@ export function ServerDetail({ id, onBack }: { id: string; onBack: () => void })
           <span>{live.connected ? t('detail.live') : t('detail.connecting')}</span>
         </div>
         <div ref={host} className="h-96 px-2" />
+        {me.permissions.includes('sendCommands') && (
         <form onSubmit={submit} className="flex border-t border-white/5">
           <span className="px-3 py-2 text-zinc-500">&gt;</span>
           <input
@@ -131,6 +133,7 @@ export function ServerDetail({ id, onBack }: { id: string; onBack: () => void })
             className="flex-1 bg-transparent py-2 pr-3 font-mono text-sm outline-none disabled:opacity-50"
           />
         </form>
+        )}
       </div>
     </section>
   );

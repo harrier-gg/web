@@ -1,8 +1,15 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState, type FormEvent, type ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
-import { authLoginMutation, authMeOptions, authSetupMutation, authSetupStatusOptions } from '../../api/@tanstack/react-query.gen';
-import type { UserDto } from '../../api/types.gen';
+import {
+  authAcceptInviteMutation,
+  authCheckInviteOptions,
+  authLoginMutation,
+  authMeOptions,
+  authSetupMutation,
+  authSetupStatusOptions,
+} from '../../api/@tanstack/react-query.gen';
+import type { MeDto } from '../../api/types.gen';
 
 /** The API answers in English (ADR 0003); auth errors are translated by their HTTP status. */
 function useAuthError(error: unknown): string | null {
@@ -22,7 +29,7 @@ function useAuthError(error: unknown): string | null {
 const input = 'w-full rounded-md bg-surface px-3 py-2 text-zinc-100 outline-none focus:ring-2 focus:ring-accent';
 
 /** Shows setup or login until there is a session, then renders the app for the user (ADR 0006). */
-export function AuthGate({ children }: { children: (user: UserDto) => ReactNode }) {
+export function AuthGate({ children }: { children: (user: MeDto) => ReactNode }) {
   // No refetch on window focus: refetching an errored query without data puts it back to
   // "pending", which would unmount the login form (and the user's input) on every click.
   // Expired sessions are still noticed: any query answering 401 re-checks the session (main.tsx).
@@ -31,7 +38,8 @@ export function AuthGate({ children }: { children: (user: UserDto) => ReactNode 
 
   if (me.data) return children(me.data);
   if (me.isPending || (me.isError && setup.isPending)) return null;
-  return setup.data?.needsSetup ? <SetupForm /> : <LoginForm />;
+  if (setup.data?.needsSetup) return <SetupForm />;
+  return location.pathname === '/invite' ? <InviteForm /> : <LoginForm />;
 }
 
 function Card({ title, hint, children }: { title: string; hint?: string; children?: ReactNode }) {
@@ -59,7 +67,7 @@ function useSignedIn() {
   const queryClient = useQueryClient();
   return () => {
     // Drop the setup token from the address bar and load everything as the new user.
-    if (location.pathname === '/setup') history.replaceState(null, '', '/');
+    if (location.pathname === '/setup' || location.pathname === '/invite') history.replaceState(null, '', '/');
     void queryClient.invalidateQueries();
   };
 }
@@ -117,6 +125,50 @@ function SetupForm() {
         {error && <p role="alert" className="text-sm text-red-300">{error}</p>}
         <button type="submit" disabled={setup.isPending} className="w-full rounded-lg bg-accent py-2 font-medium text-zinc-900 disabled:opacity-50">
           {t('auth.setupButton')}
+        </button>
+      </form>
+    </Card>
+  );
+}
+
+/** Joining via an invitation link (ADR 0007): name, e-mail and password, then straight into the panel. */
+function InviteForm() {
+  const { t } = useTranslation();
+  const signedIn = useSignedIn();
+  const token = new URLSearchParams(location.search).get('token') ?? '';
+  const invite = useQuery({ ...authCheckInviteOptions({ query: { token } }), enabled: !!token, retry: false, refetchOnWindowFocus: false });
+  const accept = useMutation({ ...authAcceptInviteMutation(), onSuccess: signedIn });
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const status = (accept.error as { status?: number } | null)?.status;
+  const error = accept.error ? (status === 409 ? t('invite.emailTaken') : status === 404 ? t('invite.invalid') : t('auth.errors.invalid')) : null;
+
+  if (!token || invite.isError) {
+    return (
+      <Card title={t('invite.title')} hint={t('invite.invalid')}>
+        <button type="button" onClick={() => location.assign('/')} className="text-sm text-accent">
+          {t('invite.toLogin')}
+        </button>
+      </Card>
+    );
+  }
+  if (!invite.data) return null;
+
+  const submit = (e: FormEvent) => {
+    e.preventDefault();
+    accept.mutate({ body: { token, name, email, password } });
+  };
+
+  return (
+    <Card title={t('invite.title')} hint={t('invite.hint', { role: t(`roles.${invite.data.role}`) })}>
+      <form onSubmit={submit} className="space-y-4">
+        <Field label={t('auth.name')} autoComplete="name" required maxLength={64} value={name} onChange={(e) => setName(e.target.value)} />
+        <Field label={t('auth.email')} type="email" autoComplete="username" required value={email} onChange={(e) => setEmail(e.target.value)} />
+        <Field label={t('auth.newPassword')} type="password" autoComplete="new-password" required minLength={10} value={password} onChange={(e) => setPassword(e.target.value)} />
+        {error && <p role="alert" className="text-sm text-red-300">{error}</p>}
+        <button type="submit" disabled={accept.isPending} className="w-full rounded-lg bg-accent py-2 font-medium text-zinc-900 disabled:opacity-50">
+          {t('invite.join')}
         </button>
       </form>
     </Card>

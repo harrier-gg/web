@@ -33,6 +33,66 @@ export type LoginDto = {
     password: string;
 };
 
+export type MeDto = {
+    id: string;
+    email: string;
+    name: string;
+    role: 'owner' | 'admin' | 'member';
+    /**
+     * What this user may do (ADR 0007); the web hides the rest
+     */
+    permissions: Array<'viewServers' | 'startStopServers' | 'sendCommands' | 'manageServers' | 'manageMembers' | 'manageAdmins'>;
+};
+
+export type InviteCheckDto = {
+    role: 'admin' | 'member';
+};
+
+export type AcceptInviteDto = {
+    /**
+     * Token from the invitation link
+     */
+    token: string;
+    name: string;
+    email: string;
+    password: string;
+};
+
+export type UserEntryDto = {
+    id: string;
+    email: string;
+    name: string;
+    role: 'owner' | 'admin' | 'member';
+    createdAt: string;
+};
+
+export type UpdateRoleDto = {
+    role: 'admin' | 'member';
+};
+
+export type InviteDto = {
+    id: string;
+    role: 'admin' | 'member';
+    /**
+     * Name of the person who created the invitation
+     */
+    createdBy: string;
+    createdAt: string;
+    expiresAt: string;
+};
+
+export type CreateInviteDto = {
+    role: 'admin' | 'member';
+};
+
+export type InviteCreatedDto = {
+    invite: InviteDto;
+    /**
+     * Link to share. Shown only once.
+     */
+    url: string;
+};
+
 export type HealthDto = {
     status: 'ok' | 'degraded';
     version: string;
@@ -199,10 +259,122 @@ export type AuthMeData = {
 };
 
 export type AuthMeResponses = {
-    200: UserDto;
+    200: MeDto;
 };
 
 export type AuthMeResponse = AuthMeResponses[keyof AuthMeResponses];
+
+export type AuthCheckInviteData = {
+    body?: never;
+    path?: never;
+    query: {
+        token: string;
+    };
+    url: '/auth/invites/check';
+};
+
+export type AuthCheckInviteResponses = {
+    200: InviteCheckDto;
+};
+
+export type AuthCheckInviteResponse = AuthCheckInviteResponses[keyof AuthCheckInviteResponses];
+
+export type AuthAcceptInviteData = {
+    body: AcceptInviteDto;
+    path?: never;
+    query?: never;
+    url: '/auth/invites/accept';
+};
+
+export type AuthAcceptInviteResponses = {
+    200: UserDto;
+};
+
+export type AuthAcceptInviteResponse = AuthAcceptInviteResponses[keyof AuthAcceptInviteResponses];
+
+export type UsersListData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/users';
+};
+
+export type UsersListResponses = {
+    200: Array<UserEntryDto>;
+};
+
+export type UsersListResponse = UsersListResponses[keyof UsersListResponses];
+
+export type UsersRemoveData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/users/{id}';
+};
+
+export type UsersRemoveResponses = {
+    204: void;
+};
+
+export type UsersRemoveResponse = UsersRemoveResponses[keyof UsersRemoveResponses];
+
+export type UsersUpdateRoleData = {
+    body: UpdateRoleDto;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/users/{id}';
+};
+
+export type UsersUpdateRoleResponses = {
+    200: UserEntryDto;
+};
+
+export type UsersUpdateRoleResponse = UsersUpdateRoleResponses[keyof UsersUpdateRoleResponses];
+
+export type UsersInvitesData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/invites';
+};
+
+export type UsersInvitesResponses = {
+    200: Array<InviteDto>;
+};
+
+export type UsersInvitesResponse = UsersInvitesResponses[keyof UsersInvitesResponses];
+
+export type UsersCreateInviteData = {
+    body: CreateInviteDto;
+    path?: never;
+    query?: never;
+    url: '/invites';
+};
+
+export type UsersCreateInviteResponses = {
+    200: InviteCreatedDto;
+};
+
+export type UsersCreateInviteResponse = UsersCreateInviteResponses[keyof UsersCreateInviteResponses];
+
+export type UsersRevokeInviteData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/invites/{id}';
+};
+
+export type UsersRevokeInviteResponses = {
+    204: void;
+};
+
+export type UsersRevokeInviteResponse = UsersRevokeInviteResponses[keyof UsersRevokeInviteResponses];
 
 export type SystemHealthData = {
     body?: never;

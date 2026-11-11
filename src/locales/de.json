@@ -91,5 +91,39 @@
       "alreadySetUp": "Harrier ist bereits eingerichtet. Bitte anmelden.",
       "tooMany": "Zu viele Fehlversuche. Bitte ein paar Minuten warten."
     }
+  },
+  "nav": {
+    "servers": "Server",
+    "users": "Benutzer"
+  },
+  "roles": {
+    "owner": "Owner",
+    "admin": "Admin",
+    "member": "Mitglied"
+  },
+  "users": {
+    "title": "Benutzer ({{count}})",
+    "role": "Rolle",
+    "inviteTitle": "Freunde einladen",
+    "inviteHint": "Erstelle einen Link und schick ihn per Chat oder Discord. Er funktioniert einmal und 7 Tage lang.",
+    "createLink": "Einladungslink erstellen",
+    "link": "Einladungslink",
+    "linkOnce": "Kopiere den Link jetzt – er wird nur einmal angezeigt.",
+    "copy": "Kopieren",
+    "copied": "Kopiert",
+    "openInvites": "Offene Einladungen",
+    "invitedBy": "von {{name}}",
+    "validUntil": "gültig bis {{date}}",
+    "revoke": "Widerrufen",
+    "remove": "Entfernen",
+    "removeConfirm": "{{name}} entfernen? Die Person wird sofort abgemeldet."
+  },
+  "invite": {
+    "title": "Beitreten",
+    "hint": "Du wurdest als {{role}} eingeladen. Wähle deinen Namen und ein Passwort.",
+    "invalid": "Diese Einladung ist ungültig, abgelaufen oder wurde schon benutzt. Bitte um einen neuen Link.",
+    "toLogin": "Zur Anmeldung",
+    "emailTaken": "Für diese E-Mail-Adresse gibt es schon ein Konto. Bitte melde dich an.",
+    "join": "Harrier beitreten"
   }
 }

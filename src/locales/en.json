@@ -91,5 +91,39 @@
       "alreadySetUp": "Harrier is already set up. Please log in.",
       "tooMany": "Too many failed attempts. Please wait a few minutes."
     }
+  },
+  "nav": {
+    "servers": "Servers",
+    "users": "Users"
+  },
+  "roles": {
+    "owner": "Owner",
+    "admin": "Admin",
+    "member": "Member"
+  },
+  "users": {
+    "title": "Users ({{count}})",
+    "role": "Role",
+    "inviteTitle": "Invite friends",
+    "inviteHint": "Create a link and send it via chat or Discord. It works once and for 7 days.",
+    "createLink": "Create invitation link",
+    "link": "Invitation link",
+    "linkOnce": "Copy the link now – it is shown only once.",
+    "copy": "Copy",
+    "copied": "Copied",
+    "openInvites": "Open invitations",
+    "invitedBy": "by {{name}}",
+    "validUntil": "valid until {{date}}",
+    "revoke": "Revoke",
+    "remove": "Remove",
+    "removeConfirm": "Remove {{name}}? They are logged out right away."
+  },
+  "invite": {
+    "title": "Join",
+    "hint": "You were invited as {{role}}. Choose your name and password.",
+    "invalid": "This invitation is invalid, expired or was already used. Ask for a new link.",
+    "toLogin": "Go to login",
+    "emailTaken": "An account with this e-mail address already exists. Log in instead.",
+    "join": "Join Harrier"
   }
 }

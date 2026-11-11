@@ -3,8 +3,8 @@
 import { type DefaultError, queryOptions, type UseMutationOptions } from '@tanstack/react-query';
 
 import { client } from '../client.gen';
-import { agentsList, authLogin, authLogout, authMe, authSetup, authSetupStatus, nodesList, type Options, serversCommand, serversCreate, serversGet, serversList, serversStart, serversStop, systemHealth, systemMeta, templatesList } from '../sdk.gen';
-import type { AgentsListData, AgentsListResponse, AuthLoginData, AuthLoginResponse, AuthLogoutData, AuthLogoutResponse, AuthMeData, AuthMeResponse, AuthSetupData, AuthSetupResponse, AuthSetupStatusData, AuthSetupStatusResponse, NodesListData, NodesListResponse, ServersCommandData, ServersCommandResponse, ServersCreateData, ServersCreateResponse, ServersGetData, ServersGetResponse, ServersListData, ServersListResponse, ServersStartData, ServersStartResponse, ServersStopData, ServersStopResponse, SystemHealthData, SystemHealthResponse, SystemMetaData, SystemMetaResponse, TemplatesListData, TemplatesListResponse } from '../types.gen';
+import { agentsList, authAcceptInvite, authCheckInvite, authLogin, authLogout, authMe, authSetup, authSetupStatus, nodesList, type Options, serversCommand, serversCreate, serversGet, serversList, serversStart, serversStop, systemHealth, systemMeta, templatesList, usersCreateInvite, usersInvites, usersList, usersRemove, usersRevokeInvite, usersUpdateRole } from '../sdk.gen';
+import type { AgentsListData, AgentsListResponse, AuthAcceptInviteData, AuthAcceptInviteResponse, AuthCheckInviteData, AuthCheckInviteResponse, AuthLoginData, AuthLoginResponse, AuthLogoutData, AuthLogoutResponse, AuthMeData, AuthMeResponse, AuthSetupData, AuthSetupResponse, AuthSetupStatusData, AuthSetupStatusResponse, NodesListData, NodesListResponse, ServersCommandData, ServersCommandResponse, ServersCreateData, ServersCreateResponse, ServersGetData, ServersGetResponse, ServersListData, ServersListResponse, ServersStartData, ServersStartResponse, ServersStopData, ServersStopResponse, SystemHealthData, SystemHealthResponse, SystemMetaData, SystemMetaResponse, TemplatesListData, TemplatesListResponse, UsersCreateInviteData, UsersCreateInviteResponse, UsersInvitesData, UsersInvitesResponse, UsersListData, UsersListResponse, UsersRemoveData, UsersRemoveResponse, UsersRevokeInviteData, UsersRevokeInviteResponse, UsersUpdateRoleData, UsersUpdateRoleResponse } from '../types.gen';
 
 export type QueryKey<TOptions extends Options> = [
     Pick<TOptions, 'baseUrl' | 'body' | 'headers' | 'path' | 'query'> & {
@@ -110,6 +110,121 @@ export const authMeOptions = (options?: Options<AuthMeData>) => queryOptions<Aut
     },
     queryKey: authMeQueryKey(options)
 });
+
+export const authCheckInviteQueryKey = (options: Options<AuthCheckInviteData>) => createQueryKey('authCheckInvite', options);
+
+export const authCheckInviteOptions = (options: Options<AuthCheckInviteData>) => queryOptions<AuthCheckInviteResponse, DefaultError, AuthCheckInviteResponse, ReturnType<typeof authCheckInviteQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await authCheckInvite({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: authCheckInviteQueryKey(options)
+});
+
+export const authAcceptInviteMutation = (options?: Partial<Options<AuthAcceptInviteData>>): UseMutationOptions<AuthAcceptInviteResponse, DefaultError, Options<AuthAcceptInviteData>> => {
+    const mutationOptions: UseMutationOptions<AuthAcceptInviteResponse, DefaultError, Options<AuthAcceptInviteData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await authAcceptInvite({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+export const usersListQueryKey = (options?: Options<UsersListData>) => createQueryKey('usersList', options);
+
+export const usersListOptions = (options?: Options<UsersListData>) => queryOptions<UsersListResponse, DefaultError, UsersListResponse, ReturnType<typeof usersListQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await usersList({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: usersListQueryKey(options)
+});
+
+export const usersRemoveMutation = (options?: Partial<Options<UsersRemoveData>>): UseMutationOptions<UsersRemoveResponse, DefaultError, Options<UsersRemoveData>> => {
+    const mutationOptions: UseMutationOptions<UsersRemoveResponse, DefaultError, Options<UsersRemoveData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await usersRemove({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+export const usersUpdateRoleMutation = (options?: Partial<Options<UsersUpdateRoleData>>): UseMutationOptions<UsersUpdateRoleResponse, DefaultError, Options<UsersUpdateRoleData>> => {
+    const mutationOptions: UseMutationOptions<UsersUpdateRoleResponse, DefaultError, Options<UsersUpdateRoleData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await usersUpdateRole({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+export const usersInvitesQueryKey = (options?: Options<UsersInvitesData>) => createQueryKey('usersInvites', options);
+
+export const usersInvitesOptions = (options?: Options<UsersInvitesData>) => queryOptions<UsersInvitesResponse, DefaultError, UsersInvitesResponse, ReturnType<typeof usersInvitesQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await usersInvites({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: usersInvitesQueryKey(options)
+});
+
+export const usersCreateInviteMutation = (options?: Partial<Options<UsersCreateInviteData>>): UseMutationOptions<UsersCreateInviteResponse, DefaultError, Options<UsersCreateInviteData>> => {
+    const mutationOptions: UseMutationOptions<UsersCreateInviteResponse, DefaultError, Options<UsersCreateInviteData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await usersCreateInvite({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+export const usersRevokeInviteMutation = (options?: Partial<Options<UsersRevokeInviteData>>): UseMutationOptions<UsersRevokeInviteResponse, DefaultError, Options<UsersRevokeInviteData>> => {
+    const mutationOptions: UseMutationOptions<UsersRevokeInviteResponse, DefaultError, Options<UsersRevokeInviteData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await usersRevokeInvite({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
 
 export const systemHealthQueryKey = (options?: Options<SystemHealthData>) => createQueryKey('systemHealth', options);
 

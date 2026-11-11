@@ -2,10 +2,11 @@ import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { serversListOptions, templatesListOptions } from '../../api/@tanstack/react-query.gen';
+import type { MeDto } from '../../api/types.gen';
 import { CreateServerForm } from './CreateServerForm';
 import { StatusBadge } from './StatusBadge';
 
-export function ServerList({ onOpen }: { onOpen: (id: string) => void }) {
+export function ServerList({ me, onOpen }: { me: MeDto; onOpen: (id: string) => void }) {
   const { t } = useTranslation();
   // ponytail: polling every 3 s; a panel-wide event stream replaces it later
   const servers = useQuery({ ...serversListOptions(), refetchInterval: 3000 });
@@ -21,7 +22,7 @@ export function ServerList({ onOpen }: { onOpen: (id: string) => void }) {
     <section className="space-y-4">
       <div className="flex items-center justify-between">
         <h2 className="text-lg font-medium">{t('servers.title')}</h2>
-        {!creating && (
+        {!creating && me.permissions.includes('manageServers') && (
           <button type="button" onClick={() => setCreating(true)} className="rounded-lg bg-accent px-3 py-1.5 text-sm font-medium text-zinc-900">
             {t('servers.new')}
           </button>
