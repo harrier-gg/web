@@ -199,5 +199,11 @@
     "saveFailed": "The file could not be saved.",
     "missing": "The file does not exist yet; the server creates it on its first start. You can also write it now.",
     "discard": "Discard changes"
+  },
+  "versions": {
+    "latest": "Latest ({{version}})",
+    "snapshot": "snapshot",
+    "showSnapshots": "Show snapshots and pre-releases",
+    "offline": "The version list is not reachable; type the version, e.g. 1.21.4."
   }
 }

@@ -1,7 +1,7 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState, type FormEvent } from 'react';
 import { useTranslation } from 'react-i18next';
-import { serversGetQueryKey, serversListQueryKey, serversUpdateSettingsMutation } from '../../api/@tanstack/react-query.gen';
+import { serversGetQueryKey, serversListQueryKey, serversUpdateSettingsMutation, templatesVersionsOptions } from '../../api/@tanstack/react-query.gen';
 import type { ServerDto, TemplateConfigFieldDto } from '../../api/types.gen';
 import { localize } from '../../lib/localize';
 
@@ -26,7 +26,17 @@ export function toSettings(fields: TemplateConfigFieldDto[], draft: Draft): Reco
 }
 
 /** One input per config field of a template (ADR 0005); the browser checks min, max and patterns. Game settings are files (ADR 0011). */
-export function SettingsFields({ fields, draft, onChange }: { fields: TemplateConfigFieldDto[]; draft: Draft; onChange: (draft: Draft) => void }) {
+export function SettingsFields({
+  templateId,
+  fields,
+  draft,
+  onChange,
+}: {
+  templateId: string;
+  fields: TemplateConfigFieldDto[];
+  draft: Draft;
+  onChange: (draft: Draft) => void;
+}) {
   const { i18n } = useTranslation();
   const lang = i18n.resolvedLanguage;
 
@@ -35,19 +45,59 @@ export function SettingsFields({ fields, draft, onChange }: { fields: TemplateCo
       {fields.map((f) => (
         <label key={f.key} className="space-y-1 text-sm">
           <span className="text-zinc-400">{localize(f.label, lang)}</span>
-          <input
-            required
-            type={f.type === 'integer' ? 'number' : 'text'}
-            min={f.min}
-            max={f.max}
-            pattern={f.pattern}
-            value={draft[f.key]}
-            onChange={(e) => onChange({ ...draft, [f.key]: e.target.value })}
-            className={input}
-          />
+          {f.type === 'version' ? (
+            <VersionSelect templateId={templateId} value={draft[f.key]} onChange={(v) => onChange({ ...draft, [f.key]: v })} />
+          ) : (
+            <input
+              required
+              type={f.type === 'integer' ? 'number' : 'text'}
+              min={f.min}
+              max={f.max}
+              pattern={f.pattern}
+              value={draft[f.key]}
+              onChange={(e) => onChange({ ...draft, [f.key]: e.target.value })}
+              className={input}
+            />
+          )}
         </label>
       ))}
     </div>
+  );
+}
+
+/**
+ * Versions from the template's version provider (ADR 0012): "latest" or a release, snapshots on
+ * request. If the list cannot be loaded (e.g. the panel is offline), the version can be typed.
+ */
+function VersionSelect({ templateId, value, onChange }: { templateId: string; value: string; onChange: (value: string) => void }) {
+  const { t } = useTranslation();
+  const versions = useQuery({ ...templatesVersionsOptions({ query: { template: templateId } }), staleTime: 10 * 60_000, retry: false });
+  const [snapshots, setSnapshots] = useState(false);
+
+  if (versions.isError) {
+    return (
+      <>
+        <input required pattern="[A-Za-z0-9._\-]{1,64}" value={value} onChange={(e) => onChange(e.target.value)} className={input} />
+        <span className="block text-xs text-zinc-500">{t('versions.offline')}</span>
+      </>
+    );
+  }
+  const shown = versions.data?.versions.filter((v) => snapshots || v.type === 'release' || v.id === value) ?? [];
+  return (
+    <>
+      <select value={value} onChange={(e) => onChange(e.target.value)} className={input}>
+        <option value="LATEST">{t('versions.latest', { version: versions.data?.latest ?? '…' })}</option>
+        {shown.map((v) => (
+          <option key={v.id} value={v.id}>
+            {v.type === 'snapshot' ? `${v.id} (${t('versions.snapshot')})` : v.id}
+          </option>
+        ))}
+      </select>
+      <span className="flex items-center gap-2 text-xs text-zinc-500">
+        <input type="checkbox" checked={snapshots} onChange={(e) => setSnapshots(e.target.checked)} className="accent-accent" />
+        {t('versions.showSnapshots')}
+      </span>
+    </>
   );
 }
 
@@ -77,6 +127,7 @@ export function ServerSettings({ server, fields, running }: { server: ServerDto;
       <summary className="cursor-pointer font-medium">{t('detail.settings')}</summary>
       <form onSubmit={submit} className="mt-4 space-y-4">
         <SettingsFields
+          templateId={server.templateId}
           fields={fields}
           draft={draft}
           onChange={(d) => {

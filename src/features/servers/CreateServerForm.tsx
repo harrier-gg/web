@@ -96,7 +96,7 @@ export function CreateServerForm({ onCancel, onCreated }: { onCancel: () => void
       {template && (
         <fieldset>
           <legend className="mb-2 text-sm text-zinc-400">{t('create.settings')}</legend>
-          <SettingsFields fields={template.config} draft={draft} onChange={setEdited} />
+          <SettingsFields templateId={template.id} fields={template.config} draft={draft} onChange={setEdited} />
         </fieldset>
       )}
 

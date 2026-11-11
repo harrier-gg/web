@@ -243,7 +243,10 @@ export type TemplateFileDto = {
 export type TemplateConfigFieldDto = {
     key: string;
     label: LocalizedTextDto;
-    type: 'string' | 'integer';
+    /**
+     * version: pick from GET /templates/versions
+     */
+    type: 'string' | 'integer' | 'version';
     default: string | number;
     min?: number;
     max?: number;
@@ -259,6 +262,22 @@ export type TemplateDto = {
      */
     files: Array<TemplateFileDto>;
     config: Array<TemplateConfigFieldDto>;
+};
+
+export type GameVersionDto = {
+    id: string;
+    type: 'release' | 'snapshot';
+};
+
+export type VersionListDto = {
+    /**
+     * The newest release; what "latest" starts
+     */
+    latest: string;
+    /**
+     * Newest first
+     */
+    versions: Array<GameVersionDto>;
 };
 
 export type NodeDto = {
@@ -677,6 +696,21 @@ export type TemplatesListResponses = {
 };
 
 export type TemplatesListResponse = TemplatesListResponses[keyof TemplatesListResponses];
+
+export type TemplatesVersionsData = {
+    body?: never;
+    path?: never;
+    query: {
+        template: string;
+    };
+    url: '/templates/versions';
+};
+
+export type TemplatesVersionsResponses = {
+    200: VersionListDto;
+};
+
+export type TemplatesVersionsResponse = TemplatesVersionsResponses[keyof TemplatesVersionsResponses];
 
 export type NodesListData = {
     body?: never;

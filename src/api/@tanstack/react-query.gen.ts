@@ -3,8 +3,8 @@
 import { type DefaultError, queryOptions, type UseMutationOptions } from '@tanstack/react-query';
 
 import { client } from '../client.gen';
-import { agentsList, authAcceptInvite, authCheckInvite, authLogin, authLogout, authMe, authSetup, authSetupStatus, discordProviders, nodesCreate, nodesList, nodesRemove, type Options, serversCommand, serversCreate, serversGet, serversList, serversMetrics, serversReadFile, serversStart, serversStop, serversUpdateSettings, serversWriteFile, systemHealth, systemMeta, templatesList, usersCreateInvite, usersInvites, usersList, usersRemove, usersRevokeInvite, usersUpdateRole } from '../sdk.gen';
-import type { AgentsListData, AgentsListResponse, AuthAcceptInviteData, AuthAcceptInviteResponse, AuthCheckInviteData, AuthCheckInviteResponse, AuthLoginData, AuthLoginResponse, AuthLogoutData, AuthLogoutResponse, AuthMeData, AuthMeResponse, AuthSetupData, AuthSetupResponse, AuthSetupStatusData, AuthSetupStatusResponse, DiscordProvidersData, DiscordProvidersResponse, NodesCreateData, NodesCreateResponse, NodesListData, NodesListResponse, NodesRemoveData, NodesRemoveResponse, ServersCommandData, ServersCommandResponse, ServersCreateData, ServersCreateResponse, ServersGetData, ServersGetResponse, ServersListData, ServersListResponse, ServersMetricsData, ServersMetricsResponse, ServersReadFileData, ServersReadFileResponse, ServersStartData, ServersStartResponse, ServersStopData, ServersStopResponse, ServersUpdateSettingsData, ServersUpdateSettingsResponse, ServersWriteFileData, ServersWriteFileResponse, SystemHealthData, SystemHealthResponse, SystemMetaData, SystemMetaResponse, TemplatesListData, TemplatesListResponse, UsersCreateInviteData, UsersCreateInviteResponse, UsersInvitesData, UsersInvitesResponse, UsersListData, UsersListResponse, UsersRemoveData, UsersRemoveResponse, UsersRevokeInviteData, UsersRevokeInviteResponse, UsersUpdateRoleData, UsersUpdateRoleResponse } from '../types.gen';
+import { agentsList, authAcceptInvite, authCheckInvite, authLogin, authLogout, authMe, authSetup, authSetupStatus, discordProviders, nodesCreate, nodesList, nodesRemove, type Options, serversCommand, serversCreate, serversGet, serversList, serversMetrics, serversReadFile, serversStart, serversStop, serversUpdateSettings, serversWriteFile, systemHealth, systemMeta, templatesList, templatesVersions, usersCreateInvite, usersInvites, usersList, usersRemove, usersRevokeInvite, usersUpdateRole } from '../sdk.gen';
+import type { AgentsListData, AgentsListResponse, AuthAcceptInviteData, AuthAcceptInviteResponse, AuthCheckInviteData, AuthCheckInviteResponse, AuthLoginData, AuthLoginResponse, AuthLogoutData, AuthLogoutResponse, AuthMeData, AuthMeResponse, AuthSetupData, AuthSetupResponse, AuthSetupStatusData, AuthSetupStatusResponse, DiscordProvidersData, DiscordProvidersResponse, NodesCreateData, NodesCreateResponse, NodesListData, NodesListResponse, NodesRemoveData, NodesRemoveResponse, ServersCommandData, ServersCommandResponse, ServersCreateData, ServersCreateResponse, ServersGetData, ServersGetResponse, ServersListData, ServersListResponse, ServersMetricsData, ServersMetricsResponse, ServersReadFileData, ServersReadFileResponse, ServersStartData, ServersStartResponse, ServersStopData, ServersStopResponse, ServersUpdateSettingsData, ServersUpdateSettingsResponse, ServersWriteFileData, ServersWriteFileResponse, SystemHealthData, SystemHealthResponse, SystemMetaData, SystemMetaResponse, TemplatesListData, TemplatesListResponse, TemplatesVersionsData, TemplatesVersionsResponse, UsersCreateInviteData, UsersCreateInviteResponse, UsersInvitesData, UsersInvitesResponse, UsersListData, UsersListResponse, UsersRemoveData, UsersRemoveResponse, UsersRevokeInviteData, UsersRevokeInviteResponse, UsersUpdateRoleData, UsersUpdateRoleResponse } from '../types.gen';
 
 export type QueryKey<TOptions extends Options> = [
     Pick<TOptions, 'baseUrl' | 'body' | 'headers' | 'path' | 'query'> & {
@@ -443,6 +443,21 @@ export const templatesListOptions = (options?: Options<TemplatesListData>) => qu
         return data;
     },
     queryKey: templatesListQueryKey(options)
+});
+
+export const templatesVersionsQueryKey = (options: Options<TemplatesVersionsData>) => createQueryKey('templatesVersions', options);
+
+export const templatesVersionsOptions = (options: Options<TemplatesVersionsData>) => queryOptions<TemplatesVersionsResponse, DefaultError, TemplatesVersionsResponse, ReturnType<typeof templatesVersionsQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await templatesVersions({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: templatesVersionsQueryKey(options)
 });
 
 export const nodesListQueryKey = (options?: Options<NodesListData>) => createQueryKey('nodesList', options);
