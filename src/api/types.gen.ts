@@ -37,6 +37,79 @@ export type AgentDto = {
     connectedAt: string;
 };
 
+export type ServerDto = {
+    id: string;
+    name: string;
+    nodeId: string;
+    templateId: string;
+    settings: {
+        [key: string]: string | number;
+    };
+    /**
+     * Port players connect to on the node
+     */
+    hostPort: number;
+    status: 'installing' | 'starting' | 'running' | 'stopping' | 'stopped' | 'crashed';
+    statusMessage: string | null;
+    createdAt: string;
+};
+
+export type CreateServerDto = {
+    nodeId: string;
+    name: string;
+    templateId: string;
+    settings?: {
+        [key: string]: string | number;
+    };
+};
+
+export type CommandDto = {
+    command: string;
+};
+
+export type NamedDto = {
+    id: string;
+    name: string;
+};
+
+export type LocalizedTextDto = {
+    en: string;
+    de?: string;
+};
+
+export type VariantDto = {
+    id: string;
+    name: string;
+    description?: LocalizedTextDto;
+};
+
+export type TemplateConfigFieldDto = {
+    key: string;
+    label: LocalizedTextDto;
+    type: 'string' | 'integer';
+    default: string | number;
+    min?: number;
+    max?: number;
+    pattern?: string;
+};
+
+export type TemplateDto = {
+    id: string;
+    game: NamedDto;
+    variant: VariantDto;
+    config: Array<TemplateConfigFieldDto>;
+};
+
+export type NodeDto = {
+    id: string;
+    name: string;
+    lastSeenAt: string | null;
+    /**
+     * Whether the agent is connected right now
+     */
+    online: boolean;
+};
+
 export type SystemHealthData = {
     body?: never;
     path?: never;
@@ -75,3 +148,115 @@ export type AgentsListResponses = {
 };
 
 export type AgentsListResponse = AgentsListResponses[keyof AgentsListResponses];
+
+export type ServersListData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/servers';
+};
+
+export type ServersListResponses = {
+    200: Array<ServerDto>;
+};
+
+export type ServersListResponse = ServersListResponses[keyof ServersListResponses];
+
+export type ServersCreateData = {
+    body: CreateServerDto;
+    path?: never;
+    query?: never;
+    url: '/servers';
+};
+
+export type ServersCreateResponses = {
+    200: ServerDto;
+};
+
+export type ServersCreateResponse = ServersCreateResponses[keyof ServersCreateResponses];
+
+export type ServersGetData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/servers/{id}';
+};
+
+export type ServersGetResponses = {
+    200: ServerDto;
+};
+
+export type ServersGetResponse = ServersGetResponses[keyof ServersGetResponses];
+
+export type ServersStartData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/servers/{id}/start';
+};
+
+export type ServersStartResponses = {
+    200: ServerDto;
+};
+
+export type ServersStartResponse = ServersStartResponses[keyof ServersStartResponses];
+
+export type ServersStopData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/servers/{id}/stop';
+};
+
+export type ServersStopResponses = {
+    200: ServerDto;
+};
+
+export type ServersStopResponse = ServersStopResponses[keyof ServersStopResponses];
+
+export type ServersCommandData = {
+    body: CommandDto;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/servers/{id}/command';
+};
+
+export type ServersCommandResponses = {
+    200: ServerDto;
+};
+
+export type ServersCommandResponse = ServersCommandResponses[keyof ServersCommandResponses];
+
+export type TemplatesListData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/templates';
+};
+
+export type TemplatesListResponses = {
+    200: Array<TemplateDto>;
+};
+
+export type TemplatesListResponse = TemplatesListResponses[keyof TemplatesListResponses];
+
+export type NodesListData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/nodes';
+};
+
+export type NodesListResponses = {
+    200: Array<NodeDto>;
+};
+
+export type NodesListResponse = NodesListResponses[keyof NodesListResponses];

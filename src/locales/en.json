@@ -31,5 +31,43 @@
     "protocol": "Protocol",
     "connectedSince": "Connected since",
     "empty": "No agent connected yet. Register a node with <code>just node-create</code> and start its agent with the token."
+  },
+  "servers": {
+    "title": "Servers",
+    "new": "New server",
+    "empty": "No servers yet. Create one to get started.",
+    "port": "Port {{port}}"
+  },
+  "serverStatus": {
+    "installing": "Installing",
+    "starting": "Starting",
+    "running": "Running",
+    "stopping": "Stopping",
+    "stopped": "Stopped",
+    "crashed": "Crashed"
+  },
+  "create": {
+    "title": "New server",
+    "name": "Name",
+    "node": "Node",
+    "offline": "offline",
+    "game": "Game",
+    "variant": "Variant",
+    "settings": "Settings",
+    "cancel": "Cancel",
+    "submit": "Create server",
+    "failed": "The server could not be created."
+  },
+  "detail": {
+    "back": "All servers",
+    "start": "Start",
+    "stop": "Stop",
+    "cpu": "CPU",
+    "memory": "Memory",
+    "console": "Console",
+    "live": "live",
+    "connecting": "connecting…",
+    "commandPlaceholder": "Type a command, e.g. list",
+    "commandOffline": "Start the server to send commands"
   }
 }

@@ -2,7 +2,7 @@
 
 import type { Client, ClientMeta, Options as Options2, RequestResult, TDataShape } from './client';
 import { client } from './client.gen';
-import type { AgentsListData, AgentsListResponses, SystemHealthData, SystemHealthResponses, SystemMetaData, SystemMetaResponses } from './types.gen';
+import type { AgentsListData, AgentsListResponses, NodesListData, NodesListResponses, ServersCommandData, ServersCommandResponses, ServersCreateData, ServersCreateResponses, ServersGetData, ServersGetResponses, ServersListData, ServersListResponses, ServersStartData, ServersStartResponses, ServersStopData, ServersStopResponses, SystemHealthData, SystemHealthResponses, SystemMetaData, SystemMetaResponses, TemplatesListData, TemplatesListResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean, TResponse = unknown> = Options2<TData, ThrowOnError, TResponse> & {
     /**
@@ -23,3 +23,33 @@ export const systemHealth = <ThrowOnError extends boolean = false>(options?: Opt
 export const systemMeta = <ThrowOnError extends boolean = false>(options?: Options<SystemMetaData, ThrowOnError>): RequestResult<SystemMetaResponses, unknown, ThrowOnError> => (options?.client ?? client).get<SystemMetaResponses, unknown, ThrowOnError>({ url: '/meta', ...options });
 
 export const agentsList = <ThrowOnError extends boolean = false>(options?: Options<AgentsListData, ThrowOnError>): RequestResult<AgentsListResponses, unknown, ThrowOnError> => (options?.client ?? client).get<AgentsListResponses, unknown, ThrowOnError>({ url: '/agents', ...options });
+
+export const serversList = <ThrowOnError extends boolean = false>(options?: Options<ServersListData, ThrowOnError>): RequestResult<ServersListResponses, unknown, ThrowOnError> => (options?.client ?? client).get<ServersListResponses, unknown, ThrowOnError>({ url: '/servers', ...options });
+
+export const serversCreate = <ThrowOnError extends boolean = false>(options: Options<ServersCreateData, ThrowOnError>): RequestResult<ServersCreateResponses, unknown, ThrowOnError> => (options.client ?? client).post<ServersCreateResponses, unknown, ThrowOnError>({
+    url: '/servers',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+export const serversGet = <ThrowOnError extends boolean = false>(options: Options<ServersGetData, ThrowOnError>): RequestResult<ServersGetResponses, unknown, ThrowOnError> => (options.client ?? client).get<ServersGetResponses, unknown, ThrowOnError>({ url: '/servers/{id}', ...options });
+
+export const serversStart = <ThrowOnError extends boolean = false>(options: Options<ServersStartData, ThrowOnError>): RequestResult<ServersStartResponses, unknown, ThrowOnError> => (options.client ?? client).post<ServersStartResponses, unknown, ThrowOnError>({ url: '/servers/{id}/start', ...options });
+
+export const serversStop = <ThrowOnError extends boolean = false>(options: Options<ServersStopData, ThrowOnError>): RequestResult<ServersStopResponses, unknown, ThrowOnError> => (options.client ?? client).post<ServersStopResponses, unknown, ThrowOnError>({ url: '/servers/{id}/stop', ...options });
+
+export const serversCommand = <ThrowOnError extends boolean = false>(options: Options<ServersCommandData, ThrowOnError>): RequestResult<ServersCommandResponses, unknown, ThrowOnError> => (options.client ?? client).post<ServersCommandResponses, unknown, ThrowOnError>({
+    url: '/servers/{id}/command',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+export const templatesList = <ThrowOnError extends boolean = false>(options?: Options<TemplatesListData, ThrowOnError>): RequestResult<TemplatesListResponses, unknown, ThrowOnError> => (options?.client ?? client).get<TemplatesListResponses, unknown, ThrowOnError>({ url: '/templates', ...options });
+
+export const nodesList = <ThrowOnError extends boolean = false>(options?: Options<NodesListData, ThrowOnError>): RequestResult<NodesListResponses, unknown, ThrowOnError> => (options?.client ?? client).get<NodesListResponses, unknown, ThrowOnError>({ url: '/nodes', ...options });
