@@ -2,7 +2,7 @@
 
 import type { Client, ClientMeta, Options as Options2, RequestResult, TDataShape } from './client';
 import { client } from './client.gen';
-import type { AgentsListData, AgentsListResponses, AuthAcceptInviteData, AuthAcceptInviteResponses, AuthCheckInviteData, AuthCheckInviteResponses, AuthLoginData, AuthLoginResponses, AuthLogoutData, AuthLogoutResponses, AuthMeData, AuthMeResponses, AuthSetupData, AuthSetupResponses, AuthSetupStatusData, AuthSetupStatusResponses, DiscordProvidersData, DiscordProvidersResponses, NodesCreateData, NodesCreateResponses, NodesListData, NodesListResponses, NodesRemoveData, NodesRemoveResponses, ServersCommandData, ServersCommandResponses, ServersCreateData, ServersCreateResponses, ServersGetData, ServersGetResponses, ServersListData, ServersListResponses, ServersMetricsData, ServersMetricsResponses, ServersReadFileData, ServersReadFileResponses, ServersStartData, ServersStartResponses, ServersStopData, ServersStopResponses, ServersUpdateSettingsData, ServersUpdateSettingsResponses, ServersWriteFileData, ServersWriteFileResponses, SystemHealthData, SystemHealthResponses, SystemMetaData, SystemMetaResponses, TemplatesListData, TemplatesListResponses, TemplatesVersionsData, TemplatesVersionsResponses, UsersCreateInviteData, UsersCreateInviteResponses, UsersInvitesData, UsersInvitesResponses, UsersListData, UsersListResponses, UsersRemoveData, UsersRemoveResponses, UsersRevokeInviteData, UsersRevokeInviteResponses, UsersUpdateRoleData, UsersUpdateRoleResponses } from './types.gen';
+import type { AgentsListData, AgentsListResponses, AuthAcceptInviteData, AuthAcceptInviteResponses, AuthCheckInviteData, AuthCheckInviteResponses, AuthLoginData, AuthLoginResponses, AuthLogoutData, AuthLogoutResponses, AuthMeData, AuthMeResponses, AuthSetupData, AuthSetupResponses, AuthSetupStatusData, AuthSetupStatusResponses, DiscordProvidersData, DiscordProvidersResponses, FilesDownloadData, FilesDownloadResponses, FilesListData, FilesListResponses, FilesMkdirData, FilesMkdirResponses, FilesMoveData, FilesMoveResponses, FilesRemoveData, FilesRemoveResponses, FilesUploadData, FilesUploadResponses, NodesCreateData, NodesCreateResponses, NodesListData, NodesListResponses, NodesRemoveData, NodesRemoveResponses, ServersCommandData, ServersCommandResponses, ServersCreateData, ServersCreateResponses, ServersGetData, ServersGetResponses, ServersListData, ServersListResponses, ServersMetricsData, ServersMetricsResponses, ServersReadFileData, ServersReadFileResponses, ServersStartData, ServersStartResponses, ServersStopData, ServersStopResponses, ServersUpdateSettingsData, ServersUpdateSettingsResponses, ServersWriteFileData, ServersWriteFileResponses, SystemHealthData, SystemHealthResponses, SystemMetaData, SystemMetaResponses, TemplatesListData, TemplatesListResponses, TemplatesVersionsData, TemplatesVersionsResponses, UsersCreateInviteData, UsersCreateInviteResponses, UsersInvitesData, UsersInvitesResponses, UsersListData, UsersListResponses, UsersRemoveData, UsersRemoveResponses, UsersRevokeInviteData, UsersRevokeInviteResponses, UsersUpdateRoleData, UsersUpdateRoleResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean, TResponse = unknown> = Options2<TData, ThrowOnError, TResponse> & {
     /**
@@ -115,6 +115,8 @@ export const serversUpdateSettings = <ThrowOnError extends boolean = false>(opti
     }
 });
 
+export const filesRemove = <ThrowOnError extends boolean = false>(options: Options<FilesRemoveData, ThrowOnError>): RequestResult<FilesRemoveResponses, unknown, ThrowOnError> => (options.client ?? client).delete<FilesRemoveResponses, unknown, ThrowOnError>({ url: '/servers/{id}/files', ...options });
+
 export const serversReadFile = <ThrowOnError extends boolean = false>(options: Options<ServersReadFileData, ThrowOnError>): RequestResult<ServersReadFileResponses, unknown, ThrowOnError> => (options.client ?? client).get<ServersReadFileResponses, unknown, ThrowOnError>({ url: '/servers/{id}/files', ...options });
 
 export const serversWriteFile = <ThrowOnError extends boolean = false>(options: Options<ServersWriteFileData, ThrowOnError>): RequestResult<ServersWriteFileResponses, unknown, ThrowOnError> => (options.client ?? client).put<ServersWriteFileResponses, unknown, ThrowOnError>({
@@ -151,3 +153,35 @@ export const nodesCreate = <ThrowOnError extends boolean = false>(options: Optio
 });
 
 export const nodesRemove = <ThrowOnError extends boolean = false>(options: Options<NodesRemoveData, ThrowOnError>): RequestResult<NodesRemoveResponses, unknown, ThrowOnError> => (options.client ?? client).delete<NodesRemoveResponses, unknown, ThrowOnError>({ url: '/nodes/{id}', ...options });
+
+export const filesList = <ThrowOnError extends boolean = false>(options: Options<FilesListData, ThrowOnError>): RequestResult<FilesListResponses, unknown, ThrowOnError> => (options.client ?? client).get<FilesListResponses, unknown, ThrowOnError>({ url: '/servers/{id}/files/list', ...options });
+
+export const filesMkdir = <ThrowOnError extends boolean = false>(options: Options<FilesMkdirData, ThrowOnError>): RequestResult<FilesMkdirResponses, unknown, ThrowOnError> => (options.client ?? client).post<FilesMkdirResponses, unknown, ThrowOnError>({
+    url: '/servers/{id}/files/mkdir',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+export const filesMove = <ThrowOnError extends boolean = false>(options: Options<FilesMoveData, ThrowOnError>): RequestResult<FilesMoveResponses, unknown, ThrowOnError> => (options.client ?? client).post<FilesMoveResponses, unknown, ThrowOnError>({
+    url: '/servers/{id}/files/move',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+export const filesDownload = <ThrowOnError extends boolean = false>(options: Options<FilesDownloadData, ThrowOnError>): RequestResult<FilesDownloadResponses, unknown, ThrowOnError> => (options.client ?? client).get<FilesDownloadResponses, unknown, ThrowOnError>({ url: '/servers/{id}/files/download', ...options });
+
+export const filesUpload = <ThrowOnError extends boolean = false>(options: Options<FilesUploadData, ThrowOnError>): RequestResult<FilesUploadResponses, unknown, ThrowOnError> => (options.client ?? client).put<FilesUploadResponses, unknown, ThrowOnError>({
+    bodySerializer: null,
+    url: '/servers/{id}/files/upload',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});

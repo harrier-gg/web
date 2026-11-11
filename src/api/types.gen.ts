@@ -305,6 +305,31 @@ export type NodeCreatedDto = {
     token: string;
 };
 
+export type FileEntryDto = {
+    name: string;
+    /**
+     * other: symlinks and special files
+     */
+    kind: 'file' | 'dir' | 'other';
+    /**
+     * Bytes; 0 for directories
+     */
+    size: number;
+    /**
+     * Last change, seconds since 1970
+     */
+    modified: number | null;
+};
+
+export type PathDto = {
+    path: string;
+};
+
+export type MoveDto = {
+    from: string;
+    to: string;
+};
+
 export type AuthSetupStatusData = {
     body?: never;
     path?: never;
@@ -637,6 +662,23 @@ export type ServersUpdateSettingsResponses = {
 
 export type ServersUpdateSettingsResponse = ServersUpdateSettingsResponses[keyof ServersUpdateSettingsResponses];
 
+export type FilesRemoveData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query: {
+        path: string;
+    };
+    url: '/servers/{id}/files';
+};
+
+export type FilesRemoveResponses = {
+    204: void;
+};
+
+export type FilesRemoveResponse = FilesRemoveResponses[keyof FilesRemoveResponses];
+
 export type ServersReadFileData = {
     body?: never;
     path: {
@@ -752,3 +794,93 @@ export type NodesRemoveResponses = {
 };
 
 export type NodesRemoveResponse = NodesRemoveResponses[keyof NodesRemoveResponses];
+
+export type FilesListData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: {
+        path?: unknown;
+    };
+    url: '/servers/{id}/files/list';
+};
+
+export type FilesListResponses = {
+    200: Array<FileEntryDto>;
+};
+
+export type FilesListResponse = FilesListResponses[keyof FilesListResponses];
+
+export type FilesMkdirData = {
+    body: PathDto;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/servers/{id}/files/mkdir';
+};
+
+export type FilesMkdirResponses = {
+    204: void;
+};
+
+export type FilesMkdirResponse = FilesMkdirResponses[keyof FilesMkdirResponses];
+
+export type FilesMoveData = {
+    body: MoveDto;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/servers/{id}/files/move';
+};
+
+export type FilesMoveResponses = {
+    204: void;
+};
+
+export type FilesMoveResponse = FilesMoveResponses[keyof FilesMoveResponses];
+
+export type FilesDownloadData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query: {
+        path: string;
+    };
+    url: '/servers/{id}/files/download';
+};
+
+export type FilesDownloadResponses = {
+    /**
+     * The file
+     */
+    200: Blob | File;
+};
+
+export type FilesDownloadResponse = FilesDownloadResponses[keyof FilesDownloadResponses];
+
+export type FilesUploadData = {
+    /**
+     * The file
+     */
+    body: Blob | File;
+    path: {
+        id: string;
+    };
+    query: {
+        /**
+         * Where to put the file, e.g. plugins/x.jar
+         */
+        path: string;
+    };
+    url: '/servers/{id}/files/upload';
+};
+
+export type FilesUploadResponses = {
+    204: void;
+};
+
+export type FilesUploadResponse = FilesUploadResponses[keyof FilesUploadResponses];

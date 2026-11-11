@@ -14,6 +14,7 @@ import {
 import type { MeDto } from '../../api/types.gen';
 import { History } from './History';
 import { ConfigFiles } from './ConfigFiles';
+import { FileManager } from './FileManager';
 import { ServerSettings } from './SettingsFields';
 import { StatusBadge } from './StatusBadge';
 import { useServerConsole } from './useServerConsole';
@@ -169,6 +170,7 @@ export function ServerDetail({ id, me, onBack }: { id: string; me: MeDto; onBack
         <>
           <ServerSettings key={server.data.id} server={server.data} fields={tpl.config} running={running} />
           <ConfigFiles key={`files-${server.data.id}`} serverId={server.data.id} files={tpl.files} running={running} />
+          <FileManager key={`manager-${server.data.id}`} serverId={server.data.id} running={running} />
         </>
       )}
     </section>
