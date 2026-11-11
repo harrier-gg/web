@@ -157,5 +157,21 @@
     "serverAction": "Create server",
     "friends": "Invite your friends",
     "friendsAction": "Invite"
+  },
+  "discord": {
+    "login": "Log in with Discord",
+    "join": "Join with Discord",
+    "link": "Link Discord",
+    "linked": "Your Discord account is now linked. Next time you can log in with Discord.",
+    "linkedAs": "Linked with Discord as {{name}}",
+    "dismiss": "Dismiss",
+    "errors": {
+      "state": "The Discord login expired or was not started here. Please try again.",
+      "not_linked": "This Discord account is not linked to a Harrier account. Log in with your password and link Discord first, or ask for an invitation.",
+      "taken": "This Discord account is already linked to another Harrier account.",
+      "invite": "This invitation is invalid, expired or was already used.",
+      "email": "Your Discord account needs a verified e-mail address to join.",
+      "failed": "The Discord login did not work. Please try again."
+    }
   }
 }

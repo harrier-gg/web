@@ -26,6 +26,10 @@ export type UserDto = {
     email: string;
     name: string;
     role: 'owner' | 'admin' | 'member';
+    /**
+     * Display name of the linked Discord account
+     */
+    discord: string | null;
 };
 
 export type LoginDto = {
@@ -38,6 +42,10 @@ export type MeDto = {
     email: string;
     name: string;
     role: 'owner' | 'admin' | 'member';
+    /**
+     * Display name of the linked Discord account
+     */
+    discord: string | null;
     /**
      * What this user may do (ADR 0007); the web hides the rest
      */
@@ -58,12 +66,23 @@ export type AcceptInviteDto = {
     password: string;
 };
 
+export type ProvidersDto = {
+    /**
+     * Whether "Log in with Discord" is configured (ADR 0008)
+     */
+    discord: boolean;
+};
+
 export type UserEntryDto = {
     id: string;
     email: string;
     name: string;
     role: 'owner' | 'admin' | 'member';
     createdAt: string;
+    /**
+     * Display name of the linked Discord account
+     */
+    discord: string | null;
 };
 
 export type UpdateRoleDto = {
@@ -306,6 +325,19 @@ export type AuthAcceptInviteResponses = {
 };
 
 export type AuthAcceptInviteResponse = AuthAcceptInviteResponses[keyof AuthAcceptInviteResponses];
+
+export type DiscordProvidersData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/auth/providers';
+};
+
+export type DiscordProvidersResponses = {
+    200: ProvidersDto;
+};
+
+export type DiscordProvidersResponse = DiscordProvidersResponses[keyof DiscordProvidersResponses];
 
 export type UsersListData = {
     body?: never;

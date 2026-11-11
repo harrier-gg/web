@@ -2,7 +2,7 @@
 
 import type { Client, ClientMeta, Options as Options2, RequestResult, TDataShape } from './client';
 import { client } from './client.gen';
-import type { AgentsListData, AgentsListResponses, AuthAcceptInviteData, AuthAcceptInviteResponses, AuthCheckInviteData, AuthCheckInviteResponses, AuthLoginData, AuthLoginResponses, AuthLogoutData, AuthLogoutResponses, AuthMeData, AuthMeResponses, AuthSetupData, AuthSetupResponses, AuthSetupStatusData, AuthSetupStatusResponses, NodesCreateData, NodesCreateResponses, NodesListData, NodesListResponses, NodesRemoveData, NodesRemoveResponses, ServersCommandData, ServersCommandResponses, ServersCreateData, ServersCreateResponses, ServersGetData, ServersGetResponses, ServersListData, ServersListResponses, ServersStartData, ServersStartResponses, ServersStopData, ServersStopResponses, SystemHealthData, SystemHealthResponses, SystemMetaData, SystemMetaResponses, TemplatesListData, TemplatesListResponses, UsersCreateInviteData, UsersCreateInviteResponses, UsersInvitesData, UsersInvitesResponses, UsersListData, UsersListResponses, UsersRemoveData, UsersRemoveResponses, UsersRevokeInviteData, UsersRevokeInviteResponses, UsersUpdateRoleData, UsersUpdateRoleResponses } from './types.gen';
+import type { AgentsListData, AgentsListResponses, AuthAcceptInviteData, AuthAcceptInviteResponses, AuthCheckInviteData, AuthCheckInviteResponses, AuthLoginData, AuthLoginResponses, AuthLogoutData, AuthLogoutResponses, AuthMeData, AuthMeResponses, AuthSetupData, AuthSetupResponses, AuthSetupStatusData, AuthSetupStatusResponses, DiscordProvidersData, DiscordProvidersResponses, NodesCreateData, NodesCreateResponses, NodesListData, NodesListResponses, NodesRemoveData, NodesRemoveResponses, ServersCommandData, ServersCommandResponses, ServersCreateData, ServersCreateResponses, ServersGetData, ServersGetResponses, ServersListData, ServersListResponses, ServersStartData, ServersStartResponses, ServersStopData, ServersStopResponses, SystemHealthData, SystemHealthResponses, SystemMetaData, SystemMetaResponses, TemplatesListData, TemplatesListResponses, UsersCreateInviteData, UsersCreateInviteResponses, UsersInvitesData, UsersInvitesResponses, UsersListData, UsersListResponses, UsersRemoveData, UsersRemoveResponses, UsersRevokeInviteData, UsersRevokeInviteResponses, UsersUpdateRoleData, UsersUpdateRoleResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean, TResponse = unknown> = Options2<TData, ThrowOnError, TResponse> & {
     /**
@@ -52,6 +52,8 @@ export const authAcceptInvite = <ThrowOnError extends boolean = false>(options: 
         ...options.headers
     }
 });
+
+export const discordProviders = <ThrowOnError extends boolean = false>(options?: Options<DiscordProvidersData, ThrowOnError>): RequestResult<DiscordProvidersResponses, unknown, ThrowOnError> => (options?.client ?? client).get<DiscordProvidersResponses, unknown, ThrowOnError>({ url: '/auth/providers', ...options });
 
 export const usersList = <ThrowOnError extends boolean = false>(options?: Options<UsersListData, ThrowOnError>): RequestResult<UsersListResponses, unknown, ThrowOnError> => (options?.client ?? client).get<UsersListResponses, unknown, ThrowOnError>({ url: '/users', ...options });
 

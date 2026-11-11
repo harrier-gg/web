@@ -157,5 +157,21 @@
     "serverAction": "Server anlegen",
     "friends": "Freunde einladen",
     "friendsAction": "Einladen"
+  },
+  "discord": {
+    "login": "Mit Discord anmelden",
+    "join": "Mit Discord beitreten",
+    "link": "Discord verknüpfen",
+    "linked": "Dein Discord-Konto ist jetzt verknüpft. Beim nächsten Mal kannst du dich mit Discord anmelden.",
+    "linkedAs": "Mit Discord verknüpft als {{name}}",
+    "dismiss": "Schließen",
+    "errors": {
+      "state": "Die Discord-Anmeldung ist abgelaufen oder wurde nicht hier gestartet. Bitte nochmal versuchen.",
+      "not_linked": "Dieses Discord-Konto ist mit keinem Harrier-Konto verknüpft. Melde dich mit Passwort an und verknüpfe Discord, oder bitte um eine Einladung.",
+      "taken": "Dieses Discord-Konto ist schon mit einem anderen Harrier-Konto verknüpft.",
+      "invite": "Diese Einladung ist ungültig, abgelaufen oder wurde schon benutzt.",
+      "email": "Dein Discord-Konto braucht eine bestätigte E-Mail-Adresse, um beizutreten.",
+      "failed": "Die Anmeldung mit Discord hat nicht geklappt. Bitte nochmal versuchen."
+    }
   }
 }

@@ -8,7 +8,9 @@ import {
   authMeOptions,
   authSetupMutation,
   authSetupStatusOptions,
+  discordProvidersOptions,
 } from '../../api/@tanstack/react-query.gen';
+import { authNotice, discordErrorKey, discordUrl } from './discord';
 import type { MeDto } from '../../api/types.gen';
 
 /** The API answers in English (ADR 0003); auth errors are translated by their HTTP status. */
@@ -63,6 +65,24 @@ function Field({ label, ...props }: { label: string } & React.InputHTMLAttribute
   );
 }
 
+/** "Log in with Discord" when the panel has it configured (ADR 0008). */
+function DiscordButton({ href, label }: { href: string; label: string }) {
+  const providers = useQuery({ ...discordProvidersOptions(), refetchOnWindowFocus: false });
+  if (!providers.data?.discord) return null;
+  return (
+    <>
+      <div className="flex items-center gap-3 text-xs text-zinc-500">
+        <span className="h-px flex-1 bg-white/10" />
+        <span>/</span>
+        <span className="h-px flex-1 bg-white/10" />
+      </div>
+      <a href={href} className="block w-full rounded-lg bg-[#5865F2] py-2 text-center font-medium text-white hover:bg-[#4752c4]">
+        {label}
+      </a>
+    </>
+  );
+}
+
 function useSignedIn() {
   const queryClient = useQueryClient();
   return () => {
@@ -85,8 +105,11 @@ function LoginForm() {
     login.mutate({ body: { email, password } });
   };
 
+  const notice = authNotice?.kind === 'error' ? t(discordErrorKey(authNotice.code)) : null;
+
   return (
     <Card title={t('auth.login')}>
+      {notice && !login.error && <p role="alert" className="rounded-md bg-red-500/10 p-2 text-sm text-red-200">{notice}</p>}
       <form onSubmit={submit} className="space-y-4">
         <Field label={t('auth.email')} type="email" autoComplete="username" required value={email} onChange={(e) => setEmail(e.target.value)} />
         <Field label={t('auth.password')} type="password" autoComplete="current-password" required value={password} onChange={(e) => setPassword(e.target.value)} />
@@ -95,6 +118,7 @@ function LoginForm() {
           {t('auth.loginButton')}
         </button>
       </form>
+      <DiscordButton href={discordUrl('login')} label={t('discord.login')} />
     </Card>
   );
 }
@@ -171,6 +195,7 @@ function InviteForm() {
           {t('invite.join')}
         </button>
       </form>
+      <DiscordButton href={discordUrl('invite', token)} label={t('discord.join')} />
     </Card>
   );
 }
