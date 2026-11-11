@@ -151,7 +151,7 @@ export type ServerDto = {
     nodeId: string;
     templateId: string;
     settings: {
-        [key: string]: string | number;
+        [key: string]: string | number | boolean;
     };
     /**
      * Port players connect to on the node
@@ -167,7 +167,7 @@ export type CreateServerDto = {
     name: string;
     templateId: string;
     settings?: {
-        [key: string]: string | number;
+        [key: string]: string | number | boolean;
     };
 };
 
@@ -190,6 +190,15 @@ export type MetricPointDto = {
     players: number | null;
 };
 
+export type SettingsDto = {
+    /**
+     * Changed settings; keys left out keep their value
+     */
+    settings: {
+        [key: string]: string | number | boolean;
+    };
+};
+
 export type CommandDto = {
     command: string;
 };
@@ -210,14 +219,23 @@ export type VariantDto = {
     description?: LocalizedTextDto;
 };
 
+export type SelectOptionDto = {
+    value: string;
+    label: LocalizedTextDto;
+};
+
 export type TemplateConfigFieldDto = {
     key: string;
     label: LocalizedTextDto;
-    type: 'string' | 'integer';
-    default: string | number;
+    type: 'string' | 'integer' | 'boolean' | 'select';
+    default: string | number | boolean;
     min?: number;
     max?: number;
     pattern?: string;
+    /**
+     * Choices of a select field
+     */
+    options?: Array<SelectOptionDto>;
 };
 
 export type TemplateDto = {
@@ -568,6 +586,21 @@ export type ServersStopResponses = {
 };
 
 export type ServersStopResponse = ServersStopResponses[keyof ServersStopResponses];
+
+export type ServersUpdateSettingsData = {
+    body: SettingsDto;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/servers/{id}/settings';
+};
+
+export type ServersUpdateSettingsResponses = {
+    200: ServerDto;
+};
+
+export type ServersUpdateSettingsResponse = ServersUpdateSettingsResponses[keyof ServersUpdateSettingsResponses];
 
 export type ServersCommandData = {
     body: CommandDto;

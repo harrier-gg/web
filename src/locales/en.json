@@ -81,7 +81,12 @@
       "24h": "24 h",
       "7d": "7 days"
     },
-    "time": "Time"
+    "time": "Time",
+    "settings": "Settings",
+    "save": "Save",
+    "settingsSaved": "Saved.",
+    "settingsSavedRestart": "Saved. Stop and start the server to apply the changes.",
+    "settingsFailed": "The settings could not be saved."
   },
   "auth": {
     "login": "Log in",

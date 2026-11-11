@@ -13,6 +13,7 @@ import {
 } from '../../api/@tanstack/react-query.gen';
 import type { MeDto } from '../../api/types.gen';
 import { History } from './History';
+import { ServerSettings } from './SettingsFields';
 import { StatusBadge } from './StatusBadge';
 import { useServerConsole } from './useServerConsole';
 
@@ -160,6 +161,10 @@ export function ServerDetail({ id, me, onBack }: { id: string; me: MeDto; onBack
         </form>
         )}
       </div>
+
+      {server.data && tpl && me.permissions.includes('manageServers') && (
+        <ServerSettings key={server.data.id} server={server.data} fields={tpl.config} running={status !== 'stopped' && (status !== 'crashed' || !!restart)} />
+      )}
     </section>
   );
 }
