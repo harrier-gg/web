@@ -30,7 +30,7 @@
     "agent": "Agent",
     "protocol": "Protocol",
     "connectedSince": "Connected since",
-    "empty": "No agent connected yet. Register a node with <code>just node-create</code> and start its agent with the token."
+    "empty": "No agent connected yet. Add a node on the <code>Nodes</code> page and start its agent with the command shown there."
   },
   "servers": {
     "title": "Servers",
@@ -94,7 +94,8 @@
   },
   "nav": {
     "servers": "Servers",
-    "users": "Users"
+    "users": "Users",
+    "nodes": "Nodes"
   },
   "roles": {
     "owner": "Owner",
@@ -125,5 +126,36 @@
     "toLogin": "Go to login",
     "emailTaken": "An account with this e-mail address already exists. Log in instead.",
     "join": "Join Harrier"
+  },
+  "nodes": {
+    "title": "Nodes ({{count}})",
+    "addTitle": "Add a node",
+    "addHint": "A node is a machine that runs game servers. The Harrier agent on it connects to this panel on its own; no port forwarding needed.",
+    "name": "Node name",
+    "add": "Add node",
+    "runCommand": "Run this on \"{{name}}\" (where the Harrier agent is installed):",
+    "command": "Agent command",
+    "tokenOnce": "The command contains the node's token and is shown only once.",
+    "waiting": "Waiting for the agent to connect…",
+    "connected": "✓ Connected",
+    "online": "online",
+    "lastSeen": "last seen {{date}}",
+    "neverConnected": "never connected",
+    "empty": "No nodes yet.",
+    "removeConfirm": "Remove node \"{{name}}\"? Its agent is disconnected and its token stops working.",
+    "conflict": "A node with this name exists, or the node still has servers.",
+    "invalid": "Node names have 1–64 characters: letters, digits, \".\", \"_\", \"-\"."
+  },
+  "start": {
+    "title": "Getting started ({{done}}/{{total}})",
+    "hide": "Hide",
+    "node": "Add a node – the machine your game servers run on",
+    "nodeAction": "Add node",
+    "agent": "Start the agent on it",
+    "agentAction": "Show command",
+    "server": "Create your first server",
+    "serverAction": "Create server",
+    "friends": "Invite your friends",
+    "friendsAction": "Invite"
   }
 }
