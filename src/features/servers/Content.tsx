@@ -1,7 +1,16 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState, type FormEvent } from 'react';
 import { useTranslation } from 'react-i18next';
-import { contentInstallMutation, contentListOptions, contentListQueryKey, contentRemoveMutation, contentSearchOptions } from '../../api/@tanstack/react-query.gen';
+import {
+  contentInstallMutation,
+  contentListOptions,
+  contentListQueryKey,
+  contentRemoveMutation,
+  contentSearchOptions,
+  contentUpdateMutation,
+  contentUpdatesOptions,
+  contentUpdatesQueryKey,
+} from '../../api/@tanstack/react-query.gen';
 import type { ContentKindDto, ContentProjectDto, InstalledContentDto } from '../../api/types.gen';
 import { localize } from '../../lib/localize';
 import { input } from './SettingsFields';
@@ -45,7 +54,13 @@ function Body({ serverId, kind, running }: { serverId: string; kind: ContentKind
   const installed = useQuery(contentListOptions(listOptions));
   const mine = installed.data?.filter((c) => c.kind === kind.kind) ?? [];
   const search = useQuery({ ...contentSearchOptions({ path: { id: serverId }, query: { kind: kind.kind, source, query } }), staleTime: 60_000 });
-  const refresh = () => void queryClient.invalidateQueries({ queryKey: contentListQueryKey(listOptions) });
+  // Checked when the block opens: one request per source for all installed files.
+  const updates = useQuery({ ...contentUpdatesOptions(listOptions), staleTime: 5 * 60_000 });
+  const updateOf = (id: string) => updates.data?.find((u) => u.contentId === id);
+  const refresh = () => {
+    void queryClient.invalidateQueries({ queryKey: contentListQueryKey(listOptions) });
+    void queryClient.invalidateQueries({ queryKey: contentUpdatesQueryKey(listOptions) });
+  };
   const failed = (e: unknown) => setError((e as { detail?: string }).detail ?? t('content.failed'));
   const install = useMutation({
     ...contentInstallMutation(),
@@ -56,7 +71,34 @@ function Body({ serverId, kind, running }: { serverId: string; kind: ContentKind
     onError: failed,
     onSettled: refresh,
   });
-  const remove = useMutation({ ...contentRemoveMutation(), onSuccess: refresh, onError: failed });
+  const remove = useMutation({
+    ...contentRemoveMutation(),
+    onSuccess: (removed: InstalledContentDto[]) => {
+      setDone(t('content.removed', { names: removed.map((r) => r.name).join(', ') }));
+      refresh();
+    },
+    onError: failed,
+  });
+  const update = useMutation({
+    ...contentUpdateMutation(),
+    onSuccess: (changed: InstalledContentDto[]) => {
+      setDone(t('content.updated', { names: changed.map((c) => `${c.name} ${c.version}`).join(', ') }));
+      refresh();
+    },
+    onError: failed,
+  });
+  const updatable = mine.filter((c) => updateOf(c.id)?.version);
+  const updateAll = async () => {
+    setError(null);
+    setDone(null);
+    for (const c of updatable) {
+      try {
+        await update.mutateAsync({ path: { id: serverId, contentId: c.id } });
+      } catch {
+        return; // the error is shown; stop instead of trying the rest blindly
+      }
+    }
+  };
 
   const submit = (e: FormEvent) => {
     e.preventDefault();
@@ -80,6 +122,29 @@ function Body({ serverId, kind, running }: { serverId: string; kind: ContentKind
       )}
 
       {mine.length > 0 && (
+        <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-zinc-400">
+          <span>
+            {updates.isFetching
+              ? t('content.checking')
+              : updates.isError
+                ? t('content.checkFailed')
+                : updatable.length
+                  ? t('content.updatesAvailable', { count: updatable.length })
+                  : t('content.upToDate')}
+          </span>
+          <span className="flex gap-2">
+            <button type="button" onClick={() => void updates.refetch()} disabled={updates.isFetching} className="rounded-md px-2 py-1 hover:bg-white/10 disabled:opacity-50">
+              {t('content.check')}
+            </button>
+            {updatable.length > 1 && (
+              <button type="button" onClick={() => void updateAll()} disabled={update.isPending} className="rounded-md bg-accent px-2 py-1 font-medium text-zinc-900 disabled:opacity-50">
+                {t('content.updateAll')}
+              </button>
+            )}
+          </span>
+        </div>
+      )}
+      {mine.length > 0 && (
         <ul className="divide-y divide-white/5">
           {mine.map((c) => (
             <li key={c.id} className="flex items-center gap-3 py-1.5">
@@ -88,6 +153,21 @@ function Body({ serverId, kind, running }: { serverId: string; kind: ContentKind
               </span>
               {c.dependency && <span className="rounded bg-white/5 px-1.5 py-0.5 text-xs text-zinc-400">{t('content.dependency')}</span>}
               <Side side={c.side} />
+              {updateOf(c.id)?.incompatible && <span className="rounded bg-red-400/15 px-1.5 py-0.5 text-xs text-red-200">{t('content.incompatible')}</span>}
+              {updateOf(c.id)?.version && (
+                <button
+                  type="button"
+                  disabled={update.isPending}
+                  onClick={() => {
+                    setError(null);
+                    setDone(null);
+                    update.mutate({ path: { id: serverId, contentId: c.id } });
+                  }}
+                  className="rounded-md bg-accent px-2 py-0.5 text-xs font-medium whitespace-nowrap text-zinc-900 disabled:opacity-50"
+                >
+                  {update.isPending && update.variables?.path.contentId === c.id ? t('content.installing') : `↑ ${updateOf(c.id)!.version}`}
+                </button>
+              )}
               <button
                 type="button"
                 title={t('files.delete')}
@@ -96,6 +176,7 @@ function Body({ serverId, kind, running }: { serverId: string; kind: ContentKind
                 onClick={() => {
                   if (!window.confirm(t('content.removeConfirm', { name: c.name }))) return;
                   setError(null);
+                  setDone(null);
                   remove.mutate({ path: { id: serverId, contentId: c.id } });
                 }}
               >

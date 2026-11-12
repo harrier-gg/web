@@ -407,6 +407,18 @@ export type InstallDto = {
     projectId: string;
 };
 
+export type ContentUpdateDto = {
+    contentId: string;
+    /**
+     * The newer version; null if nothing fits the server any more
+     */
+    version: string | null;
+    /**
+     * No version fits the server's game version
+     */
+    incompatible: boolean;
+};
+
 export type AuthSetupStatusData = {
     body?: never;
     path?: never;
@@ -1104,6 +1116,37 @@ export type ContentSearchResponses = {
 
 export type ContentSearchResponse = ContentSearchResponses[keyof ContentSearchResponses];
 
+export type ContentUpdatesData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/servers/{id}/content/updates';
+};
+
+export type ContentUpdatesResponses = {
+    200: Array<ContentUpdateDto>;
+};
+
+export type ContentUpdatesResponse = ContentUpdatesResponses[keyof ContentUpdatesResponses];
+
+export type ContentUpdateData = {
+    body?: never;
+    path: {
+        id: string;
+        contentId: string;
+    };
+    query?: never;
+    url: '/servers/{id}/content/{contentId}/update';
+};
+
+export type ContentUpdateResponses = {
+    200: Array<InstalledContentDto>;
+};
+
+export type ContentUpdateResponse = ContentUpdateResponses[keyof ContentUpdateResponses];
+
 export type ContentRemoveData = {
     body?: never;
     path: {
@@ -1115,7 +1158,7 @@ export type ContentRemoveData = {
 };
 
 export type ContentRemoveResponses = {
-    204: void;
+    200: Array<InstalledContentDto>;
 };
 
 export type ContentRemoveResponse = ContentRemoveResponses[keyof ContentRemoveResponses];
