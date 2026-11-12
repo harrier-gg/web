@@ -246,7 +246,7 @@
   "content": {
     "clientOnly": "nur für Spieler",
     "dependency": "von anderem benötigt",
-    "removeConfirm": "{{name}} entfernen? Die Datei wird gelöscht.",
+    "removeConfirm": "{{name}} entfernen? Die Datei wird gelöscht, und Abhängigkeiten, die sonst nichts braucht, gleich mit.",
     "failed": "Das hat nicht geklappt.",
     "installed": "Installiert: {{names}}",
     "restartHint": "Der Server läuft: Änderungen wirken nach einem Neustart.",
@@ -257,6 +257,15 @@
     "downloads": "{{count}} Downloads",
     "isInstalled": "Installiert",
     "installing": "Wird installiert …",
-    "install": "Installieren"
+    "install": "Installieren",
+    "removed": "Entfernt: {{names}}",
+    "updated": "Aktualisiert: {{names}}",
+    "checking": "Suche nach Updates …",
+    "checkFailed": "Updates konnten nicht geprüft werden.",
+    "updatesAvailable": "{{count}} Update(s) verfügbar",
+    "upToDate": "Alles ist aktuell.",
+    "check": "Erneut prüfen",
+    "updateAll": "Alle aktualisieren",
+    "incompatible": "passt nicht zu dieser Version"
   }
 }
