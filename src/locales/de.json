@@ -306,5 +306,14 @@
     "fromEnv": "In der Umgebung gesetzt",
     "remove": "Entfernen",
     "removeConfirm": "Die Einstellungen für {{name}} entfernen?"
+  },
+  "delete": {
+    "title": "Server löschen",
+    "warning": "Löscht den Server auf seinem Node: die Welt, alle Dateien und alle Backups. Das lässt sich nicht rückgängig machen. Lade vorher ein Backup herunter, falls du es noch brauchen könntest.",
+    "confirm": "Gib „{{name}}“ ein, um zu bestätigen",
+    "stopFirst": "Stoppe den Server zuerst.",
+    "button": "Endgültig löschen",
+    "deleting": "Wird gelöscht …",
+    "failed": "Der Server konnte nicht gelöscht werden."
   }
 }

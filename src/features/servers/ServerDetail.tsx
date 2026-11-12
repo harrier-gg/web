@@ -15,6 +15,7 @@ import type { MeDto } from '../../api/types.gen';
 import { History } from './History';
 import { ConfigFiles } from './ConfigFiles';
 import { Backups } from './Backups';
+import { DeleteServer } from './DeleteServer';
 import { Content } from './Content';
 import { SharePack } from './SharePack';
 import { FileManager } from './FileManager';
@@ -178,6 +179,7 @@ export function ServerDetail({ id, me, onBack }: { id: string; me: MeDto; onBack
           <ConfigFiles key={`files-${server.data.id}`} serverId={server.data.id} files={tpl.files} running={running} />
           <FileManager key={`manager-${server.data.id}`} serverId={server.data.id} running={running} />
           <Backups key={`backups-${server.data.id}`} serverId={server.data.id} stopped={status === 'stopped' || (status === 'crashed' && !restart)} />
+          <DeleteServer key={`delete-${server.data.id}`} server={server.data} stopped={status === 'stopped' || (status === 'crashed' && !restart)} onDeleted={onBack} />
         </>
       )}
     </section>

@@ -306,5 +306,14 @@
     "fromEnv": "Set in the environment",
     "remove": "Remove",
     "removeConfirm": "Remove the settings for {{name}}?"
+  },
+  "delete": {
+    "title": "Delete server",
+    "warning": "Deletes the server on its node: the world, all files and all backups. This cannot be undone. Download a backup first if you might need it.",
+    "confirm": "Type \"{{name}}\" to confirm",
+    "stopFirst": "Stop the server first.",
+    "button": "Delete for good",
+    "deleting": "Deleting …",
+    "failed": "The server could not be deleted."
   }
 }
