@@ -279,7 +279,7 @@
   },
   "integrations": {
     "title": "Integrations",
-    "intro": "Each Harrier installation uses its own accounts at Discord and CurseForge. Enter them here; values set as environment variables on the server win and are shown greyed out.",
+    "intro": "Each Harrier installation uses its own Discord application. Enter them here; values set as environment variables on the server win and are shown greyed out.",
     "loadFailed": "The settings could not be loaded.",
     "saveFailed": "The settings could not be saved.",
     "noAppKey": "HARRIER_APP_KEY is not set on the server, so secrets cannot be stored. Generate one with \"openssl rand -base64 32\", add it to the environment and restart.",
@@ -287,7 +287,6 @@
     "discordLoginHelp": "Create an application in the Discord Developer Portal (discord.com/developers/applications). Under OAuth2, copy the client ID and secret, and add this redirect:",
     "discordBot": "Discord bot",
     "discordBotHelp": "In the same application, open \"Bot\" and reset the token. For \"online\" and \"crashed\" messages, enter a channel ID (Discord: Settings → Advanced → Developer Mode, then right-click the channel → Copy Channel ID).",
-    "curseforgeHelp": "An API key from the CurseForge for Studios console (console.curseforge.com). CurseForge gives keys on request; without one, CurseForge is not offered as a source.",
     "copy": "Copy",
     "invite": "Invite the bot to your Discord server",
     "botOnline": "Online as {{name}}",
@@ -301,8 +300,7 @@
       "discord.clientId": "Client ID",
       "discord.clientSecret": "Client secret",
       "discord.botToken": "Bot token",
-      "discord.channelId": "Channel for messages (optional)",
-      "curseforge.apiKey": "API key"
+      "discord.channelId": "Channel for messages (optional)"
     },
     "secretSet": "•••••••• set (type to replace)",
     "fromEnv": "Set in the environment",
