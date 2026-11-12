@@ -267,5 +267,13 @@
     "check": "Check again",
     "updateAll": "Update all",
     "incompatible": "doesn't fit this version"
+  },
+  "share": {
+    "title": "Mods for players",
+    "count": "{{count}} mod(s) you need to join",
+    "download": "Download modpack",
+    "howTo": "Import the file in your launcher: Prism Launcher (Add Instance → Import), Modrinth App (+ → From file) or ATLauncher. It installs exactly the mods this server expects.",
+    "list": "Show mods",
+    "missing": "Not in the pack (no download link): {{names}}. Ask an admin for these."
   }
 }

@@ -267,5 +267,13 @@
     "check": "Erneut prüfen",
     "updateAll": "Alle aktualisieren",
     "incompatible": "passt nicht zu dieser Version"
+  },
+  "share": {
+    "title": "Mods zum Mitspielen",
+    "count": "{{count}} Mod(s), die du zum Mitspielen brauchst",
+    "download": "Modpack herunterladen",
+    "howTo": "Importiere die Datei in deinem Launcher: Prism Launcher (Instanz hinzufügen → Importieren), Modrinth App (+ → Aus Datei) oder ATLauncher. So hast du genau die Mods, die dieser Server erwartet.",
+    "list": "Mods anzeigen",
+    "missing": "Nicht im Paket (kein Download-Link): {{names}}. Frag einen Admin danach."
   }
 }

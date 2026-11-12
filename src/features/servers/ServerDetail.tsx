@@ -16,6 +16,7 @@ import { History } from './History';
 import { ConfigFiles } from './ConfigFiles';
 import { Backups } from './Backups';
 import { Content } from './Content';
+import { SharePack } from './SharePack';
 import { FileManager } from './FileManager';
 import { ServerSettings } from './SettingsFields';
 import { StatusBadge } from './StatusBadge';
@@ -144,6 +145,8 @@ export function ServerDetail({ id, me, onBack }: { id: string; me: MeDto; onBack
           </div>
         </div>
       )}
+
+      {tpl?.share && <SharePack serverId={id} />}
 
       <History serverId={id} />
 

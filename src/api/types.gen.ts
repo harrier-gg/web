@@ -275,6 +275,10 @@ export type TemplateDto = {
      * Content that can be installed (ADR 0017)
      */
     content: Array<ContentKindDto>;
+    /**
+     * Pack format for sharing player content (ADR 0018)
+     */
+    share: 'mrpack';
     config: Array<TemplateConfigFieldDto>;
 };
 
@@ -417,6 +421,24 @@ export type ContentUpdateDto = {
      * No version fits the server's game version
      */
     incompatible: boolean;
+};
+
+export type ShareModDto = {
+    name: string;
+    version: string;
+};
+
+export type ShareSummaryDto = {
+    format: 'mrpack';
+    fileName: string;
+    /**
+     * Content players get
+     */
+    mods: Array<ShareModDto>;
+    /**
+     * Content that cannot be in the pack
+     */
+    missing: Array<string>;
 };
 
 export type AuthSetupStatusData = {
@@ -1162,3 +1184,36 @@ export type ContentRemoveResponses = {
 };
 
 export type ContentRemoveResponse = ContentRemoveResponses[keyof ContentRemoveResponses];
+
+export type ShareSummaryData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/servers/{id}/share';
+};
+
+export type ShareSummaryResponses = {
+    200: ShareSummaryDto;
+};
+
+export type ShareSummaryResponse = ShareSummaryResponses[keyof ShareSummaryResponses];
+
+export type ShareDownloadData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/servers/{id}/share/download';
+};
+
+export type ShareDownloadResponses = {
+    /**
+     * The pack
+     */
+    200: Blob | File;
+};
+
+export type ShareDownloadResponse = ShareDownloadResponses[keyof ShareDownloadResponses];
