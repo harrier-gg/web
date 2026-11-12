@@ -3,8 +3,8 @@
 import { type DefaultError, queryOptions, type UseMutationOptions } from '@tanstack/react-query';
 
 import { client } from '../client.gen';
-import { agentsList, authAcceptInvite, authCheckInvite, authLogin, authLogout, authMe, authSetup, authSetupStatus, backupsCreate, backupsDownload, backupsRemove, backupsRestore, backupsSchedule, backupsSummary, contentInstall, contentList, contentRemove, contentSearch, contentUpdate, contentUpdates, discordProviders, filesDownload, filesList, filesMkdir, filesMove, filesRemove, filesUpload, nodesCreate, nodesList, nodesRemove, type Options, serversCommand, serversCreate, serversGet, serversList, serversMetrics, serversReadFile, serversStart, serversStop, serversUpdateSettings, serversWriteFile, systemHealth, systemMeta, templatesList, templatesVersions, usersCreateInvite, usersInvites, usersList, usersRemove, usersRevokeInvite, usersUpdateRole } from '../sdk.gen';
-import type { AgentsListData, AgentsListResponse, AuthAcceptInviteData, AuthAcceptInviteResponse, AuthCheckInviteData, AuthCheckInviteResponse, AuthLoginData, AuthLoginResponse, AuthLogoutData, AuthLogoutResponse, AuthMeData, AuthMeResponse, AuthSetupData, AuthSetupResponse, AuthSetupStatusData, AuthSetupStatusResponse, BackupsCreateData, BackupsDownloadData, BackupsDownloadResponse, BackupsRemoveData, BackupsRemoveResponse, BackupsRestoreData, BackupsScheduleData, BackupsScheduleResponse, BackupsSummaryData, BackupsSummaryResponse, ContentInstallData, ContentInstallResponse, ContentListData, ContentListResponse, ContentRemoveData, ContentRemoveResponse, ContentSearchData, ContentSearchResponse, ContentUpdateData, ContentUpdateResponse, ContentUpdatesData, ContentUpdatesResponse, DiscordProvidersData, DiscordProvidersResponse, FilesDownloadData, FilesDownloadResponse, FilesListData, FilesListResponse, FilesMkdirData, FilesMkdirResponse, FilesMoveData, FilesMoveResponse, FilesRemoveData, FilesRemoveResponse, FilesUploadData, FilesUploadResponse, NodesCreateData, NodesCreateResponse, NodesListData, NodesListResponse, NodesRemoveData, NodesRemoveResponse, ServersCommandData, ServersCommandResponse, ServersCreateData, ServersCreateResponse, ServersGetData, ServersGetResponse, ServersListData, ServersListResponse, ServersMetricsData, ServersMetricsResponse, ServersReadFileData, ServersReadFileResponse, ServersStartData, ServersStartResponse, ServersStopData, ServersStopResponse, ServersUpdateSettingsData, ServersUpdateSettingsResponse, ServersWriteFileData, ServersWriteFileResponse, SystemHealthData, SystemHealthResponse, SystemMetaData, SystemMetaResponse, TemplatesListData, TemplatesListResponse, TemplatesVersionsData, TemplatesVersionsResponse, UsersCreateInviteData, UsersCreateInviteResponse, UsersInvitesData, UsersInvitesResponse, UsersListData, UsersListResponse, UsersRemoveData, UsersRemoveResponse, UsersRevokeInviteData, UsersRevokeInviteResponse, UsersUpdateRoleData, UsersUpdateRoleResponse } from '../types.gen';
+import { agentsList, authAcceptInvite, authCheckInvite, authLogin, authLogout, authMe, authSetup, authSetupStatus, backupsCreate, backupsDownload, backupsRemove, backupsRestore, backupsSchedule, backupsSummary, contentInstall, contentList, contentRemove, contentSearch, contentUpdate, contentUpdates, discordProviders, filesDownload, filesList, filesMkdir, filesMove, filesRemove, filesUpload, nodesCreate, nodesList, nodesRemove, type Options, serversCommand, serversCreate, serversGet, serversList, serversMetrics, serversReadFile, serversStart, serversStop, serversUpdateSettings, serversWriteFile, shareDownload, shareSummary, systemHealth, systemMeta, templatesList, templatesVersions, usersCreateInvite, usersInvites, usersList, usersRemove, usersRevokeInvite, usersUpdateRole } from '../sdk.gen';
+import type { AgentsListData, AgentsListResponse, AuthAcceptInviteData, AuthAcceptInviteResponse, AuthCheckInviteData, AuthCheckInviteResponse, AuthLoginData, AuthLoginResponse, AuthLogoutData, AuthLogoutResponse, AuthMeData, AuthMeResponse, AuthSetupData, AuthSetupResponse, AuthSetupStatusData, AuthSetupStatusResponse, BackupsCreateData, BackupsDownloadData, BackupsDownloadResponse, BackupsRemoveData, BackupsRemoveResponse, BackupsRestoreData, BackupsScheduleData, BackupsScheduleResponse, BackupsSummaryData, BackupsSummaryResponse, ContentInstallData, ContentInstallResponse, ContentListData, ContentListResponse, ContentRemoveData, ContentRemoveResponse, ContentSearchData, ContentSearchResponse, ContentUpdateData, ContentUpdateResponse, ContentUpdatesData, ContentUpdatesResponse, DiscordProvidersData, DiscordProvidersResponse, FilesDownloadData, FilesDownloadResponse, FilesListData, FilesListResponse, FilesMkdirData, FilesMkdirResponse, FilesMoveData, FilesMoveResponse, FilesRemoveData, FilesRemoveResponse, FilesUploadData, FilesUploadResponse, NodesCreateData, NodesCreateResponse, NodesListData, NodesListResponse, NodesRemoveData, NodesRemoveResponse, ServersCommandData, ServersCommandResponse, ServersCreateData, ServersCreateResponse, ServersGetData, ServersGetResponse, ServersListData, ServersListResponse, ServersMetricsData, ServersMetricsResponse, ServersReadFileData, ServersReadFileResponse, ServersStartData, ServersStartResponse, ServersStopData, ServersStopResponse, ServersUpdateSettingsData, ServersUpdateSettingsResponse, ServersWriteFileData, ServersWriteFileResponse, ShareDownloadData, ShareDownloadResponse, ShareSummaryData, ShareSummaryResponse, SystemHealthData, SystemHealthResponse, SystemMetaData, SystemMetaResponse, TemplatesListData, TemplatesListResponse, TemplatesVersionsData, TemplatesVersionsResponse, UsersCreateInviteData, UsersCreateInviteResponse, UsersInvitesData, UsersInvitesResponse, UsersListData, UsersListResponse, UsersRemoveData, UsersRemoveResponse, UsersRevokeInviteData, UsersRevokeInviteResponse, UsersUpdateRoleData, UsersUpdateRoleResponse } from '../types.gen';
 
 export type QueryKey<TOptions extends Options> = [
     Pick<TOptions, 'baseUrl' | 'body' | 'headers' | 'path' | 'query'> & {
@@ -761,3 +761,33 @@ export const contentRemoveMutation = (options?: Partial<Options<ContentRemoveDat
     };
     return mutationOptions;
 };
+
+export const shareSummaryQueryKey = (options: Options<ShareSummaryData>) => createQueryKey('shareSummary', options);
+
+export const shareSummaryOptions = (options: Options<ShareSummaryData>) => queryOptions<ShareSummaryResponse, DefaultError, ShareSummaryResponse, ReturnType<typeof shareSummaryQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await shareSummary({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: shareSummaryQueryKey(options)
+});
+
+export const shareDownloadQueryKey = (options: Options<ShareDownloadData>) => createQueryKey('shareDownload', options);
+
+export const shareDownloadOptions = (options: Options<ShareDownloadData>) => queryOptions<ShareDownloadResponse, DefaultError, ShareDownloadResponse, ReturnType<typeof shareDownloadQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await shareDownload({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: shareDownloadQueryKey(options)
+});
