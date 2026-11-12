@@ -49,7 +49,7 @@ export type MeDto = {
     /**
      * What this user may do (ADR 0007); the web hides the rest
      */
-    permissions: Array<'viewServers' | 'startStopServers' | 'sendCommands' | 'manageServers' | 'manageMembers' | 'manageAdmins'>;
+    permissions: Array<'viewServers' | 'startStopServers' | 'sendCommands' | 'manageServers' | 'manageMembers' | 'manageAdmins' | 'manageInstance'>;
 };
 
 export type InviteCheckDto = {
@@ -439,6 +439,46 @@ export type ShareSummaryDto = {
      * Content that cannot be in the pack
      */
     missing: Array<string>;
+};
+
+export type SettingEntryDto = {
+    key: 'discord.clientId' | 'discord.clientSecret' | 'discord.botToken' | 'discord.channelId' | 'curseforge.apiKey';
+    secret: boolean;
+    set: boolean;
+    /**
+     * Never a secret
+     */
+    value: string | null;
+    /**
+     * Set by an environment variable; cannot be changed here
+     */
+    fromEnv: boolean;
+};
+
+export type BotStatusDto = {
+    state: 'off' | 'connecting' | 'online' | 'error';
+    user: string | null;
+    inviteUrl: string | null;
+    error: string | null;
+};
+
+export type IntegrationSettingsDto = {
+    settings: Array<SettingEntryDto>;
+    /**
+     * Whether HARRIER_APP_KEY is set
+     */
+    canStoreSecrets: boolean;
+    discordRedirectUrl: string;
+    bot: BotStatusDto;
+};
+
+export type SettingsChangeDto = {
+    /**
+     * A value per setting key; null or "" removes it
+     */
+    values?: {
+        [key: string]: string | null;
+    };
 };
 
 export type AuthSetupStatusData = {
@@ -1217,3 +1257,29 @@ export type ShareDownloadResponses = {
 };
 
 export type ShareDownloadResponse = ShareDownloadResponses[keyof ShareDownloadResponses];
+
+export type SettingsGetData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/settings/integrations';
+};
+
+export type SettingsGetResponses = {
+    200: IntegrationSettingsDto;
+};
+
+export type SettingsGetResponse = SettingsGetResponses[keyof SettingsGetResponses];
+
+export type SettingsSetData = {
+    body: SettingsChangeDto;
+    path?: never;
+    query?: never;
+    url: '/settings/integrations';
+};
+
+export type SettingsSetResponses = {
+    200: IntegrationSettingsDto;
+};
+
+export type SettingsSetResponse = SettingsSetResponses[keyof SettingsSetResponses];

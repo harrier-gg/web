@@ -9,6 +9,7 @@ import { ServerList } from './features/servers/ServerList';
 import { SystemStatus } from './features/system/SystemStatus';
 import { UsersPage } from './features/users/UsersPage';
 import { NodesPage } from './features/nodes/NodesPage';
+import { IntegrationsPage } from './features/settings/IntegrationsPage';
 import { LANGUAGES } from './i18n';
 
 declare const __API_CONTRACT__: string;
@@ -22,7 +23,7 @@ export function App() {
   const [notice, setNotice] = useState(authNotice);
   // ponytail: one level of navigation; a router comes with more pages (M2: login, users)
   const [serverId, setServerId] = useState<string | null>(null);
-  const [page, setPage] = useState<'servers' | 'nodes' | 'users'>('servers');
+  const [page, setPage] = useState<'servers' | 'nodes' | 'users' | 'integrations'>('servers');
 
   const contractOk = meta.data ? meta.data.contract === __API_CONTRACT__ : undefined;
 
@@ -71,6 +72,9 @@ export function App() {
                 {user.permissions.includes('manageMembers') && (
                   <Tab active={page === 'users'} onClick={() => setPage('users')}>{t('nav.users')}</Tab>
                 )}
+                {user.permissions.includes('manageInstance') && (
+                  <Tab active={page === 'integrations'} onClick={() => setPage('integrations')}>{t('nav.integrations')}</Tab>
+                )}
               </div>
               <div className="flex items-center gap-3 text-zinc-400">
                 <span>{t('auth.signedInAs', { name: user.name })} · {t(`roles.${user.role}`)}</span>
@@ -97,7 +101,9 @@ export function App() {
                 <button type="button" onClick={() => setNotice(null)} aria-label={t('discord.dismiss')}>×</button>
               </p>
             )}
-            {page === 'users' ? (
+            {page === 'integrations' ? (
+              <IntegrationsPage />
+            ) : page === 'users' ? (
               <UsersPage me={user} />
             ) : page === 'nodes' ? (
               <NodesPage />
