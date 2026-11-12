@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.6.0](https://github.com/harrier-gg/web/compare/v0.5.0...v0.6.0) (2026-11-12)
+
+
+### Features
+
+* browse, install and remove mods and plugins ([#25](https://github.com/harrier-gg/web/issues/25)) ([597ee0d](https://github.com/harrier-gg/web/commit/597ee0dcd84159dc1994d5c5fa1d644fe90c8784))
+* update mods and plugins, show what no longer fits ([#27](https://github.com/harrier-gg/web/issues/27)) ([21cf62f](https://github.com/harrier-gg/web/commit/21cf62fb28ef794cb950154f092059d82941e2c8))
+
 ## [0.5.0](https://github.com/harrier-gg/web/compare/v0.4.0...v0.5.0) (2026-11-11)
 
 
