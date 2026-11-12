@@ -279,7 +279,7 @@
   },
   "integrations": {
     "title": "Integrationen",
-    "intro": "Jede Harrier-Installation nutzt ihre eigenen Konten bei Discord und CurseForge. Trag sie hier ein; Werte, die als Umgebungsvariablen auf dem Server gesetzt sind, haben Vorrang und erscheinen ausgegraut.",
+    "intro": "Jede Harrier-Installation nutzt ihre eigene Discord-Anwendung. Trag sie hier ein; Werte, die als Umgebungsvariablen auf dem Server gesetzt sind, haben Vorrang und erscheinen ausgegraut.",
     "loadFailed": "Die Einstellungen konnten nicht geladen werden.",
     "saveFailed": "Die Einstellungen konnten nicht gespeichert werden.",
     "noAppKey": "HARRIER_APP_KEY ist auf dem Server nicht gesetzt, daher lassen sich keine Secrets speichern. Erzeuge einen mit „openssl rand -base64 32“, trag ihn in die Umgebung ein und starte neu.",
@@ -287,7 +287,6 @@
     "discordLoginHelp": "Leg im Discord Developer Portal (discord.com/developers/applications) eine Anwendung an. Kopiere unter OAuth2 Client-ID und Secret und füge diese Redirect-Adresse hinzu:",
     "discordBot": "Discord-Bot",
     "discordBotHelp": "Öffne in derselben Anwendung „Bot“ und setze das Token zurück. Für Meldungen bei „online“ und „abgestürzt“ trag eine Kanal-ID ein (Discord: Einstellungen → Erweitert → Entwicklermodus, dann Rechtsklick auf den Kanal → Kanal-ID kopieren).",
-    "curseforgeHelp": "Ein API-Schlüssel aus der „CurseForge for Studios“-Konsole (console.curseforge.com). CurseForge vergibt Schlüssel auf Antrag; ohne Schlüssel wird CurseForge nicht als Quelle angeboten.",
     "copy": "Kopieren",
     "invite": "Bot auf deinen Discord-Server einladen",
     "botOnline": "Online als {{name}}",
@@ -301,8 +300,7 @@
       "discord.clientId": "Client-ID",
       "discord.clientSecret": "Client-Secret",
       "discord.botToken": "Bot-Token",
-      "discord.channelId": "Kanal für Meldungen (optional)",
-      "curseforge.apiKey": "API-Schlüssel"
+      "discord.channelId": "Kanal für Meldungen (optional)"
     },
     "secretSet": "•••••••• gesetzt (zum Ersetzen tippen)",
     "fromEnv": "In der Umgebung gesetzt",

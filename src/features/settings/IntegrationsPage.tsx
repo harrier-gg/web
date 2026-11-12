@@ -8,7 +8,7 @@ const input = 'w-full rounded-md bg-surface px-3 py-2 text-zinc-100 outline-none
 type Key = SettingEntryDto['key'];
 
 /**
- * Credentials for Discord and CurseForge, for the owner (ADR 0019). Secrets are only written:
+ * Credentials for Discord, for the owner (ADR 0019). Secrets are only written:
  * the page shows whether they are set, never their value.
  */
 export function IntegrationsPage() {
@@ -46,7 +46,6 @@ export function IntegrationsPage() {
         help={t('integrations.discordBotHelp')}
         status={<BotStatus bot={data.bot} />}
       />
-      <Section data={data} title="CurseForge" keys={['curseforge.apiKey']} help={t('integrations.curseforgeHelp')} />
     </section>
   );
 }

@@ -16,7 +16,7 @@ import { localize } from '../../lib/localize';
 import { input } from './SettingsFields';
 
 /** Names of the providers templates use (ADR 0017); unknown ones show as they are. */
-const SOURCES: Record<string, string> = { modrinth: 'Modrinth', curseforge: 'CurseForge', hangar: 'Hangar' };
+const SOURCES: Record<string, string> = { modrinth: 'Modrinth', hangar: 'Hangar' };
 
 /** One block per kind of content the template offers, e.g. "Mods" or "Plugins" (ADR 0017). */
 export function Content({ serverId, kinds, running }: { serverId: string; kinds: ContentKindDto[]; running: boolean }) {

@@ -442,7 +442,7 @@ export type ShareSummaryDto = {
 };
 
 export type SettingEntryDto = {
-    key: 'discord.clientId' | 'discord.clientSecret' | 'discord.botToken' | 'discord.channelId' | 'curseforge.apiKey';
+    key: 'discord.clientId' | 'discord.clientSecret' | 'discord.botToken' | 'discord.channelId';
     secret: boolean;
     set: boolean;
     /**
