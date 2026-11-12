@@ -240,6 +240,16 @@ export type TemplateFileDto = {
     description?: LocalizedTextDto;
 };
 
+export type ContentKindDto = {
+    kind: string;
+    label: LocalizedTextDto;
+    path: string;
+    /**
+     * Providers to search
+     */
+    sources: Array<string>;
+};
+
 export type TemplateConfigFieldDto = {
     key: string;
     label: LocalizedTextDto;
@@ -261,6 +271,10 @@ export type TemplateDto = {
      * Files owners and admins can edit
      */
     files: Array<TemplateFileDto>;
+    /**
+     * Content that can be installed (ADR 0017)
+     */
+    content: Array<ContentKindDto>;
     config: Array<TemplateConfigFieldDto>;
 };
 
@@ -355,6 +369,42 @@ export type BackupScheduleDto = {
 
 export type BackupNameDto = {
     name: string;
+};
+
+export type InstalledContentDto = {
+    id: string;
+    kind: string;
+    provider: string;
+    projectId: string;
+    name: string;
+    version: string;
+    path: string;
+    side: 'server' | 'client' | 'both';
+    /**
+     * Installed because another project needs it
+     */
+    dependency: boolean;
+    installedAt: string;
+};
+
+export type ContentProjectDto = {
+    id: string;
+    name: string;
+    summary: string;
+    author: string;
+    downloads: number;
+    iconUrl: string | null;
+    pageUrl: string;
+    /**
+     * client: only players need it
+     */
+    side: 'server' | 'client' | 'both';
+};
+
+export type InstallDto = {
+    kind: string;
+    source: string;
+    projectId: string;
 };
 
 export type AuthSetupStatusData = {
@@ -1004,3 +1054,68 @@ export type BackupsDownloadResponses = {
 };
 
 export type BackupsDownloadResponse = BackupsDownloadResponses[keyof BackupsDownloadResponses];
+
+export type ContentListData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/servers/{id}/content';
+};
+
+export type ContentListResponses = {
+    200: Array<InstalledContentDto>;
+};
+
+export type ContentListResponse = ContentListResponses[keyof ContentListResponses];
+
+export type ContentInstallData = {
+    body: InstallDto;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/servers/{id}/content';
+};
+
+export type ContentInstallResponses = {
+    200: Array<InstalledContentDto>;
+};
+
+export type ContentInstallResponse = ContentInstallResponses[keyof ContentInstallResponses];
+
+export type ContentSearchData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query: {
+        kind: string;
+        source: string;
+        query?: unknown;
+    };
+    url: '/servers/{id}/content/search';
+};
+
+export type ContentSearchResponses = {
+    200: Array<ContentProjectDto>;
+};
+
+export type ContentSearchResponse = ContentSearchResponses[keyof ContentSearchResponses];
+
+export type ContentRemoveData = {
+    body?: never;
+    path: {
+        id: string;
+        contentId: string;
+    };
+    query?: never;
+    url: '/servers/{id}/content/{contentId}';
+};
+
+export type ContentRemoveResponses = {
+    204: void;
+};
+
+export type ContentRemoveResponse = ContentRemoveResponses[keyof ContentRemoveResponses];
