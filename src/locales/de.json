@@ -164,6 +164,7 @@
     "neverConnected": "noch nie verbunden",
     "empty": "Noch keine Nodes.",
     "removeConfirm": "Node „{{name}}“ entfernen? Sein Agent wird getrennt und sein Token ist danach ungültig.",
+    "removeOfflineConfirm": "Node „{{name}}“ entfernen? Sein Token ist danach ungültig. Der Node ist offline, deshalb verschwinden auch seine Server aus dem Panel; ihre Dateien bleiben auf dem Rechner.",
     "conflict": "Es gibt schon einen Node mit diesem Namen, oder der Node hat noch Server.",
     "invalid": "Node-Namen haben 1–64 Zeichen: Buchstaben, Ziffern, „.“, „_“, „-“."
   },

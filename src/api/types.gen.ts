@@ -951,7 +951,12 @@ export type NodesRemoveData = {
     path: {
         id: string;
     };
-    query?: never;
+    query?: {
+        /**
+         * Also remove the servers of an offline node from the panel. Their files stay on the machine.
+         */
+        force?: boolean;
+    };
     url: '/nodes/{id}';
 };
 
