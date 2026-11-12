@@ -736,6 +736,21 @@ export type ServersCreateResponses = {
 
 export type ServersCreateResponse = ServersCreateResponses[keyof ServersCreateResponses];
 
+export type ServersRemoveData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/servers/{id}';
+};
+
+export type ServersRemoveResponses = {
+    204: void;
+};
+
+export type ServersRemoveResponse = ServersRemoveResponses[keyof ServersRemoveResponses];
+
 export type ServersGetData = {
     body?: never;
     path: {
