@@ -103,7 +103,11 @@ export function NodesPage() {
                 </span>
                 <button
                   type="button"
-                  onClick={() => window.confirm(t('nodes.removeConfirm', { name: n.name })) && remove.mutate({ path: { id: n.id } })}
+                  // An offline node may be gone for good: its servers are then only forgotten, their files stay.
+                  onClick={() =>
+                    window.confirm(t(n.online ? 'nodes.removeConfirm' : 'nodes.removeOfflineConfirm', { name: n.name })) &&
+                    remove.mutate({ path: { id: n.id }, query: { force: !n.online } })
+                  }
                   className="rounded-md px-2 py-1 text-red-300 hover:bg-white/5"
                 >
                   {t('users.remove')}

@@ -164,6 +164,7 @@
     "neverConnected": "never connected",
     "empty": "No nodes yet.",
     "removeConfirm": "Remove node \"{{name}}\"? Its agent is disconnected and its token stops working.",
+    "removeOfflineConfirm": "Remove node \"{{name}}\"? Its token stops working. The node is offline, so its servers are removed from the panel too; their files stay on the machine.",
     "conflict": "A node with this name exists, or the node still has servers.",
     "invalid": "Node names have 1–64 characters: letters, digits, \".\", \"_\", \"-\"."
   },
