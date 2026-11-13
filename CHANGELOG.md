@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.7.0](https://github.com/harrier-gg/web/compare/v0.6.0...v0.7.0) (2026-11-13)
+
+
+### Features
+
+* delete a server from its page ([#32](https://github.com/harrier-gg/web/issues/32)) ([49bbe33](https://github.com/harrier-gg/web/commit/49bbe3342358973af6d1b689e8ec46b22e5ecd69))
+* integrations page for Discord and CurseForge ([#30](https://github.com/harrier-gg/web/issues/30)) ([12824e7](https://github.com/harrier-gg/web/commit/12824e71c21db34554c45e38cd729ea35cd37566))
+* modpack download for players on the server page ([#28](https://github.com/harrier-gg/web/issues/28)) ([6a8f410](https://github.com/harrier-gg/web/commit/6a8f4101619e3897b697e0e582e6306bad3d01ee))
+* remove an offline node with its servers ([#33](https://github.com/harrier-gg/web/issues/33)) ([2c1d13d](https://github.com/harrier-gg/web/commit/2c1d13df898c2e6fed93c13fd673c115274f0914))
+
 ## [0.6.0](https://github.com/harrier-gg/web/compare/v0.5.0...v0.6.0) (2026-11-12)
 
 
