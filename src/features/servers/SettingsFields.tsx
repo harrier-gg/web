@@ -102,7 +102,7 @@ function ModpackSearch({ templateId, version, onPick }: { templateId: string; ve
   const count = (n: number) => new Intl.NumberFormat(undefined, { notation: 'compact' }).format(n);
 
   return (
-    <div className="space-y-2 text-sm sm:col-span-3">
+    <div className="min-w-0 space-y-2 text-sm sm:col-span-3">
       <div className="flex gap-2">
         <input
           type="search"
