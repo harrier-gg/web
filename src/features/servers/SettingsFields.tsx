@@ -46,7 +46,12 @@ export function SettingsFields({
         <label key={f.key} className="space-y-1 text-sm">
           <span className="text-zinc-400">{localize(f.label, lang)}</span>
           {f.type === 'version' ? (
-            <VersionSelect templateId={templateId} value={draft[f.key]} onChange={(v) => onChange({ ...draft, [f.key]: v })} />
+            <VersionSelect
+              templateId={templateId}
+              pack={fields.some((p) => p.type === 'modpack')}
+              value={draft[f.key]}
+              onChange={(v) => onChange({ ...draft, [f.key]: v })}
+            />
           ) : (
             <input
               required
@@ -74,8 +79,9 @@ export function SettingsFields({
 /**
  * Versions from the template's version provider (ADR 0012): "latest" or a release, snapshots on
  * request. If the list cannot be loaded (e.g. the panel is offline), the version can be typed.
+ * With a modpack, "latest" is the pack's newest version, not the game's (ADR 0020).
  */
-function VersionSelect({ templateId, value, onChange }: { templateId: string; value: string; onChange: (value: string) => void }) {
+function VersionSelect({ templateId, pack, value, onChange }: { templateId: string; pack: boolean; value: string; onChange: (value: string) => void }) {
   const { t } = useTranslation();
   const versions = useQuery({ ...templatesVersionsOptions({ query: { template: templateId } }), staleTime: 10 * 60_000, retry: false });
   const [snapshots, setSnapshots] = useState(false);
@@ -92,7 +98,7 @@ function VersionSelect({ templateId, value, onChange }: { templateId: string; va
   return (
     <>
       <select value={value} onChange={(e) => onChange(e.target.value)} className={input}>
-        <option value="LATEST">{t('versions.latest', { version: versions.data?.latest ?? '…' })}</option>
+        <option value="LATEST">{pack ? t('versions.latestPack') : t('versions.latest', { version: versions.data?.latest ?? '…' })}</option>
         {shown.map((v) => (
           <option key={v.id} value={v.id}>
             {v.type === 'snapshot' ? `${v.id} (${t('versions.snapshot')})` : v.id}

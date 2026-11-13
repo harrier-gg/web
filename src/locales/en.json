@@ -223,6 +223,7 @@
   },
   "versions": {
     "latest": "Latest ({{version}})",
+    "latestPack": "Newest pack version",
     "snapshot": "snapshot",
     "showSnapshots": "Show snapshots and pre-releases",
     "offline": "The version list is not reachable; type the version, e.g. 1.21.4."
