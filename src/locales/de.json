@@ -316,5 +316,8 @@
     "button": "Endgültig löschen",
     "deleting": "Wird gelöscht …",
     "failed": "Der Server konnte nicht gelöscht werden."
+  },
+  "modpack": {
+    "browse": "Modpacks auf modrinth.com finden und den Link kopieren"
   }
 }

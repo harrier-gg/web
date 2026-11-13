@@ -37,7 +37,7 @@ export function SettingsFields({
   draft: Draft;
   onChange: (draft: Draft) => void;
 }) {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const lang = i18n.resolvedLanguage;
 
   return (
@@ -58,6 +58,12 @@ export function SettingsFields({
               onChange={(e) => onChange({ ...draft, [f.key]: e.target.value })}
               className={input}
             />
+          )}
+          {/* ponytail: packs are named by link; a search in the panel can come later (ADR 0020) */}
+          {f.type === 'modpack' && (
+            <a href="https://modrinth.com/modpacks" target="_blank" rel="noreferrer" className="block text-xs text-accent hover:underline">
+              {t('modpack.browse')}
+            </a>
           )}
         </label>
       ))}
