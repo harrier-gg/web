@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.8.0](https://github.com/harrier-gg/web/compare/v0.7.0...v0.8.0) (2026-11-13)
+
+
+### Features
+
+* egg servers in the panel: all ports, checkboxes, secrets, reinstall ([#37](https://github.com/harrier-gg/web/issues/37)) ([4c2ba16](https://github.com/harrier-gg/web/commit/4c2ba160f7d04519ae11edc8388f0e565d37b6b0))
+* modpack servers in the settings form ([#34](https://github.com/harrier-gg/web/issues/34)) ([eb18ebb](https://github.com/harrier-gg/web/commit/eb18ebb917a50ed2a2d446c3e20cb56ec23f2058))
+* search Modrinth modpacks in the settings form ([#36](https://github.com/harrier-gg/web/issues/36)) ([7b7a6e8](https://github.com/harrier-gg/web/commit/7b7a6e85666415e17f84f9385cb2f89b50aa2695))
+
 ## [0.7.0](https://github.com/harrier-gg/web/compare/v0.6.0...v0.7.0) (2026-11-13)
 
 
