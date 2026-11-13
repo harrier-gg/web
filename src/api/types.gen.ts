@@ -254,9 +254,9 @@ export type TemplateConfigFieldDto = {
     key: string;
     label: LocalizedTextDto;
     /**
-     * version: pick from GET /templates/versions
+     * version: pick from GET /templates/versions; modpack: a Modrinth modpack, its name or link
      */
-    type: 'string' | 'integer' | 'version';
+    type: 'string' | 'integer' | 'version' | 'modpack';
     default: string | number;
     min?: number;
     max?: number;

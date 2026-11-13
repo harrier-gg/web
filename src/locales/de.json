@@ -223,6 +223,7 @@
   },
   "versions": {
     "latest": "Neueste ({{version}})",
+    "latestPack": "Neueste Version des Packs",
     "snapshot": "Snapshot",
     "showSnapshots": "Snapshots und Vorabversionen zeigen",
     "offline": "Die Versionsliste ist nicht erreichbar; gib die Version ein, z. B. 1.21.4."
@@ -316,5 +317,8 @@
     "button": "Endgültig löschen",
     "deleting": "Wird gelöscht …",
     "failed": "Der Server konnte nicht gelöscht werden."
+  },
+  "modpack": {
+    "browse": "Modpacks auf modrinth.com finden und den Link kopieren"
   }
 }
