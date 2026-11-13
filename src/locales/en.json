@@ -36,7 +36,8 @@
     "title": "Servers",
     "new": "New server",
     "empty": "No servers yet. Create one to get started.",
-    "port": "Port {{port}}"
+    "port": "Port {{port}}",
+    "ports": "Ports {{list}}"
   },
   "serverStatus": {
     "installing": "Installing",
@@ -57,7 +58,10 @@
     "settings": "Settings",
     "cancel": "Cancel",
     "submit": "Create server",
-    "failed": "The server could not be created."
+    "failed": "The server could not be created.",
+    "secretRandom": "Empty: a random one",
+    "show": "Show",
+    "hide": "Hide"
   },
   "detail": {
     "back": "All servers",
@@ -321,5 +325,16 @@
   "modpack": {
     "search": "Search modpacks on Modrinth",
     "pick": "Choose"
+  },
+  "ports": {
+    "game": "game",
+    "query": "query"
+  },
+  "reinstall": {
+    "title": "Reinstall",
+    "text": "Runs the install script again at the next start, which downloads the game files again. Worlds and settings usually stay, but make a backup first.",
+    "button": "Reinstall at next start",
+    "done": "Start the server to reinstall it.",
+    "failed": "Could not mark the server for reinstalling."
   }
 }

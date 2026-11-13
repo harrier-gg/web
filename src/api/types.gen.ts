@@ -145,18 +145,28 @@ export type AgentDto = {
     connectedAt: string;
 };
 
+export type ServerPortDto = {
+    name: string;
+    port: number;
+    protocol: 'tcp' | 'udp';
+};
+
 export type ServerDto = {
     id: string;
     name: string;
     nodeId: string;
     templateId: string;
     settings: {
-        [key: string]: string | number;
+        [key: string]: string | number | boolean;
     };
     /**
      * Port players connect to on the node
      */
     hostPort: number;
+    /**
+     * All ports of the server on the node; the first is hostPort
+     */
+    ports: Array<ServerPortDto>;
     status: 'installing' | 'starting' | 'running' | 'stopping' | 'stopped' | 'crashed' | 'sleeping';
     statusMessage: string | null;
     createdAt: string;
@@ -167,7 +177,7 @@ export type CreateServerDto = {
     name: string;
     templateId: string;
     settings?: {
-        [key: string]: string | number;
+        [key: string]: string | number | boolean;
     };
 };
 
@@ -195,7 +205,7 @@ export type SettingsDto = {
      * Changed settings; keys left out keep their value
      */
     settings: {
-        [key: string]: string | number;
+        [key: string]: string | number | boolean;
     };
 };
 
@@ -254,10 +264,10 @@ export type TemplateConfigFieldDto = {
     key: string;
     label: LocalizedTextDto;
     /**
-     * version: pick from GET /templates/versions; modpack: a Modrinth modpack, its name or link
+     * version: pick from GET /templates/versions; modpack: a Modrinth modpack, its name or link; secret: text not shown in clear
      */
-    type: 'string' | 'integer' | 'version' | 'modpack';
-    default: string | number;
+    type: 'string' | 'integer' | 'version' | 'modpack' | 'boolean' | 'secret';
+    default: string | number | boolean;
     min?: number;
     max?: number;
     pattern?: string;
@@ -280,6 +290,10 @@ export type TemplateDto = {
      */
     share: 'mrpack';
     config: Array<TemplateConfigFieldDto>;
+    /**
+     * `script`: an install script runs before the first start and on reinstall (ADR 0022)
+     */
+    install: 'image' | 'script';
 };
 
 export type GameVersionDto = {
@@ -797,6 +811,21 @@ export type ServersStartResponses = {
 };
 
 export type ServersStartResponse = ServersStartResponses[keyof ServersStartResponses];
+
+export type ServersReinstallData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/servers/{id}/reinstall';
+};
+
+export type ServersReinstallResponses = {
+    200: ServerDto;
+};
+
+export type ServersReinstallResponse = ServersReinstallResponses[keyof ServersReinstallResponses];
 
 export type ServersStopData = {
     body?: never;

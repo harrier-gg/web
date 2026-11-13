@@ -15,7 +15,7 @@ import type { MeDto } from '../../api/types.gen';
 import { History } from './History';
 import { ConfigFiles } from './ConfigFiles';
 import { Backups } from './Backups';
-import { DeleteServer } from './DeleteServer';
+import { DeleteServer, Reinstall } from './DeleteServer';
 import { Content } from './Content';
 import { SharePack } from './SharePack';
 import { FileManager } from './FileManager';
@@ -87,7 +87,9 @@ export function ServerDetail({ id, me, onBack }: { id: string; me: MeDto; onBack
         <div>
           <h2 className="text-lg font-medium">{server.data?.name}</h2>
           <p className="text-sm text-zinc-400">
-            {tpl ? `${tpl.game.name} · ${tpl.variant.name}` : server.data?.templateId} · {t('servers.port', { port: server.data?.hostPort })}
+            {tpl ? `${tpl.game.name} · ${tpl.variant.name}` : server.data?.templateId} · {server.data && server.data.ports.length > 1
+              ? t('servers.ports', { list: server.data.ports.map((p) => `${t(`ports.${p.name}`, { defaultValue: p.name })} ${p.port}/${p.protocol}`).join(', ') })
+              : t('servers.port', { port: server.data?.hostPort })}
           </p>
         </div>
         <div className="flex items-center gap-4">
@@ -179,6 +181,7 @@ export function ServerDetail({ id, me, onBack }: { id: string; me: MeDto; onBack
           <ConfigFiles key={`files-${server.data.id}`} serverId={server.data.id} files={tpl.files} running={running} />
           <FileManager key={`manager-${server.data.id}`} serverId={server.data.id} running={running} />
           <Backups key={`backups-${server.data.id}`} serverId={server.data.id} stopped={status === 'stopped' || (status === 'crashed' && !restart)} />
+          {tpl.install === 'script' && <Reinstall key={`reinstall-${server.data.id}`} serverId={server.data.id} stopped={status === 'stopped' || (status === 'crashed' && !restart)} />}
           <DeleteServer key={`delete-${server.data.id}`} server={server.data} stopped={status === 'stopped' || (status === 'crashed' && !restart)} onDeleted={onBack} />
         </>
       )}

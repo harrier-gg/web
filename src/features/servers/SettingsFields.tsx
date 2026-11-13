@@ -13,7 +13,7 @@ import { localize } from '../../lib/localize';
 
 export const input = 'w-full rounded-md bg-surface px-3 py-2 text-zinc-100 outline-none focus:ring-2 focus:ring-accent';
 
-type Value = string | number;
+type Value = string | number | boolean;
 /** Form state: values as typed. */
 export type Draft = Record<string, string>;
 
@@ -28,10 +28,14 @@ export function draftOf(fields: TemplateConfigFieldDto[], settings: Record<strin
 
 /** Turns form state into settings for the API; only keys of the given fields. */
 export function toSettings(fields: TemplateConfigFieldDto[], draft: Draft): Record<string, Value> {
-  return Object.fromEntries(fields.map((f) => [f.key, f.type === 'integer' ? Number(draft[f.key]) : draft[f.key]]));
+  const value = (f: TemplateConfigFieldDto) => (f.type === 'integer' ? Number(draft[f.key]) : f.type === 'boolean' ? draft[f.key] === 'true' : draft[f.key]);
+  return Object.fromEntries(fields.map((f) => [f.key, value(f)]));
 }
 
-/** One input per config field of a template (ADR 0005); the browser checks min, max and patterns. Game settings are files (ADR 0011). */
+/**
+ * One input per config field of a template (ADR 0005); the browser checks min, max and patterns.
+ * Game settings are files (ADR 0011). An empty secret gets a random value from the panel (ADR 0022).
+ */
 export function SettingsFields({
   templateId,
   fields,
@@ -48,7 +52,18 @@ export function SettingsFields({
 
   return (
     <div className="grid gap-4 sm:grid-cols-3">
-      {fields.map((f) => (
+      {fields.map((f) =>
+        f.type === 'boolean' ? (
+          <label key={f.key} className="flex items-center gap-2 self-end py-2 text-sm">
+            <input
+              type="checkbox"
+              checked={draft[f.key] === 'true'}
+              onChange={(e) => onChange({ ...draft, [f.key]: String(e.target.checked) })}
+              className="size-4 accent-accent"
+            />
+            <span className="text-zinc-300">{localize(f.label, lang)}</span>
+          </label>
+        ) : (
         <label key={f.key} className="space-y-1 text-sm">
           <span className="text-zinc-400">{localize(f.label, lang)}</span>
           {f.type === 'version' ? (
@@ -58,9 +73,14 @@ export function SettingsFields({
               value={draft[f.key]}
               onChange={(v) => onChange({ ...draft, [f.key]: v })}
             />
+          ) : f.type === 'secret' ? (
+            <SecretInput field={f} value={draft[f.key]} onChange={(v) => onChange({ ...draft, [f.key]: v })} />
           ) : (
             <input
-              required
+              // Text may be empty unless the template asks for a minimum length (the panel checks the same).
+              required={f.type !== 'string' || (f.min ?? 0) > 0}
+              minLength={f.type === 'string' ? f.min : undefined}
+              maxLength={f.type === 'string' ? f.max : undefined}
               type={f.type === 'integer' ? 'number' : 'text'}
               min={f.min}
               max={f.max}
@@ -71,7 +91,8 @@ export function SettingsFields({
             />
           )}
         </label>
-      ))}
+        ),
+      )}
       {fields
         .filter((f) => f.type === 'modpack')
         .map((f) => (
@@ -83,6 +104,31 @@ export function SettingsFields({
           />
         ))}
     </div>
+  );
+}
+
+/** A password or token, hidden until shown; empty lets the panel pick a random one. */
+function SecretInput({ field, value, onChange }: { field: TemplateConfigFieldDto; value: string; onChange: (value: string) => void }) {
+  const { t } = useTranslation();
+  const [shown, setShown] = useState(false);
+  return (
+    <span className="flex gap-2">
+      <input
+        type={shown ? 'text' : 'password'}
+        // Checks only what is typed; empty means "pick one".
+        minLength={field.min}
+        maxLength={field.max}
+        pattern={field.pattern}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        placeholder={t('create.secretRandom')}
+        autoComplete="new-password"
+        className={`${input} min-w-0 flex-1`}
+      />
+      <button type="button" onClick={() => setShown(!shown)} className="shrink-0 rounded-lg bg-white/10 px-3 hover:bg-white/15">
+        {shown ? t('create.hide') : t('create.show')}
+      </button>
+    </span>
   );
 }
 
