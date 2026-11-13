@@ -298,6 +298,20 @@ export type VersionListDto = {
     versions: Array<GameVersionDto>;
 };
 
+export type ContentProjectDto = {
+    id: string;
+    name: string;
+    summary: string;
+    author: string;
+    downloads: number;
+    iconUrl: string | null;
+    pageUrl: string;
+    /**
+     * client: only players need it
+     */
+    side: 'server' | 'client' | 'both';
+};
+
 export type NodeDto = {
     id: string;
     name: string;
@@ -389,20 +403,6 @@ export type InstalledContentDto = {
      */
     dependency: boolean;
     installedAt: string;
-};
-
-export type ContentProjectDto = {
-    id: string;
-    name: string;
-    summary: string;
-    author: string;
-    downloads: number;
-    iconUrl: string | null;
-    pageUrl: string;
-    /**
-     * client: only players need it
-     */
-    side: 'server' | 'client' | 'both';
 };
 
 export type InstallDto = {
@@ -919,6 +919,26 @@ export type TemplatesVersionsResponses = {
 };
 
 export type TemplatesVersionsResponse = TemplatesVersionsResponses[keyof TemplatesVersionsResponses];
+
+export type TemplatesModpacksData = {
+    body?: never;
+    path?: never;
+    query: {
+        template: string;
+        query?: unknown;
+        /**
+         * Game version; empty or LATEST: any
+         */
+        version?: unknown;
+    };
+    url: '/templates/modpacks';
+};
+
+export type TemplatesModpacksResponses = {
+    200: Array<ContentProjectDto>;
+};
+
+export type TemplatesModpacksResponse = TemplatesModpacksResponses[keyof TemplatesModpacksResponses];
 
 export type NodesListData = {
     body?: never;

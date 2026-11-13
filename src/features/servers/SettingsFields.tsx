@@ -1,7 +1,13 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState, type FormEvent } from 'react';
 import { useTranslation } from 'react-i18next';
-import { serversGetQueryKey, serversListQueryKey, serversUpdateSettingsMutation, templatesVersionsOptions } from '../../api/@tanstack/react-query.gen';
+import {
+  serversGetQueryKey,
+  serversListQueryKey,
+  serversUpdateSettingsMutation,
+  templatesModpacksOptions,
+  templatesVersionsOptions,
+} from '../../api/@tanstack/react-query.gen';
 import type { ServerDto, TemplateConfigFieldDto } from '../../api/types.gen';
 import { localize } from '../../lib/localize';
 
@@ -37,7 +43,7 @@ export function SettingsFields({
   draft: Draft;
   onChange: (draft: Draft) => void;
 }) {
-  const { t, i18n } = useTranslation();
+  const { i18n } = useTranslation();
   const lang = i18n.resolvedLanguage;
 
   return (
@@ -64,14 +70,97 @@ export function SettingsFields({
               className={input}
             />
           )}
-          {/* ponytail: packs are named by link; a search in the panel can come later (ADR 0020) */}
-          {f.type === 'modpack' && (
-            <a href="https://modrinth.com/modpacks" target="_blank" rel="noreferrer" className="block text-xs text-accent hover:underline">
-              {t('modpack.browse')}
-            </a>
-          )}
         </label>
       ))}
+      {fields
+        .filter((f) => f.type === 'modpack')
+        .map((f) => (
+          <ModpackSearch
+            key={f.key}
+            templateId={templateId}
+            version={draft[fields.find((v) => v.type === 'version')?.key ?? ''] ?? ''}
+            onPick={(link) => onChange({ ...draft, [f.key]: link })}
+          />
+        ))}
+    </div>
+  );
+}
+
+/**
+ * Finds Modrinth modpacks for the chosen Minecraft version; picking one fills in its link, which
+ * can also be typed or pasted (ADR 0020). Packs only for players are not offered.
+ */
+function ModpackSearch({ templateId, version, onPick }: { templateId: string; version: string; onPick: (link: string) => void }) {
+  const { t } = useTranslation();
+  const [typed, setTyped] = useState('');
+  const [query, setQuery] = useState<string | null>(null);
+  const packs = useQuery({
+    ...templatesModpacksOptions({ query: { template: templateId, version, query: query ?? '' } }),
+    enabled: query !== null,
+    staleTime: 60_000,
+  });
+  const count = (n: number) => new Intl.NumberFormat(undefined, { notation: 'compact' }).format(n);
+
+  return (
+    <div className="space-y-2 text-sm sm:col-span-3">
+      <div className="flex gap-2">
+        <input
+          type="search"
+          value={typed}
+          onChange={(e) => setTyped(e.target.value)}
+          // Enter searches instead of submitting the surrounding form.
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              e.preventDefault();
+              setQuery(typed);
+            }
+          }}
+          placeholder={t('modpack.search')}
+          aria-label={t('modpack.search')}
+          className={`${input} min-w-0 flex-1`}
+        />
+        <button type="button" onClick={() => setQuery(typed)} className="rounded-lg bg-white/10 px-3 py-2 hover:bg-white/15">
+          {t('content.search')}
+        </button>
+      </div>
+      {query !== null &&
+        (packs.isPending ? (
+          <p className="text-zinc-400">{t('files.loading')}</p>
+        ) : packs.isError ? (
+          <p role="alert" className="text-red-300">
+            {(packs.error as { detail?: string }).detail ?? t('content.failed')}
+          </p>
+        ) : packs.data.length === 0 ? (
+          <p className="text-zinc-400">{t('content.nothing')}</p>
+        ) : (
+          <ul className="max-h-80 divide-y divide-white/5 overflow-y-auto rounded-md bg-surface px-3">
+            {packs.data.map((p) => (
+              <li key={p.id} className="flex items-start gap-3 py-2">
+                {p.iconUrl ? <img src={p.iconUrl} alt="" className="size-10 shrink-0 rounded-md" loading="lazy" /> : <span className="size-10 shrink-0 rounded-md bg-white/5" />}
+                <div className="min-w-0 flex-1">
+                  <a href={p.pageUrl} target="_blank" rel="noreferrer" className="font-medium hover:underline">
+                    {p.name}
+                  </a>
+                  <p className="truncate text-zinc-400">{p.summary}</p>
+                  <p className="text-xs text-zinc-500">
+                    {p.author && `${p.author} · `}
+                    {t('content.downloads', { count: count(p.downloads) })}
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    onPick(p.pageUrl);
+                    setQuery(null);
+                  }}
+                  className="shrink-0 rounded-lg bg-accent px-3 py-1.5 font-medium text-zinc-900"
+                >
+                  {t('modpack.pick')}
+                </button>
+              </li>
+            ))}
+          </ul>
+        ))}
     </div>
   );
 }
