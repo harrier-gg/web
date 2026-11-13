@@ -319,6 +319,7 @@
     "failed": "The server could not be deleted."
   },
   "modpack": {
-    "browse": "Find modpacks on modrinth.com and copy the link"
+    "search": "Search modpacks on Modrinth",
+    "pick": "Choose"
   }
 }
