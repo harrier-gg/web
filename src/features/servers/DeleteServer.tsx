@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState, type FormEvent } from 'react';
 import { useTranslation } from 'react-i18next';
-import { serversListQueryKey, serversRemoveMutation } from '../../api/@tanstack/react-query.gen';
+import { serversGetQueryKey, serversListQueryKey, serversReinstallMutation, serversRemoveMutation } from '../../api/@tanstack/react-query.gen';
 import type { ServerDto } from '../../api/types.gen';
 
 /** Deletes a stopped server with its world and backups. Typing the name confirms it. */
@@ -51,6 +51,39 @@ export function DeleteServer({ server, stopped, onDeleted }: { server: ServerDto
           </button>
         </div>
       </form>
+    </details>
+  );
+}
+
+/** Runs the template's install script again at the next start (ADR 0022), e.g. to repair game files. */
+export function Reinstall({ serverId, stopped }: { serverId: string; stopped: boolean }) {
+  const { t } = useTranslation();
+  const queryClient = useQueryClient();
+  const reinstall = useMutation({
+    ...serversReinstallMutation(),
+    onSuccess: (updated) => queryClient.setQueryData(serversGetQueryKey({ path: { id: serverId } }), updated),
+  });
+  const error = reinstall.error as { detail?: string } | null;
+
+  return (
+    <details className="rounded-xl bg-surface-raised p-4">
+      <summary className="cursor-pointer font-medium">{t('reinstall.title')}</summary>
+      <div className="mt-3 space-y-3 text-sm">
+        <p className="text-zinc-400">{t('reinstall.text')}</p>
+        {!stopped && <p className="text-amber-200">{t('delete.stopFirst')}</p>}
+        <div className="flex flex-wrap items-center justify-end gap-3">
+          {error && <p role="alert" className="text-red-300">{error.detail ?? t('reinstall.failed')}</p>}
+          {reinstall.isSuccess && <p role="status" className="text-zinc-400">{t('reinstall.done')}</p>}
+          <button
+            type="button"
+            disabled={!stopped || reinstall.isPending || reinstall.isSuccess}
+            onClick={() => reinstall.mutate({ path: { id: serverId } })}
+            className="rounded-lg bg-white/10 px-3 py-1.5 font-medium hover:bg-white/15 disabled:opacity-40"
+          >
+            {t('reinstall.button')}
+          </button>
+        </div>
+      </div>
     </details>
   );
 }

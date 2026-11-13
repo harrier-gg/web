@@ -36,7 +36,8 @@
     "title": "Server",
     "new": "Neuer Server",
     "empty": "Noch keine Server. Leg einen an, um loszulegen.",
-    "port": "Port {{port}}"
+    "port": "Port {{port}}",
+    "ports": "Ports {{list}}"
   },
   "serverStatus": {
     "installing": "Wird installiert",
@@ -57,7 +58,10 @@
     "settings": "Einstellungen",
     "cancel": "Abbrechen",
     "submit": "Server anlegen",
-    "failed": "Der Server konnte nicht angelegt werden."
+    "failed": "Der Server konnte nicht angelegt werden.",
+    "secretRandom": "Leer: ein zufälliges",
+    "show": "Anzeigen",
+    "hide": "Verbergen"
   },
   "detail": {
     "back": "Alle Server",
@@ -321,5 +325,16 @@
   "modpack": {
     "search": "Modpacks auf Modrinth suchen",
     "pick": "Auswählen"
+  },
+  "ports": {
+    "game": "Spiel",
+    "query": "Abfrage"
+  },
+  "reinstall": {
+    "title": "Neu installieren",
+    "text": "Führt beim nächsten Start das Installationsskript erneut aus und lädt die Spieldateien neu. Welten und Einstellungen bleiben normalerweise erhalten, mach aber vorher ein Backup.",
+    "button": "Beim nächsten Start neu installieren",
+    "done": "Starte den Server, um ihn neu zu installieren.",
+    "failed": "Der Server konnte nicht zum Neuinstallieren vorgemerkt werden."
   }
 }
