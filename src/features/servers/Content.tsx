@@ -149,8 +149,8 @@ function Body({ serverId, kind, running }: { serverId: string; kind: ContentKind
       {mine.length > 0 && (
         <ul className="divide-y divide-white/5">
           {mine.map((c) => (
-            <li key={c.id} className="flex items-center gap-3 py-1.5">
-              <span className="min-w-0 flex-1 truncate">
+            <li key={c.id} className="flex flex-wrap items-center gap-x-3 gap-y-1 py-1.5">
+              <span className="min-w-32 flex-1 truncate">
                 {c.name} <span className="text-zinc-500">{c.version}</span>
               </span>
               {c.dependency && <span className="rounded bg-white/5 px-1.5 py-0.5 text-xs text-zinc-400">{t('content.dependency')}</span>}
