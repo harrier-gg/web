@@ -16,7 +16,7 @@ import { localize } from '../../lib/localize';
 import { input } from './SettingsFields';
 
 /** Names of the providers templates use (ADR 0017); unknown ones show as they are. */
-const SOURCES: Record<string, string> = { modrinth: 'Modrinth', hangar: 'Hangar' };
+const SOURCES: Record<string, string> = { modrinth: 'Modrinth', hangar: 'Hangar', thunderstore: 'Thunderstore' };
 
 /** One block per kind of content the template offers, e.g. "Mods" or "Plugins" (ADR 0017). */
 export function Content({ serverId, kinds, running }: { serverId: string; kinds: ContentKindDto[]; running: boolean }) {
@@ -36,9 +36,11 @@ function ContentKind({ serverId, kind, running }: { serverId: string; kind: Cont
 
 function Side({ side }: { side: ContentProjectDto['side'] }) {
   const { t } = useTranslation();
-  if (side !== 'client') return null;
   // A mod only players need does nothing on the server (ADR 0005, 0017).
-  return <span className="rounded bg-amber-400/15 px-1.5 py-0.5 text-xs text-amber-200">{t('content.clientOnly')}</span>;
+  if (side === 'client') return <span className="rounded bg-amber-400/15 px-1.5 py-0.5 text-xs text-amber-200">{t('content.clientOnly')}</span>;
+  // Players without it usually can't join (ADR 0023).
+  if (side === 'both') return <span className="rounded bg-zinc-400/15 px-1.5 py-0.5 text-xs text-zinc-300">{t('content.playersToo')}</span>;
+  return null;
 }
 
 function Body({ serverId, kind, running }: { serverId: string; kind: ContentKindDto; running: boolean }) {
