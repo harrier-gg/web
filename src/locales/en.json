@@ -252,6 +252,7 @@
   },
   "content": {
     "clientOnly": "only for players",
+    "playersToo": "players need it too",
     "dependency": "needed by another",
     "removeConfirm": "Remove {{name}}? The file is deleted, and dependencies nothing else needs are removed with it.",
     "failed": "That did not work.",

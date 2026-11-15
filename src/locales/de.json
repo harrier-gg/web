@@ -252,6 +252,7 @@
   },
   "content": {
     "clientOnly": "nur für Spieler",
+    "playersToo": "auch für Spieler nötig",
     "dependency": "von anderem benötigt",
     "removeConfirm": "{{name}} entfernen? Die Datei wird gelöscht, und Abhängigkeiten, die sonst nichts braucht, gleich mit.",
     "failed": "Das hat nicht geklappt.",
